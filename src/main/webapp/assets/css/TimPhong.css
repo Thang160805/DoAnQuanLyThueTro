@@ -1,0 +1,588 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	outline: none;
+}
+
+body {
+	font-family: 'Poppins', sans-serif;
+	background-color: #f5f5f5;
+	color: #222222;
+	line-height: 1.6;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+	transition: 0.2s;
+}
+
+ul {
+	list-style: none;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+header {
+	height: 70px;
+	background: white;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1000;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+	padding: 0 40px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.navbar-brand {
+	font-weight: 800;
+	color: #1E90FF !important;
+	font-size: 1.8rem;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.nav-menu {
+	display: flex;
+	gap: 30px;
+}
+
+.nav-item {
+	font-weight: 500;
+	color: #717171;
+	font-size: 0.95rem;
+	padding: 22px 0;
+	position: relative;
+	cursor: pointer;
+}
+
+.nav-item:hover {
+	color: #1E90FF;
+}
+
+.nav-item.active {
+	color: #1E90FF;
+	font-weight: 700;
+}
+
+.nav-item.active::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background: #1E90FF;
+	border-radius: 3px 3px 0 0;
+}
+
+.header-right {
+	display: flex;
+	align-items: center;
+	gap: 25px;
+}
+
+/* Dropdown Styles */
+.dropdown {
+	position: relative;
+	cursor: pointer;
+}
+
+.dropdown-content {
+	display: none;
+	position: absolute;
+	top: 150%;
+	right: 0;
+	background: white;
+	min-width: 250px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	border-radius: 8px;
+	padding: 10px 0;
+	z-index: 100;
+	border: 1px solid #eee;
+	animation: slideUp 0.2s ease;
+}
+
+.dropdown.active .dropdown-content {
+	display: block;
+}
+
+.dropdown-item {
+	padding: 10px 20px;
+	display: block;
+	font-size: 0.9rem;
+	color: #222222;
+}
+
+.dropdown-item:hover {
+	background: #f5f9ff;
+	color: #1E90FF;
+}
+
+.dropdown-divider {
+	height: 1px;
+	background: #eee;
+	margin: 5px 0;
+}
+
+@keyframes slideUp {
+	from {opacity: 0;
+	transform: translateY(10px);
+}
+
+to {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+}
+
+/* Icon Chuông */
+.notification-icon {
+	font-size: 1.3rem;
+	color: #222222;
+	position: relative;
+	transition: 0.2s;
+}
+
+.notification-icon:hover {
+	color: #1E90FF;
+}
+
+.badge {
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	background: #ff385c;
+	color: white;
+	font-size: 0.7rem;
+	font-weight: bold;
+	padding: 2px 5px;
+	border-radius: 10px;
+	border: 2px solid white;
+}
+
+/* User Avatar */
+.user-profile {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px;
+	border-radius: 30px;
+	transition: 0.2s;
+}
+
+.user-profile:hover {
+	background: #f0f0f0;
+}
+
+.avatar {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 1px solid #ddd;
+}
+
+/* --- MAIN LAYOUT (GRID 2 CỘT) --- */
+
+
+/* --- 2. FILTER SIDEBAR (BÊN TRÁI) --- */
+.filter-sidebar {
+	background: #ffffff;
+	border-radius: 10px;
+	padding: 25px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+	position: sticky;
+	top: 90px; /* Cố định khi cuộn */
+}
+
+.filter-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.filter-title {
+	font-weight: 700;
+	font-size: 1.1rem;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.btn-reset {
+	font-size: 0.85rem;
+	color: #1E90FF;
+	cursor: pointer;
+	background: none;
+	border: none;
+	font-weight: 500;
+}
+
+.btn-reset:hover {
+	text-decoration: underline;
+}
+
+.filter-group {
+	margin-bottom: 25px;
+	border-bottom: 1px solid #f0f0f0;
+	padding-bottom: 20px;
+}
+
+.filter-group:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+.label {
+	font-weight: 600;
+	font-size: 0.95rem;
+	margin-bottom: 12px;
+	display: block;
+	color: #222;
+}
+
+/* Form Tìm kiếm (Search Box) */
+.search-group {
+	position: relative;
+	width: 100%;
+}
+
+.input-box {
+	width: 100%;
+	padding: 10px 40px 10px 12px;
+	border: 1px solid #e0e0e0;
+	border-radius: 6px;
+	font-size: 0.9rem;
+	margin-bottom: 5px;
+	transition: 0.2s;
+}
+
+.input-box:focus {
+	border-color: #1E90FF;
+	box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.1);
+}
+
+.search-btn-icon {
+	position: absolute;
+	right: 10px;
+	top: 40%;
+	transform: translateY(-50%);
+	color: #888;
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+.search-btn-icon:hover {
+	color: #1E90FF;
+}
+
+/* Style cho danh sách link lọc */
+.filter-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.filter-list li {
+	margin-bottom: 8px;
+}
+
+.filter-link {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 0.9rem;
+	color: #666666;
+	padding: 6px 0;
+	transition: 0.2s;
+	cursor: pointer;
+}
+
+.filter-link:hover {
+	color: #1E90FF;
+	transform: translateX(5px);
+}
+
+.filter-link.active {
+	color: #1E90FF;
+	font-weight: 600;
+}
+
+.filter-link.active::before {
+	content: '•';
+	margin-right: 5px;
+}
+
+.filter-count {
+	font-size: 0.75rem;
+	background: #f0f2f5;
+	color: #888;
+	padding: 2px 8px;
+	border-radius: 10px;
+}
+
+/* Checkbox Styles (Cho Tiện ích) */
+.checkbox-group {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.checkbox-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 0.9rem;
+	color: #666666;
+	cursor: pointer;
+}
+
+.checkbox-item input {
+	accent-color: #1E90FF;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+/* Utility Icons in Sidebar */
+.util-icon {
+	width: 20px;
+	text-align: center;
+	margin-right: 5px;
+	color: #888;
+}
+
+.checkbox-item:hover .util-icon {
+	color: #1E90FF;
+}
+
+.btn-search-main {
+	width: 100%;
+	padding: 12px;
+	background: #1E90FF;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-weight: 600;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: 0.2s;
+	margin-top: 10px;
+	box-shadow: 0 4px 12px rgba(30, 144, 255, 0.3);
+}
+
+.btn-search-main:hover {
+	background: #1070e0;
+	transform: translateY(-2px);
+}
+
+/* --- 3. RESULT LIST (BÊN PHẢI) --- */
+.results-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	background: white;
+	padding: 15px 20px;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.result-count {
+	font-size: 1rem;
+	color: #555;
+}
+
+.result-count strong {
+	color: #333333;
+}
+
+.sort-select {
+	padding: 8px 30px 8px 12px;
+	border: 1px solid #e0e0e0;
+	border-radius: 6px;
+	font-size: 0.9rem;
+	cursor: pointer;
+	background: white;
+}
+
+.room-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+	gap: 25px;
+}
+
+/* --- CARD DESIGN --- */
+.room-card {
+	background: #ffffff;
+	border-radius: 10px;
+	overflow: hidden;
+	border: 1px solid transparent;
+	transition: all 0.3s ease;
+	position: relative;
+	cursor: pointer;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.room-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+	border-color: #dceeff;
+}
+
+.card-img-wrapper {
+	position: relative;
+	height: 200px;
+	overflow: hidden;
+}
+
+.card-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.5s;
+}
+
+.room-card:hover .card-img {
+	transform: scale(1.05);
+}
+
+.wishlist-icon {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: white;
+	font-size: 1.2rem;
+	cursor: pointer;
+	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+	transition: 0.2s;
+}
+
+.wishlist-icon:hover {
+	color: #ff385c;
+	transform: scale(1.1);
+}
+
+.card-body {
+	padding: 15px;
+}
+
+.card-title {
+	font-size: 1.05rem;
+	font-weight: 700;
+	margin-bottom: 6px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: #222;
+	
+}
+
+.card-price {
+	font-size: 1.1rem;
+	color: #1E90FF;
+	font-weight: 800;
+	margin-bottom: 10px;
+	display: block;
+}
+
+.card-price span {
+	font-size: 0.8rem;
+	color: #888;
+	font-weight: 400;
+}
+
+.card-features {
+	display: flex;
+	gap: 15px;
+	font-size: 0.85rem;
+	color: #666;
+	margin-bottom: 12px;
+}
+
+.card-features i {
+	color: #1E90FF;
+	margin-right: 4px;
+}
+
+
+.card-footer {
+	border-top: 1px solid #f0f0f0;
+	padding-top: 12px;
+	margin-top: 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.rating {
+	color: #f5a623;
+	font-weight: 700;
+	font-size: 0.9rem;
+}
+
+.btn-view {
+	padding: 6px 14px;
+	border: 1px solid #1E90FF;
+	border-radius: 6px;
+	background: white;
+	color: #1E90FF;
+	font-weight: 600;
+	font-size: 0.85rem;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.btn-view:hover {
+	background: #1E90FF;
+	color: white;
+}
+
+/* --- 4. PAGINATION --- */
+.pagination {
+	display: flex;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 40px;
+}
+
+.page-btn {
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	background: white;
+	color: #555;
+	font-weight: 600;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.page-btn:hover {
+	background: #f0f0f0;
+}
+
+.page-btn.active {
+	background: #1E90FF;
+	color: white;
+	border-color: #1E90FF;
+}
+

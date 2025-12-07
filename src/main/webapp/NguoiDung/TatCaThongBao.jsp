@@ -1,0 +1,164 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="model.bean.ThongBao"%>
+<%@ page import="model.bean.TaiKhoan"%>
+<%@ page import="utils.TimeHelper"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- Font Google: Poppins & Inter -->
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+	rel="stylesheet">
+<!-- Bootstrap 5 CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Toastify CSS (Thông báo đẹp) -->
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/TatCaThongBao.css">
+	<style>
+	a {
+	text-decoration: none;
+	color: inherit;
+	transition: 0.2s;
+}
+	</style>
+</head>
+<body>
+<%
+    // Ngăn cache để không thể back sau khi logout
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+
+    if (session.getAttribute("user") == null) {
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        return;
+    }
+%>
+	<div class="container">
+		<%
+		ArrayList<ThongBao> list = (ArrayList<ThongBao>) request.getAttribute("listThongBao");
+		%>
+
+		<!-- HEADER SECTION -->
+		<header class="header">
+			<h1 class="page-title">Thông báo</h1>
+			<button class="btn-mark-read" onclick="markAllRead()"
+				title="Đánh dấu tất cả là đã đọc">
+				<i class="fa-solid fa-check-double"></i> <span>Đánh dấu tất
+					cả đã đọc</span>
+			</button>
+		</header>
+
+		<div class="notif-list" id="notifList">
+			<%
+			for (ThongBao tb : list) {
+			%>
+			<%
+			String icon = "";
+			String iconClass = "";
+			if (tb.getType().equals("important")) {
+				icon = "fa-triangle-exclamation";
+				iconClass = "icon-danger";
+			} else if (tb.getRole() == 0) {
+				icon = "fa-user-check";
+				iconClass = "icon-admin";
+			} else if (tb.getRole() == 1) {
+				icon = "fa-comment-dots";
+				iconClass = "icon-owner";
+			} else if (tb.getRole() == 3 || tb.getSender_id() == -1) {
+				icon = "fa-receipt";
+				iconClass = "icon-system";
+			}
+			%>
+			<a href="${pageContext.request.contextPath}/ChiTietThongBao?id=<%= tb.getId() %>" class="notif-card <%= tb.getIs_read() == 1 ? "is-read" : "" %>">
+				<div class="notif-icon <%=iconClass%>">
+					<i class="fa-solid <%=icon%>"></i>
+				</div>
+				<div class="notif-content">
+					<div class="notif-title"><%=tb.getTitle()%></div>
+					<p class="notif-desc"><%=tb.getContent()%></p>
+					<div class="notif-meta"><%=TimeHelper.timeAgo(tb.getCreate_at())%></div>
+				</div>
+				<%
+				if (tb.getIs_read() == 0) {
+				%>
+				<div class="unread-dot"></div>
+				<%
+				}
+				%>
+			</a>
+
+			<%
+			}
+			%>
+
+
+
+		</div>
+	</div>
+	<script
+				src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+				<% TaiKhoan tk = (TaiKhoan) session.getAttribute("user");
+	int id = tk.getId();
+	%>
+	<script>
+	
+	const USER_ID = <%= id  %>
+	function markAllRead() {
+	    const unreadCards = document.querySelectorAll('.notif-card:not(.is-read)');
+	    const btn = document.querySelector('.btn-mark-read');
+	    const btnText = btn.querySelector('span');
+	    const btnIcon = btn.querySelector('i');
+
+	    if (unreadCards.length === 0) return;
+	    btnIcon.classList.remove('fa-check-double');
+	    btnIcon.classList.add('fa-spinner', 'fa-spin');
+	    $.ajax({
+	        url: "/DoAnQLThueTro/UpdateTrangThaiTB",
+	        type: "post",
+	        data: {
+	            action: "DocTatCa",
+	            receiverId: USER_ID
+	        },
+	        success: function (response) {
+	            setTimeout(() => {
+	                unreadCards.forEach(card => {
+	                    card.classList.add('is-read');
+	                });
+
+	                btnIcon.classList.remove('fa-spinner', 'fa-spin');
+	                btnIcon.classList.add('fa-check');
+	                btnText.textContent = "Đã xong!";
+	                btn.style.color = "#10b981"; 
+	                btn.style.borderColor = "#10b981";
+	                btn.style.background = "#ecfdf5";
+
+	                setTimeout(() => {
+	                    btnIcon.classList.remove('fa-check');
+	                    btnIcon.classList.add('fa-check-double');
+	                    btnText.textContent = "Đánh dấu tất cả đã đọc";
+	                    btn.removeAttribute('style');
+	                }, 2000);
+
+	            }, 300);
+	        },
+	        error: function (xhr) {
+	            alert("Lỗi: không thể cập nhật trạng thái đọc!");
+	            console.log(xhr.responseText);
+	        }
+	    });
+	}
+</script>
+</body>
+</html>
