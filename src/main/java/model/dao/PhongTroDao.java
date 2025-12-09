@@ -233,6 +233,7 @@ public class PhongTroDao {
 				pt.setGiaDien(rs.getInt("GiaDien"));
 				pt.setGiaNuoc(rs.getInt("GiaNuoc"));
 				pt.setMoTa(rs.getString("MoTa"));
+				pt.setAnhChinh(rs.getString("AnhChinh"));
 				pt.setTenCT(rs.getString("HoTen"));
 				pt.setPhone(rs.getString("SDT"));
 				pt.setAvatar(rs.getString("Avatar"));
@@ -376,6 +377,9 @@ public class PhongTroDao {
 		}
 		return count;
 	}
+	
+	
+
 	
 	
 }

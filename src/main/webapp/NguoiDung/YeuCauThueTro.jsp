@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="java.util.ArrayList"%>
+<%@ page import="model.bean.TaiKhoan"%>
+<%@ page import="model.bean.PhongTro"%>
+<%@ page import="utils.CurrencyHelper"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,11 +19,9 @@
 <!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/assets/css/YeuCauThueTro.css">
+	href="${pageContext.request.contextPath}/assets/css/YCThueTro.css">
 	<style>
 	.navbar-brand {
 	font-weight: 800;
@@ -32,13 +34,16 @@
 	</style>
 </head>
 <body>
+<% TaiKhoan tk = (TaiKhoan) request.getAttribute("ThongTin");
+int ID_Phong = (int) request.getAttribute("ID_Phong");
+PhongTro pt = (PhongTro) request.getAttribute("ThongTinPhong");
+%>
 <div class="container">
-
     <nav class="navbar">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/ProcessHomeUser"> <i
 			class="fa-solid fa-house-chimney"></i> FindRoom
 		</a>
-        <a href="${pageContext.request.contextPath}/ChiTietPhong_1?ID_Phong=" class="btn-back">
+        <a href="${pageContext.request.contextPath}/ChiTietPhong_1?ID_Phong=<%= ID_Phong %>" class="btn-back">
             <i class="fa-solid fa-arrow-left"></i> Quay lại
         </a>
     </nav>
@@ -58,12 +63,14 @@
                 </div>
 
                 <form id="rentalForm">
+                <input type="hidden" name="ID_Phong" value="<%=( ID_Phong != -1) ? ID_Phong : ""%>">
+                <input type="hidden" name="ID_TaiKhoan" value="<%=(tk != null && tk.getId() != -1) ? tk.getId() : ""%>">
                     <div class="form-grid">
                         <div class="form-group col-span-2">
                             <label>Họ và tên</label>
                             <div class="input-box">
                                 <i class="fa-regular fa-user"></i>
-                                <input type="text" class="form-control" placeholder="Ví dụ: Nguyễn Văn A" required>
+                                <input type="text" class="form-control" placeholder="<%=(tk != null && tk.getHoTen() != null) ? tk.getHoTen() : ""%>" disabled>
                             </div>
                         </div>
 
@@ -71,7 +78,7 @@
                             <label>Email</label>
                             <div class="input-box">
                                 <i class="fa-regular fa-envelope"></i>
-                                <input type="email" class="form-control" placeholder="email@example.com">
+                                <input type="email" class="form-control" placeholder="<%=(tk != null && tk.getEmail() != null) ? tk.getEmail() : ""%>" disabled>
                             </div>
                         </div>
 
@@ -79,7 +86,7 @@
                             <label>Số điện thoại</label>
                             <div class="input-box">
                                 <i class="fa-solid fa-phone"></i>
-                                <input type="tel" class="form-control" placeholder="09xx xxx xxx" required>
+                                <input type="tel" class="form-control" placeholder="<%=(tk != null && tk.getSDT() != null) ? tk.getSDT() : ""%>" disabled>
                             </div>
                         </div>
 
@@ -87,7 +94,7 @@
                             <label>Ngày dọn vào dự kiến</label>
                             <div class="input-box">
                                 <i class="fa-regular fa-calendar"></i>
-                                <input type="date" class="form-control" required>
+                                <input name="NgayDonVao" type="date" class="form-control" required>
                             </div>
                         </div>
 
@@ -95,10 +102,11 @@
                             <label>Thời hạn thuê</label>
                             <div class="input-box">
                                 <i class="fa-regular fa-clock"></i>
-                                <select class="form-control" style="appearance: none;">
+                                <select name="ThoiHanThue" class="form-control" style="appearance: none;">
+                                    <option value="1 tháng">1 tháng</option>
+                                    <option value="3 tháng">3 tháng</option>
                                     <option value="6 tháng">6 tháng</option>
-                                    <option value="12 tháng" selected>1 năm</option>
-                                    <option value="lâu dài">Lâu dài (> 1 năm)</option>
+                                    <option value="12 tháng">1 năm</option>
                                 </select>
                                 <i class="fa-solid fa-chevron-down" style="left: auto; right: 14px;"></i>
                             </div>
@@ -106,35 +114,35 @@
 
                         <div class="form-group col-span-2">
                             <label>Lời nhắn cho chủ nhà</label>
-                            <textarea class="form-control" placeholder="Ví dụ: Tôi là sinh viên năm cuối, muốn thuê ở lâu dài..."></textarea>
+                            <textarea name="LoiNhan" class="form-control" placeholder="Ví dụ: Tôi là sinh viên năm cuối, muốn thuê ở lâu dài..."></textarea>
                         </div>
 
                         <div class="form-group col-span-2">
                             <label>Bạn muốn được liên hệ qua?</label>
                             <div class="contact-grid">
                                 <label class="contact-item">
-                                    <input type="radio" name="contact" value="call" checked>
+                                    <input type="radio" name="contact" value="Gọi điện" checked>
                                     <div class="contact-label">
                                         <i class="fa-solid fa-phone-volume"></i>
                                         <span>Gọi điện</span>
                                     </div>
                                 </label>
                                 <label class="contact-item">
-                                    <input type="radio" name="contact" value="zalo">
+                                    <input type="radio" name="contact" value="Zalo/Mess">
                                     <div class="contact-label">
                                         <i class="fa-brands fa-facebook-messenger"></i>
                                         <span>Zalo / Mess</span>
                                     </div>
                                 </label>
                                 <label class="contact-item">
-                                    <input type="radio" name="contact" value="sms">
+                                    <input type="radio" name="contact" value="Tin nhắn">
                                     <div class="contact-label">
                                         <i class="fa-regular fa-comment-dots"></i>
                                         <span>Tin nhắn</span>
                                     </div>
                                 </label>
                                 <label class="contact-item">
-                                    <input type="radio" name="contact" value="email">
+                                    <input type="radio" name="contact" value="Email">
                                     <div class="contact-label">
                                         <i class="fa-regular fa-envelope"></i>
                                         <span>Email</span>
@@ -145,7 +153,7 @@
                     </div>
 
                     <div class="form-footer">
-                        <a href="${pageContext.request.contextPath}/ChiTietPhong_1?ID_Phong=" type="button" class="btn btn-ghost">Hủy bỏ</a>
+                        <a href="${pageContext.request.contextPath}/ChiTietPhong_1?ID_Phong=<%= ID_Phong %>" type="button" class="btn btn-ghost">Hủy bỏ</a>
                         <button type="submit" class="btn btn-primary">
                             <span>Gửi yêu cầu</span>
                             <i class="fa-regular fa-paper-plane"></i>
@@ -158,19 +166,19 @@
         <aside class="sticky-sidebar">
             <div class="card room-preview">
                 <div class="room-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Phòng trọ">
-                    <div class="status-badge">Còn trống</div>
+                    <img src="<%=(pt != null && pt.getAnhChinh() != null) ? pt.getAnhChinh() : ""%>" alt="Phòng trọ">
+                    <div class="status-badge"><%=(pt != null && pt.getTrangThai() != null) ? pt.getTrangThai() : ""%></div>
                 </div>
 
                 <div class="room-content">
-                    <h3 class="room-title">Phòng Studio Full Nội Thất - Ban Công Thoáng</h3>
+                    <h3 class="room-title"><%=(pt != null && pt.getTenPhong() != null) ? pt.getTenPhong() : ""%></h3>
                     <div class="room-address">
                         <i class="fa-solid fa-location-dot" style="margin-top:2px;"></i>
-                        <span>Số 15, Ngõ 102 Đường Láng, Đống Đa, Hà Nội</span>
+                        <span><%=(pt != null && pt.getDiaChi() != null) ? pt.getDiaChi() : ""%></span>
                     </div>
 
                     <div class="room-price">
-                        4.500.000đ <span>/tháng</span>
+                        <%=(pt != null && pt.getGiaThue() != -1) ? CurrencyHelper.format(pt.getGiaThue()) : ""%>đ <span>/tháng</span>
                     </div>
 
                     <div class="divider"></div>
@@ -180,7 +188,7 @@
                             <i class="fa-solid fa-user"></i>
                         </div>
                         <div class="owner-details">
-                            <div>Nguyễn Văn Chủ</div>
+                            <div><%=(pt != null && pt.getTenCT() != null) ? pt.getTenCT() : ""%></div>
                             <div>Chủ nhà • Phản hồi 100%</div>
                         </div>
                     </div>
@@ -194,32 +202,91 @@
 
     </div>
 </div>
-<div id="toast">
-    <i class="fa-solid fa-circle-check"></i>
-    <span>Yêu cầu đã được gửi thành công!</span>
+<div id="toast"
+     style="
+        position:fixed; 
+        top:20px; 
+        right:20px; 
+        background:#1e293b; 
+        color:white; 
+        padding:12px 24px; 
+        border-radius:50px; 
+        font-weight:600; 
+        font-size:14px; 
+        box-shadow:0 10px 20px rgba(0,0,0,0.2); 
+        opacity:0; 
+        transition:0.3s; 
+        transform:translateY(-20px); 
+        pointer-events:none;
+     ">
 </div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
-    document.getElementById('rentalForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Button Loading Effect
-        const btn = this.querySelector('button[type="submit"]');
-        const originalContent = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
-        btn.disabled = true;
+function showToast(message, type = "success") {
+    const toast = $("#toast");
 
-        // Fake API Call
-        setTimeout(() => {
-            btn.innerHTML = originalContent;
-            btn.disabled = false;
-            
-            // Show Toast
-            const toast = document.getElementById('toast');
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
-        }, 1500);
+    // Icon hiển thị theo loại
+    let iconHTML = "";
+
+    if (type === "error") {
+        toast.css("background-color", "#dc2626"); // đỏ
+        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
+    } else {
+        toast.css("background-color", "#2563eb"); // xanh
+        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
+    }
+
+    // Set nội dung kèm icon
+    toast.html(iconHTML + message);
+
+    // hiện
+    toast.css({ opacity: "1", transform: "translateY(0)" });
+
+    // tự tắt sau 5 giây
+    setTimeout(() => {
+        toast.css({ opacity: "0", transform: "translateY(20px)" });
+    }, 5000);
+}
+
+$(document).ready(function () {
+    $("#rentalForm").on("submit", function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "/DoAnQLThueTro/XuLyYeuCauThueTro",
+            type: "POST",
+            data: $(this).serialize(),
+            dataType: "json",
+
+            success: function (res) {
+
+                // Delay 5 giây trước khi hiện thông báo
+                setTimeout(function () {
+
+                    if (res.status === "success") {
+                        showToast("Bạn đã gửi yêu cầu thành công, vui lòng chờ duyệt!", "success");
+                    } else {
+                        showToast("Gửi yêu cầu thất bại! Vui lòng thử lại.", "error");
+                    }
+
+                }, 5000);
+
+            },
+
+            error: function () {
+
+                setTimeout(function () {
+                    showToast("Không thể kết nối đến server!", "error");
+                }, 5000);
+
+            }
+        });
+
     });
+});
+
 </script>
 
 </body>

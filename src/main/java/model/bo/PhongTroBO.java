@@ -72,4 +72,6 @@ public class PhongTroBO {
 	public int getCountSoPhongDaThueByIDCT(int ID_ChuTro) {
 		return ptDao.getCountSoPhongDaThueByIDCT(ID_ChuTro);
 	}
+	
+
 }
