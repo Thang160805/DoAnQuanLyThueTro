@@ -53,12 +53,7 @@ public class XuLyYeuCauThueTro extends HttpServlet {
          String thoiHan = request.getParameter("ThoiHanThue");
          String loiNhan = request.getParameter("LoiNhan");
          String lienHe = request.getParameter("contact");
-         System.out.println("ID_Phong = " + idPhong);
-         System.out.println("ID_TaiKhoan = " + idTaiKhoan);
-         System.out.println("NgayDonVao = " + ngayDonVao);
-         System.out.println("ThoiHanThue = " + thoiHan);
-         System.out.println("LoiNhan = " + loiNhan);
-         System.out.println("LienHe = " + lienHe);
+
 
          YeuCauThueTroBO ycttBO = new YeuCauThueTroBO();
          YeuCauThueTro yctt = new YeuCauThueTro();

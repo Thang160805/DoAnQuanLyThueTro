@@ -9,8 +9,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.bean.PhongTro;
 import model.bean.TaiKhoan;
+import model.bean.YeuCauThueTro;
 import model.bo.PhongTroBO;
 import model.bo.TaiKhoanBO;
+import model.bo.YeuCauThueTroBO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,6 +64,12 @@ public class QuanLyTro extends HttpServlet {
 		request.setAttribute("countPhongTrong", countPhongTrong);
 		int countPhongDaThue = ptBO.getCountSoPhongDaThueByIDCT(user.getId());
 		request.setAttribute("countPhongDaThue", countPhongDaThue);
+		
+		YeuCauThueTroBO ycBO = new YeuCauThueTroBO();
+		ArrayList<YeuCauThueTro> listYeuCau = ycBO.getListYeuCau();
+		request.setAttribute("listYeuCau", listYeuCau);
+		int count = ycBO.getCountYeuCau();
+		request.setAttribute("countYC", count);
 		RequestDispatcher rs = request.getRequestDispatcher("/ChuTro/QuanLyTro.jsp");
 		rs.forward(request, response);
 	}

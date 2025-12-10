@@ -5,6 +5,8 @@
 <%@ page import="model.bean.PhongTro"%>
 <%@ page import="model.bean.TaiKhoan"%>
 <%@ page import="model.bean.ThongBao"%>
+<%@ page import="model.bean.YeuCauThueTro"%>
+<%@ page import="utils.TimeHelper"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,9 +22,7 @@
 <!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/ChuTro.css">
@@ -107,6 +107,13 @@
 	grid-template-columns: 0.8fr 2.5fr 1.2fr 1fr 1.2fr 120px;
 	align-items: center;
 }
+.truncate-150 {
+    display:block;
+    width: 150px;            /* cố định 150px như bạn yêu cầu */
+    white-space: nowrap;     /* không xuống dòng */
+    overflow: hidden;        /* ẩn phần dư */
+    text-overflow: ellipsis; /* hiện dấu “…” */
+}
 </style>
 </head>
 <body>
@@ -128,8 +135,13 @@
 					<i class="fa-solid fa-users"></i> Quản lý người thuê
 				</div>
 				<div class="nav-item" onclick="navTo('requests', this)">
-					<i class="fa-solid fa-user-clock"></i> Yêu cầu thuê <span
-						style="margin-left: auto; background: linear-gradient(135deg, #ef4444, #f43f5e); color: white; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 8px; box-shadow: var(--shadow-primary);">4</span>
+					<i class="fa-solid fa-user-clock"></i> Yêu cầu thuê
+					<% int countYC = (int) request.getAttribute("countYC");
+					if(countYC != -1){%>
+						<span
+						style="margin-left: auto; background: linear-gradient(135deg, #ef4444, #f43f5e); color: white; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 8px; box-shadow: var(--shadow-primary);"><%= countYC %></span>
+					<%}
+					%>
 				</div>
 				<div class="nav-item" onclick="navTo('incidents', this)">
 					<i class="fa-solid fa-screwdriver-wrench"></i> Sự cố & Sửa chữa
@@ -579,7 +591,6 @@
 				</div>
 
 				<div id="requests" class="section">
-
 					<div
 						style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
 						<div class="table-title">Danh sách yêu cầu thuê</div>
@@ -595,7 +606,14 @@
 					</div>
 
 					<div class="room-grid-container">
+					<% ArrayList<YeuCauThueTro> listYC = (ArrayList<YeuCauThueTro>) request.getAttribute("listYeuCau");
+					if (listYC == null || listYC.size() == 0) {
+						%>
 
+						<div style="padding: 20px; text-align:center; color: #6b7280; font-size: 15px;">
+						    <i class="fa-regular fa-circle-xmark"></i> Chưa có yêu cầu thuê nào
+						</div>
+					<%} else { %>
 						<div class="room-grid-header request-cols">
 							<div>Người gửi yêu cầu</div>
 							<div>Phòng quan tâm</div>
@@ -606,88 +624,54 @@
 						</div>
 
 						<div class="room-grid-body">
+						<%
+						for(YeuCauThueTro yc : listYC){
+							String status = yc.getTrangThai();
+							String badgeClass = "";
 
+							switch (status) {
+								case "Chờ duyệt" :
+							badgeClass = "badge-warn";
+							break;
+								case "Đã liên hệ" :
+							badgeClass = "badge-success";
+							break;
+								case "Đã hủy" :
+							badgeClass = "badge-error";
+							break;
+								default :
+							badgeClass = "badge-warn";
+							}
+						%>
 							<div class="room-grid-row request-cols">
 								<div>
 									<div class="user-cell">
-										<img src="https://i.pravatar.cc/150?img=3"
+										<img src="<%=(yc != null && yc.getAvatar() != null) ? yc.getAvatar() : ""%>"
 											class="table-avatar">
 										<div>
-											<div style="font-weight: 700;">Phạm Hương</div>
-											<div style="font-size: 12px; color: var(--text-secondary);">Sinh
-												viên</div>
+											<div style="font-weight: 700;"><%=(yc != null && yc.getHoTen() != null) ? yc.getHoTen() : ""%></div>
 										</div>
 									</div>
 								</div>
 								<div>
-									<span style="font-weight: 700; color: var(--primary);">P.102</span>
-									- Studio
+									<span class="truncate-150" style="font-weight: 700; color: #6366f1;"><%=(yc != null && yc.getTenPhong() != null) ? yc.getTenPhong() : ""%></span>
 								</div>
-								<div>0987 654 321</div>
-								<div style="color: var(--text-secondary);">Vừa xong</div>
+								<div><%=(yc != null && yc.getSDT() != null) ? yc.getSDT() : ""%></div>
+								<div style="color: #64748b;"><%=(yc != null && yc.getCreate_at() != null) ? TimeHelper.timeAgo(yc.getCreate_at()) : ""%></div>
 								<div>
-									<span class="status-badge badge-warn"><span
-										class="status-dot"></span>Chờ duyệt</span>
-								</div>
-								<div class="col-right">
-									<button class="btn btn-outline btn-sm"
-										onclick="openModal('requestDetailModal')">Xem chi
-										tiết</button>
-								</div>
-							</div>
-
-							<div class="room-grid-row request-cols">
-								<div>
-									<div class="user-cell">
-										<img src="https://i.pravatar.cc/150?img=68"
-											class="table-avatar">
-										<div>
-											<div style="font-weight: 700;">Trần Đức</div>
-											<div style="font-size: 12px; color: var(--text-secondary);">Nhân
-												viên VP</div>
-										</div>
-									</div>
-								</div>
-								<div>
-									<span style="font-weight: 700; color: var(--text-main);">P.305</span>
-									- Gác lửng
-								</div>
-								<div>0912 345 678</div>
-								<div style="color: var(--text-secondary);">2 giờ trước</div>
-								<div>
-									<span class="status-badge badge-success"><span
-										class="status-dot"></span>Đã liên hệ</span>
+									<span class="status-badge <%= badgeClass%>"><span
+										class="status-dot"></span><%= status %></span>
 								</div>
 								<div class="col-right">
 									<button class="btn btn-outline btn-sm">Xem chi tiết</button>
 								</div>
 							</div>
+							<% }
+							}%>
+							
+							
 
-							<div class="room-grid-row request-cols">
-								<div>
-									<div class="user-cell">
-										<img src="https://i.pravatar.cc/150?img=15"
-											class="table-avatar">
-										<div>
-											<div style="font-weight: 700;">Lê Văn C</div>
-											<div style="font-size: 12px; color: var(--text-secondary);">Tự
-												do</div>
-										</div>
-									</div>
-								</div>
-								<div>
-									<span style="font-weight: 700; color: var(--text-main);">P.101</span>
-								</div>
-								<div>0999 888 777</div>
-								<div style="color: var(--text-secondary);">Hôm qua</div>
-								<div>
-									<span class="status-badge badge-error"><span
-										class="status-dot"></span>Đã hủy</span>
-								</div>
-								<div class="col-right">
-									<button class="btn btn-outline btn-sm">Xem chi tiết</button>
-								</div>
-							</div>
+							
 
 						</div>
 					</div>

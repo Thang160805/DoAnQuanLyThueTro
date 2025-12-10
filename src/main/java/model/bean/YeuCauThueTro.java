@@ -16,7 +16,8 @@ public class YeuCauThueTro {
 	private String TenPhong;
 	private String HoTen;
 	private String SDT;
-	
+	private String Avatar;
+	private PhongTro phongTro;
 	
 	public YeuCauThueTro() {
 		super();
@@ -97,5 +98,29 @@ public class YeuCauThueTro {
 	public void setSDT(String sDT) {
 		SDT = sDT;
 	}
+
+	public PhongTro getPhongTro() {
+		return phongTro;
+	}
+
+	public void setPhongTro(PhongTro phongTro) {
+		this.phongTro = phongTro;
+	}
+
+
+
+
+	public String getAvatar() {
+		return Avatar;
+	}
+
+
+
+
+	public void setAvatar(String avatar) {
+		Avatar = avatar;
+	}
+	
+	
 	
 }

@@ -4,7 +4,9 @@ import java.sql.Connection;
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import model.bean.YeuCauThueTro;
 
@@ -40,5 +42,49 @@ public class YeuCauThueTroDao {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public ArrayList<YeuCauThueTro> getListYeuCau(){
+		Connect();
+		ArrayList<YeuCauThueTro> list = new ArrayList<YeuCauThueTro>();
+		String sql = "select yc.*,pt.TenPhong,tt.HoTen,tt.SDT,tt.Avatar from YeuCauThueTro yc join PhongTro pt on yc.ID_Phong=pt.ID_Phong join TaiKhoan tk on yc.ID_TaiKhoan=tk.id "
+				+ "join ThongTinNguoiDung tt on tk.id=tt.ID_TaiKhoan order by yc.create_at desc";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				YeuCauThueTro yc = new YeuCauThueTro();
+				yc.setId(rs.getInt("id"));
+				yc.setID_Phong(rs.getInt("ID_Phong"));
+				yc.setID_TaiKhoan(rs.getInt("ID_TaiKhoan"));
+				yc.setTrangThai(rs.getString("TrangThai"));
+				yc.setTenPhong(rs.getString("TenPhong"));
+				yc.setHoTen(rs.getString("HoTen"));
+				yc.setAvatar(rs.getString("Avatar"));
+				yc.setSDT(rs.getString("SDT"));
+				
+				yc.setCreate_at(rs.getTimestamp("create_at").toLocalDateTime());
+				list.add(yc);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public int getCountYeuCau() {
+		Connect();
+		int count = -1;
+		String sql = "select count(*) as cnt from YeuCauThueTro";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 }

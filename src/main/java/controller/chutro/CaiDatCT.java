@@ -54,6 +54,8 @@ public class CaiDatCT extends HttpServlet {
 		PhongTroBO ptBO = new PhongTroBO();
 		int countSoPhong = ptBO.getCountSoPhongByIDChutro(user.getId());
 		request.setAttribute("countSoPhong", countSoPhong);
+		
+		
 		RequestDispatcher rs = request.getRequestDispatcher("/ChuTro/CaiDatCT.jsp");
 		rs.forward(request, response);
 	}
