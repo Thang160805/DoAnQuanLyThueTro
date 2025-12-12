@@ -378,6 +378,140 @@ public class PhongTroDao {
 		return count;
 	}
 	
+	public void insertAnhPhu(int idPhong, ArrayList<String> dsAnh) {
+		Connect();
+		 String sql = "INSERT INTO HinhAnhPhong(ID_Phong, linkAnh) VALUES (?, ?)";
+		 try {
+			 PreparedStatement ps = connection.prepareStatement(sql);
+			 for (String link : dsAnh) {
+	                ps.setInt(1, idPhong);
+	                ps.setString(2, link);
+	                ps.executeUpdate();
+	            }
+		 }catch(Exception e) {
+			 e.printStackTrace();
+		 }
+		
+	}
+	
+	public boolean insertPhongTro(PhongTro pt) {
+		Connect();
+		String sql = "insert into PhongTro(ID_ChuTro,ID_KhuVuc,TenPhong,DiaChi,GiaThue,DienTich,MoTa,AnhChinh,GiaDien,GiaNuoc) "
+				+ "values(?,?,?,?,?,?,?,?,?,?)";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, pt.getID_ChuTro());
+			ps.setInt(2, pt.getID_KhuVuc());
+			ps.setString(3, pt.getTenPhong());
+			ps.setString(4, pt.getDiaChi());
+			ps.setInt(5, pt.getGiaThue());
+			ps.setFloat(6, pt.getDienTich());
+			ps.setString(7, pt.getMoTa());
+			ps.setString(8, pt.getAnhChinh());
+			ps.setInt(9, pt.getGiaDien());
+			ps.setInt(10, pt.getGiaNuoc());
+			int row = ps.executeUpdate();
+			if(row > 0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public int getNewId_Phong() {
+		Connect();
+		int ID_Phong=0;
+		String sql = "select max(ID_Phong) as cnt from PhongTro";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				ID_Phong = rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return ID_Phong;
+	}
+	
+	public void deletePhongTro_TienIch(int ID_Phong) {
+		Connect();
+		String sql = "delete from PhongTro_TienIch where ID_Phong=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_Phong);
+			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteHinhAnhPhong(int ID_Phong) {
+		Connect();
+		String sql = "delete from HinhAnhPhong where ID_Phong=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_Phong);
+			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteYeuCauThueTro(int ID_Phong) {
+		Connect();
+		String sql = "delete from YeuCauThueTro where ID_Phong=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_Phong);
+			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean deletePhongTro(int ID_Phong) {
+		Connect();
+		String sql = "delete from PhongTro where ID_Phong=? and TrangThai = N'Còn trống'";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_Phong);
+			int row = ps.executeUpdate();
+			if(row > 0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean UpdatePhongTro(PhongTro pt) {
+		Connect();
+		String sql = "update PhongTro set ID_KhuVuc=?,TenPhong=?,DiaChi=?,GiaThue=?,DienTich=?,MoTa=?,AnhChinh=?,GiaDien=?,GiaNuoc=? where ID_Phong=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, pt.getID_KhuVuc());
+			ps.setString(2, pt.getTenPhong());
+			ps.setString(3, pt.getDiaChi());
+			ps.setInt(4, pt.getGiaThue());
+			ps.setFloat(5, pt.getDienTich());
+			ps.setString(6, pt.getMoTa());
+			ps.setString(7, pt.getAnhChinh());
+			ps.setInt(8, pt.getGiaDien());
+			ps.setInt(9, pt.getGiaNuoc());
+			ps.setInt(10, pt.getID_Phong());
+			int row = ps.executeUpdate();
+			if(row > 0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 
 	

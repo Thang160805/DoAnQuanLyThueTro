@@ -85,6 +85,7 @@ public class DangKyServlet extends HttpServlet {
 		    out.write("{\"status\":\"error\", \"message\":\"Tên đăng nhập đã tồn tại\"}");
 		    return;
 		}
+		
 
 		TaiKhoan tk = new TaiKhoan();
 		tk.setTenDangNhap(TenDangNhap);
@@ -92,14 +93,15 @@ public class DangKyServlet extends HttpServlet {
 		tk.setRole(role);
 
 		try {
-		    boolean created = tkBO.insertTaiKhoan(tk);
-
-		    if (created) {
-		        String url = request.getContextPath() + "/auth/DangNhap.jsp";
-		        out.write("{\"status\":\"success\", \"redirect\":\"" + url + "\"}");
-		    } else {
-		        out.write("{\"status\":\"error\", \"message\":\"Lỗi khi tạo tài khoản\"}");
-		    }
+			int ID_TaiKhoan = tkBO.insertTaiKhoanReturnID(tk);
+			System.out.println(ID_TaiKhoan);
+			if (ID_TaiKhoan > 0) {
+			    tkBO.insertThongTinNguoiDungMoi(ID_TaiKhoan);
+			    String url = request.getContextPath() + "/auth/DangNhap.jsp";
+			    out.write("{\"status\":\"success\", \"redirect\":\"" + url + "\"}");
+			} else {
+			    out.write("{\"status\":\"error\", \"message\":\"Lỗi khi tạo tài khoản\"}");
+			}
 
 		} catch (Exception e) {
 		    e.printStackTrace();

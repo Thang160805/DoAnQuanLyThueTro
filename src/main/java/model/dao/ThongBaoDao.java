@@ -155,4 +155,20 @@ public class ThongBaoDao {
 		
 		return list;
 	}
+	
+	public void insertGuiThongBao(ThongBao tb) {
+		Connect();
+		String sql = "insert into ThongBao(receiver_id,sender_id,title,content,full_content) values(?,?,?,?,?)";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, tb.getReceiver_id());
+			ps.setInt(2, tb.getSender_id());
+			ps.setString(3, tb.getTitle());
+			ps.setString(4, tb.getContent());
+			ps.setString(5, tb.getFull_content());
+			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

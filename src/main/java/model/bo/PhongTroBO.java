@@ -73,5 +73,37 @@ public class PhongTroBO {
 		return ptDao.getCountSoPhongDaThueByIDCT(ID_ChuTro);
 	}
 	
+	 public void insertAnhPhu(int idPhong, ArrayList<String> dsAnh) {
+	        ptDao.insertAnhPhu(idPhong, dsAnh);
+	    }
+	 
+	 public boolean insertPhongTro(PhongTro pt) {
+		 return ptDao.insertPhongTro(pt);
+	 }
+	 
+	 public int getNewId_Phong() {
+		 return ptDao.getNewId_Phong();
+	 }
+	 
+	 public void deletePhongTro_TienIch(int ID_Phong) {
+		 ptDao.deletePhongTro_TienIch(ID_Phong);
+	 }
+	 
+	 public void deleteHinhAnhPhong(int ID_Phong) {
+		 ptDao.deleteHinhAnhPhong(ID_Phong);
+	 }
+	 
+	 public void deleteYeuCauThueTro(int ID_Phong) {
+		 ptDao.deleteYeuCauThueTro(ID_Phong);
+	 }
+	 
+	 public boolean deletePhongTro(int ID_Phong) {
+		 return ptDao.deletePhongTro(ID_Phong);
+	 }
+	 
+	 public boolean UpdatePhongTro(PhongTro pt) {
+		 return ptDao.UpdatePhongTro(pt);
+	 }
+	
 
 }

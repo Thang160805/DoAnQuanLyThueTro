@@ -180,7 +180,7 @@
 								<div class="input-wrapper">
 									<i class="fa-regular fa-user input-icon"></i> <input
 										type="text" class="form-input" name="HoTen"
-										placeholder="<%=(tk != null && tk.getHoTen() != null) ? tk.getHoTen() : ""%>">
+										value = "<%=(tk != null && tk.getHoTen() != null) ? tk.getHoTen() : ""%>">
 								</div>
 							</div>
 
@@ -190,7 +190,7 @@
 								<div class="input-wrapper">
 									<i class="fa-solid fa-briefcase input-icon"></i> <input
 										type="text" name="CCCD" class="form-input"
-										placeholder="<%=(tk != null && tk.getCCCD() != null) ? tk.getCCCD() : ""%>">
+										value="<%=(tk != null && tk.getCCCD() != null) ? tk.getCCCD() : ""%>">
 								</div>
 							</div>
 
@@ -200,8 +200,7 @@
 								<div class="input-wrapper">
 									<i class="fa-regular fa-envelope input-icon"></i> <input
 										type="email" name="Email" class="form-input"
-										placeholder="<%=(tk != null && tk.getEmail() != null) ? tk.getEmail() : ""%>"
-										disabled>
+										value="<%=(tk != null && tk.getEmail() != null) ? tk.getEmail() : ""%>">
 								</div>
 							</div>
 
@@ -211,7 +210,7 @@
 								<div class="input-wrapper">
 									<i class="fa-solid fa-phone input-icon"></i> <input type="tel"
 										name="SDT" class="form-input"
-										placeholder="<%=(tk != null && tk.getSDT() != null) ? tk.getSDT() : ""%>">
+										value="<%=(tk != null && tk.getSDT() != null) ? tk.getSDT() : ""%>">
 								</div>
 							</div>
 
@@ -244,7 +243,7 @@
 								<div class="input-wrapper">
 									<i class="fa-solid fa-map-pin input-icon"></i> <input
 										type="text" name="DiaChi" class="form-input"
-										placeholder="<%=(tk != null && tk.getDiaChi() != null) ? tk.getDiaChi() : ""%>">
+										value="<%=(tk != null && tk.getDiaChi() != null) ? tk.getDiaChi() : ""%>">
 								</div>
 							</div>
 
@@ -712,6 +711,9 @@
                     success: function (response) {
                         if (response.status === "success") {
                             showToast("Đổi mật khẩu thành công!");
+                            setTimeout(() => {
+                                window.location.href = "/DoAnQLThueTro/CaiDat";
+                            }, 3000);
                         } else {
                             showToast(response.message, "error");
                         }
@@ -731,7 +733,10 @@
                     data: $(this).serialize(),  // Tự động gom tất cả name=""
                     success: function (response) {
                         if (response.status === "success") {
-                            showToast(response.message); // dùng toast bạn đã có
+                            showToast(response.message);
+                            setTimeout(() => {
+                                window.location.href = "/DoAnQLThueTro/CaiDat";
+                            }, 3000);
                         } else {
                             showToast(response.message, "error");
                         }
@@ -774,6 +779,9 @@
                     if (res.status === "success") {
                         showToast("Cập nhật ảnh thành công!");
                         $("#avatar-preview").attr("src", res.newAvatar);
+                        setTimeout(() => {
+                            window.location.href = "/DoAnQLThueTro/CaiDat";
+                        }, 3000);
                     } else {
                         showToast(res.message, "error");
                     }

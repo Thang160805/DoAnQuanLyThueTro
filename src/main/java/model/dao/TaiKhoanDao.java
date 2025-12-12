@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.bean.TaiKhoan;
@@ -50,24 +51,27 @@ public class TaiKhoanDao {
 		return null;
 	}
 	
-	public boolean insertTaiKhoan(TaiKhoan tk) {
-		Connect();
-	    String sql = "INSERT INTO TaiKhoan (TenDangNhap, MatKhau, Role) VALUES (?, ?, ?)";
-
+	public int insertTaiKhoanReturnID(TaiKhoan tk) {
+	    int newId = -1;
 	    try {
-	        PreparedStatement ps = connection.prepareStatement(sql);
-	        ps.setString(1, tk.getTenDangNhap());
-	        ps.setString(2, HashUtil.md5(tk.getMatKhau()));
-	        ps.setInt(3, tk.getRole());
+	        Connect();
+	        String sql =
+	        	    "INSERT INTO TaiKhoan(TenDangNhap, MatKhau, Role) VALUES (?, ?, ?); " +
+	        	    "SELECT SCOPE_IDENTITY();";
 
-	        int rows = ps.executeUpdate();
-	        return rows > 0;  // true nếu thêm thành công
+	        	PreparedStatement ps = connection.prepareStatement(sql);
+	        	ps.setString(1, tk.getTenDangNhap());
+	        	ps.setString(2, tk.getMatKhau());
+	        	ps.setInt(3, tk.getRole());
 
+	        	ResultSet rs = ps.executeQuery();
+	        	if (rs.next()) {
+	        	    newId = rs.getInt(1);
+	        	}
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-
-	    return false;
+	    return newId;
 	}
 	
 	public boolean checkUserName(String username) {
@@ -154,7 +158,7 @@ public class TaiKhoanDao {
 	
 	public boolean updateThongTinCaNhan(TaiKhoan tk) {
 		Connect();
-		String sql = "update ThongTinNguoiDung set HoTen=?,SDT=?,CCCD=?,DiaChi=?,NgaySinh=?,GioiTinh=? where ID_TaiKhoan=?";
+		String sql = "update ThongTinNguoiDung set HoTen=?,SDT=?,CCCD=?,DiaChi=?,NgaySinh=?,GioiTinh=?,Email=? where ID_TaiKhoan=?";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, tk.getHoTen());
@@ -163,7 +167,8 @@ public class TaiKhoanDao {
 			ps.setString(4, tk.getDiaChi());
 			ps.setDate(5, tk.getNgaySinh());
 			ps.setInt(6, tk.getGioiTinh());
-			ps.setInt(7, tk.getId());
+			ps.setString(7, tk.getEmail());
+			ps.setInt(8, tk.getId());
 			int row = ps.executeUpdate();
 			if(row>0) {
 				return true;
@@ -306,6 +311,20 @@ public class TaiKhoanDao {
 			e.printStackTrace();
 		}
 		return tk;
+	}
+	
+	
+	
+	public void insertThongTinNguoiDungMoi(int ID_TaiKhoan) {
+		Connect();
+		String sql = "insert into ThongTinNguoiDung(ID_TaiKhoan) values(?)";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_TaiKhoan);
+			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

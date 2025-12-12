@@ -63,7 +63,8 @@
 
 .room-grid-row {
 	display: grid;
-	grid-template-columns: 2.5fr 1fr 1.5fr 1fr 160px; padding : 16px 24px;
+	grid-template-columns: 2.5fr 1fr 1.5fr 1fr 160px;
+	padding: 16px 24px;
 	border-bottom: 1px solid
 		linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
 	align-items: center;
@@ -107,16 +108,56 @@
 	grid-template-columns: 0.8fr 2.5fr 1.2fr 1fr 1.2fr 120px;
 	align-items: center;
 }
+
 .truncate-150 {
-    display:block;
-    width: 150px;            /* cố định 150px như bạn yêu cầu */
-    white-space: nowrap;     /* không xuống dòng */
-    overflow: hidden;        /* ẩn phần dư */
-    text-overflow: ellipsis; /* hiện dấu “…” */
+	display: block;
+	width: 150px; /* cố định 150px như bạn yêu cầu */
+	white-space: nowrap; /* không xuống dòng */
+	overflow: hidden; /* ẩn phần dư */
+	text-overflow: ellipsis; /* hiện dấu “…” */
+}
+
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.4);
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-overlay.active {
+	display: flex;
+}
+
+.modal-box {
+	background: white;
+	padding: 20px 28px;
+	border-radius: 12px;
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn-error {
+	background: #ef4444;
+	color: white;
 }
 </style>
 </head>
 <body>
+<%
+	// Ngăn cache để không thể back sau khi logout
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 	<div class="app-container">
 
 		<aside class="sidebar">
@@ -136,11 +177,14 @@
 				</div>
 				<div class="nav-item" onclick="navTo('requests', this)">
 					<i class="fa-solid fa-user-clock"></i> Yêu cầu thuê
-					<% int countYC = (int) request.getAttribute("countYC");
-					if(countYC != -1){%>
-						<span
-						style="margin-left: auto; background: linear-gradient(135deg, #ef4444, #f43f5e); color: white; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 8px; box-shadow: var(--shadow-primary);"><%= countYC %></span>
-					<%}
+					<%
+					int countYC = (int) request.getAttribute("countYC");
+					if (countYC != 0) {
+					%>
+					<span
+						style="margin-left: auto; background: linear-gradient(135deg, #ef4444, #f43f5e); color: white; font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 8px; box-shadow: var(--shadow-primary);"><%=countYC%></span>
+					<%
+					}
 					%>
 				</div>
 				<div class="nav-item" onclick="navTo('incidents', this)">
@@ -153,16 +197,15 @@
 			<%
 			TaiKhoan tk = (TaiKhoan) request.getAttribute("ThongTinCaNhan");
 			%>
-			<a href="${pageContext.request.contextPath}/CaiDatCT" class="user-profile">
-				<img
-					src="<%=(tk != null && tk.getAvatar() != null) ? tk.getAvatar() : ""%>"
-					alt="Avatar" class="user-avatar">
+			<a href="${pageContext.request.contextPath}/CaiDatCT"
+				class="user-profile"> <img
+				src="<%=(tk != null && tk.getAvatar() != null) ? tk.getAvatar() : ""%>"
+				alt="Avatar" class="user-avatar">
 				<div class="user-info">
 					<h4 style="font-size: 14px;"><%=(tk != null && tk.getHoTen() != null) ? tk.getHoTen() : ""%></h4>
 					<span style="font-size: 12px;">Chủ trọ • Premium</span>
-				</div>
-				<i class="fa-solid fa-chevron-right"
-					style="margin-left: auto; font-size: 12px; color: #94a3b8;"></i>
+				</div> <i class="fa-solid fa-chevron-right"
+				style="margin-left: auto; font-size: 12px; color: #94a3b8;"></i>
 			</a>
 		</aside>
 
@@ -187,32 +230,32 @@
 			</header>
 
 			<div class="main-content">
-			<% int countSoPhong = (int) request.getAttribute("countSoPhong");
-			int countPhongTrong = (int) request.getAttribute("countPhongTrong");
-			int countPhongDaThue = (int) request.getAttribute("countPhongDaThue");
-			%>
+				<%
+				int countSoPhong = (int) request.getAttribute("countSoPhong");
+				int countPhongTrong = (int) request.getAttribute("countPhongTrong");
+				int countPhongDaThue = (int) request.getAttribute("countPhongDaThue");
+				%>
 				<div id="dashboard" class="section active">
 					<div class="stats-grid">
 						<div class="stat-card">
 							<div class="stat-icon stat-primary">
 								<i class="fa-solid fa-building-user"></i>
 							</div>
-							<div class="stat-value"><%= (countSoPhong!=-1) ? countSoPhong : "" %></div>
+							<div class="stat-value"><%=(countSoPhong != -1) ? countSoPhong : ""%></div>
 							<div class="stat-label">Tổng số phòng</div>
 						</div>
 						<div class="stat-card">
 							<div class="stat-icon stat-busy">
 								<i class="fa-solid fa-check-double"></i>
 							</div>
-							<div class="stat-value"><%= (countPhongDaThue!=-1) ? countPhongDaThue : "" %></div>
-							<div class="stat-label" style="color: #6366f1">Đang
-								thuê</div>
+							<div class="stat-value"><%=(countPhongDaThue != -1) ? countPhongDaThue : ""%></div>
+							<div class="stat-label" style="color: #6366f1">Đang thuê</div>
 						</div>
 						<div class="stat-card">
 							<div class="stat-icon stat-success">
 								<i class="fa-solid fa-key"></i>
 							</div>
-							<div class="stat-value"><%= (countPhongTrong!=-1) ? countPhongTrong : "" %></div>
+							<div class="stat-value"><%=(countPhongTrong != -1) ? countPhongTrong : ""%></div>
 							<div class="stat-label" style="color: #15803d">Phòng trống</div>
 						</div>
 						<div class="stat-card">
@@ -271,11 +314,34 @@
 					<div
 						style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
 						<div class="table-title">Danh sách phòng</div>
-						<a href="#" class="btn btn-primary"> <i
-							class="fa-solid fa-plus"></i> Thêm phòng
+						<a href="${pageContext.request.contextPath}/ThemPhongTro"
+							class="btn btn-primary"> <i class="fa-solid fa-plus"></i>
+							Thêm phòng
 						</a>
 					</div>
+					<%
+					ArrayList<PhongTro> listPT = (ArrayList<PhongTro>) request.getAttribute("listPT");
 
+					if (listPT == null || listPT.isEmpty()) {
+					%>
+
+					<div
+						style="padding: 40px; text-align: center; width: 100%; grid-column: span 5; color: #64748b;">
+
+						<i class="fa-solid fa-circle-info"
+							style="font-size: 36px; margin-bottom: 12px; color: #94a3b8;"></i>
+
+						<div
+							style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">
+							Chưa có phòng nào trong hệ thống</div>
+						<div style="font-size: 14px; margin-bottom: 16px;">Hãy thêm
+							phòng mới để bắt đầu quản lý trọ.</div>
+
+
+					</div>
+					<%
+					} else {
+					%>
 					<div class="room-grid-container">
 
 						<!-- HEADER -->
@@ -289,32 +355,9 @@
 
 						<div class="room-grid-body">
 
-							<%
-							ArrayList<PhongTro> listPT = (ArrayList<PhongTro>) request.getAttribute("listPT");
 
-							if (listPT == null || listPT.isEmpty()) {
-							%>
-
-							<div
-								style="padding: 40px; text-align: center; width: 100%; grid-column: span 5; color: #64748b;">
-
-								<i class="fa-solid fa-circle-info"
-									style="font-size: 36px; margin-bottom: 12px; color: #94a3b8;"></i>
-
-								<div
-									style="font-size: 18px; font-weight: 600; margin-bottom: 6px;">
-									Chưa có phòng nào trong hệ thống</div>
-								<div style="font-size: 14px; margin-bottom: 16px;">Hãy
-									thêm phòng mới để bắt đầu quản lý trọ.</div>
-
-								<a href="#" class="btn btn-primary"> <i
-									class="fa-solid fa-plus"></i> Thêm phòng mới
-								</a>
-							</div>
 
 							<%
-							} else {
-
 							for (PhongTro pt : listPT) {
 								String status = pt.getTrangThai();
 								String badgeClass = "";
@@ -355,8 +398,8 @@
 								</div>
 
 								<div>
-									<div style="font-weight: 600; font-size: 13px;"><%=pt.getTenCT()%></div>
-									<div style="font-size: 11px; color: #64748b;"><%=pt.getPhone()%></div>
+									<div style="font-weight: 600; font-size: 13px;"><%="Còn trống".equals(status) ? "Chưa có" : pt.getTenCT()%></div>
+									<div style="font-size: 11px; color: #64748b;"><%="Còn trống".equals(status) ? "" : pt.getPhone()%></div>
 								</div>
 
 								<div>
@@ -381,13 +424,17 @@
 										}
 										%>
 
-										<button class="btn-action btn-edit" title="Sửa">
-											<i class="fa-solid fa-pen"></i>
-										</button>
+										<a
+											href="${pageContext.request.contextPath}/SuaPhongTro?ID_Phong=<%= pt.getID_Phong() %>"
+											class="btn-action btn-edit" title="Sửa"> <i
+											class="fa-solid fa-pen"></i>
+										</a>
 
-										<button class="btn-action btn-delete" title="Xóa">
+										<button class="btn-action btn-delete" data-id="<%=pt.getID_Phong()%>"
+											data-status="<%=status%>">
 											<i class="fa-solid fa-trash"></i>
 										</button>
+
 									</div>
 								</div>
 
@@ -395,11 +442,13 @@
 
 							<%
 							}
-							}
 							%>
 
 						</div>
 					</div>
+					<%
+					}
+					%>
 				</div>
 
 
@@ -409,7 +458,7 @@
 						style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
 						<div class="table-title">Danh sách người thuê trọ</div>
 
-						<div style="display: flex; gap: 12px;">
+						<form id="timKiemNguoiThue" style="display: flex; gap: 12px;">
 							<button class="btn btn-outline" style="padding: 10px 16px;">
 								<i class="fa-solid fa-filter"></i> Lọc
 							</button>
@@ -417,10 +466,10 @@
 								style="padding: 8px 12px; display: flex; align-items: center; gap: 8px; width: 250px;">
 								<i class="fa-solid fa-magnifying-glass"
 									style="color: var(--text-light)"></i> <input type="text"
-									placeholder="Tìm tên, phòng..."
+									placeholder="Tìm theo tên người thuê..."
 									style="border: none; outline: none; background: transparent; width: 100%;">
 							</div>
-						</div>
+						</form>
 					</div>
 
 					<div class="room-grid-container">
@@ -604,16 +653,21 @@
 							</select>
 						</div>
 					</div>
-
-					<div class="room-grid-container">
-					<% ArrayList<YeuCauThueTro> listYC = (ArrayList<YeuCauThueTro>) request.getAttribute("listYeuCau");
+					<%
+					ArrayList<YeuCauThueTro> listYC = (ArrayList<YeuCauThueTro>) request.getAttribute("listYeuCau");
 					if (listYC == null || listYC.size() == 0) {
-						%>
+					%>
 
-						<div style="padding: 20px; text-align:center; color: #6b7280; font-size: 15px;">
-						    <i class="fa-regular fa-circle-xmark"></i> Chưa có yêu cầu thuê nào
-						</div>
-					<%} else { %>
+					<div
+						style="padding: 20px; text-align: center; color: #6b7280; font-size: 15px;">
+						<i class="fa-regular fa-circle-xmark"></i> Chưa có yêu cầu thuê
+						nào
+					</div>
+					<%
+					} else {
+					%>
+					<div class="room-grid-container">
+
 						<div class="room-grid-header request-cols">
 							<div>Người gửi yêu cầu</div>
 							<div>Phòng quan tâm</div>
@@ -624,29 +678,30 @@
 						</div>
 
 						<div class="room-grid-body">
-						<%
-						for(YeuCauThueTro yc : listYC){
-							String status = yc.getTrangThai();
-							String badgeClass = "";
+							<%
+							for (YeuCauThueTro yc : listYC) {
+								String status = yc.getTrangThai();
+								String badgeClass = "";
 
-							switch (status) {
-								case "Chờ duyệt" :
-							badgeClass = "badge-warn";
-							break;
-								case "Đã liên hệ" :
-							badgeClass = "badge-success";
-							break;
-								case "Đã hủy" :
-							badgeClass = "badge-error";
-							break;
-								default :
-							badgeClass = "badge-warn";
-							}
-						%>
+								switch (status) {
+									case "Chờ duyệt" :
+								badgeClass = "badge-warn";
+								break;
+									case "Đã liên hệ" :
+								badgeClass = "badge-success";
+								break;
+									case "Đã hủy" :
+								badgeClass = "badge-error";
+								break;
+									default :
+								badgeClass = "badge-warn";
+								}
+							%>
 							<div class="room-grid-row request-cols">
 								<div>
 									<div class="user-cell">
-										<img src="<%=(yc != null && yc.getAvatar() != null) ? yc.getAvatar() : ""%>"
+										<img
+											src="<%=(yc != null && yc.getAvatar() != null) ? yc.getAvatar() : ""%>"
 											class="table-avatar">
 										<div>
 											<div style="font-weight: 700;"><%=(yc != null && yc.getHoTen() != null) ? yc.getHoTen() : ""%></div>
@@ -654,27 +709,30 @@
 									</div>
 								</div>
 								<div>
-									<span class="truncate-150" style="font-weight: 700; color: #6366f1;"><%=(yc != null && yc.getTenPhong() != null) ? yc.getTenPhong() : ""%></span>
+									<span class="truncate-150"
+										style="font-weight: 700; color: #6366f1;"><%=(yc != null && yc.getTenPhong() != null) ? yc.getTenPhong() : ""%></span>
 								</div>
 								<div><%=(yc != null && yc.getSDT() != null) ? yc.getSDT() : ""%></div>
 								<div style="color: #64748b;"><%=(yc != null && yc.getCreate_at() != null) ? TimeHelper.timeAgo(yc.getCreate_at()) : ""%></div>
 								<div>
-									<span class="status-badge <%= badgeClass%>"><span
-										class="status-dot"></span><%= status %></span>
+									<span class="status-badge <%=badgeClass%>"><span
+										class="status-dot"></span><%=status%></span>
 								</div>
 								<div class="col-right">
-									<button class="btn btn-outline btn-sm">Xem chi tiết</button>
+									<a
+										href="${pageContext.request.contextPath}/ChiTietYeuCauThue?id=<%= yc.getId() %>"
+										class="btn btn-outline btn-sm">Xem chi tiết</a>
 								</div>
 							</div>
-							<% }
-							}%>
-							
-							
-
-							
+							<%
+							}
+							%>
 
 						</div>
 					</div>
+					<%
+					}
+					%>
 				</div>
 
 				<div id="incidents" class="section">
@@ -841,133 +899,6 @@
 		</main>
 	</div>
 
-	<div class="modal-overlay" id="roomModal">
-		<div class="modal-box">
-			<div class="modal-header"
-				style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-				<h3>Thêm phòng mới</h3>
-				<button onclick="closeModal('roomModal')"
-					style="background: none; border: none; cursor: pointer;">
-					<i class="fa-solid fa-xmark" style="font-size: 20px;"></i>
-				</button>
-			</div>
-			<div class="form-group">
-				<label class="form-label">Tên phòng</label><input type="text"
-					class="form-input">
-			</div>
-			<div style="display: flex; justify-content: flex-end;">
-				<button class="btn btn-primary">Lưu</button>
-			</div>
-		</div>
-	</div>
-
-	<div class="modal-overlay" id="requestDetailModal">
-		<div class="modal-box" style="max-width: 600px;">
-			<div class="table-header">
-				<h3>Chi tiết yêu cầu thuê</h3>
-				<button onclick="closeModal('requestDetailModal')"
-					style="background: none; border: none; cursor: pointer;">
-					<i class="fa-solid fa-xmark" style="font-size: 20px;"></i>
-				</button>
-			</div>
-			<div style="display: flex; gap: 20px; margin-bottom: 20px;">
-				<img src="https://i.pravatar.cc/150?img=3"
-					style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover;">
-				<div>
-					<h4 style="font-size: 18px; margin-bottom: 4px;">Phạm Hương</h4>
-					<p
-						style="color: var(--text-secondary); font-size: 14px; margin-bottom: 4px;">
-						<i class="fa-solid fa-phone"></i> 0987 654 321
-					</p>
-					<p style="color: var(--text-secondary); font-size: 14px;">
-						<i class="fa-solid fa-envelope"></i> huong.pham@email.com
-					</p>
-				</div>
-			</div>
-			<div style="display: flex; justify-content: flex-end; gap: 12px;">
-				<button class="btn btn-outline">Từ chối</button>
-				<button class="btn btn-primary">
-					<i class="fa-solid fa-check"></i> Duyệt yêu cầu
-				</button>
-			</div>
-		</div>
-	</div>
-
-	<div class="modal-overlay" id="billModal">
-		<div class="modal-box" style="max-width: 500px;">
-			<div class="table-header" style="margin-bottom: 20px;">
-				<h3>
-					<i class="fa-solid fa-calculator"
-						style="color: var(--primary); margin-right: 8px;"></i> Tính tiền
-					phòng
-				</h3>
-				<button onclick="closeModal('billModal')"
-					style="background: none; border: none; cursor: pointer;">
-					<i class="fa-solid fa-xmark" style="font-size: 20px;"></i>
-				</button>
-			</div>
-			<div
-				style="background: var(--primary-soft); padding: 12px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-				<div>
-					<div
-						style="font-size: 12px; color: var(--text-secondary); font-weight: 600;">PHÒNG</div>
-					<div
-						style="font-weight: 800; color: var(--text-main); font-size: 16px;"
-						id="billRoomName">P.101</div>
-				</div>
-				<div style="text-align: right;">
-					<div
-						style="font-size: 12px; color: var(--text-secondary); font-weight: 600;">KHÁCH
-						THUÊ</div>
-					<div style="font-weight: 700; color: var(--primary);"
-						id="billTenantName">Nguyễn Văn A</div>
-				</div>
-			</div>
-			<form id="billForm">
-				<div class="form-group">
-					<label class="form-label">Tiền phòng cố định</label><input
-						type="number" id="baseRent" class="form-input"
-						style="background: #f1f5f9; font-weight: 700;" readonly>
-				</div>
-				<div
-					style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-					<div class="form-group">
-						<label class="form-label">Số điện (kWh) <span
-							style="font-weight: 400; font-size: 11px;">(3.5k/số)</span></label><input
-							type="number" id="elecNum" class="form-input" placeholder="0"
-							oninput="calculateTotal()">
-					</div>
-					<div class="form-group">
-						<label class="form-label">Số nước (m³) <span
-							style="font-weight: 400; font-size: 11px;">(15k/khối)</span></label><input
-							type="number" id="waterNum" class="form-input" placeholder="0"
-							oninput="calculateTotal()">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="form-label">Chi phí khác</label><input type="number"
-						id="otherFee" class="form-input" value="100000"
-						oninput="calculateTotal()">
-				</div>
-				<div
-					style="margin-top: 24px; padding-top: 16px; border-top: 2px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-					<div
-						style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">TỔNG
-						CỘNG</div>
-					<div style="font-size: 24px; font-weight: 800; color: #ef4444;"
-						id="totalBill">0 ₫</div>
-				</div>
-				<div
-					style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
-					<button type="button" class="btn btn-outline"
-						onclick="closeModal('billModal')">Hủy</button>
-					<button type="submit" class="btn btn-primary">
-						<i class="fa-regular fa-paper-plane"></i> Gửi hóa đơn
-					</button>
-				</div>
-			</form>
-		</div>
-	</div>
 
 	<div class="modal-overlay" id="incidentModal">
 		<div class="modal-box" style="max-width: 550px;">
@@ -1043,8 +974,26 @@
 			</form>
 		</div>
 	</div>
+	<div id="deleteModal" class="modal-overlay">
+		<div class="modal-box" style="max-width: 350px; text-align: center;">
+			<h3>Xoá phòng?</h3>
+			<p>Bạn có chắc chắn muốn xoá phòng này không?</p>
+			<input type="hidden" id="deleteRoomId" name="id">
+        <input type="hidden" id="roomStatus" name="status">
+
+			<div style="display: flex; justify-content: center; gap: 12px;">
+				<button onclick="closeDeleteModal()" class="btn btn-outline">Hủy</button>
+				<button onclick="confirmDeleteRoom()" class="btn btn-error">Có</button>
+			</div>
+		</div>
+	</div>
+	<div id="toast"
+		style="position: fixed; top: 20px; right: 20px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 14px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); opacity: 0; transition: 0.3s; transform: translateY(-20px); pointer-events: none;">
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 	<script>
-    // --- Navigation ---
     function navTo(id, el) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
@@ -1061,75 +1010,88 @@
     // --- Modal General ---
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-    // --- Bill Logic ---
-    const PRICE_ELEC = 3500;
-    const PRICE_WATER = 15000;
-    function openBillModal(room, tenant, price) {
-        document.getElementById('billRoomName').innerText = room;
-        document.getElementById('billTenantName').innerText = tenant;
-        document.getElementById('baseRent').value = price;
-        document.getElementById('elecNum').value = '';
-        document.getElementById('waterNum').value = '';
-        calculateTotal();
-        openModal('billModal');
-    }
-    function calculateTotal() {
-        let rent = Number(document.getElementById('baseRent').value) || 0;
-        let elec = Number(document.getElementById('elecNum').value) || 0;
-        let water = Number(document.getElementById('waterNum').value) || 0;
-        let other = Number(document.getElementById('otherFee').value) || 0;
-        let total = rent + (elec * PRICE_ELEC) + (water * PRICE_WATER) + other;
-        document.getElementById('totalBill').innerText = total.toLocaleString('vi-VN') + ' ₫';
-    }
-    document.getElementById('billForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const btn = this.querySelector('button[type="submit"]');
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
-        setTimeout(() => { closeModal('billModal'); btn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Gửi hóa đơn'; alert('Đã gửi hóa đơn!'); }, 1000);
-    });
-
-    // --- Incident Logic ---
-    function openIncidentModal(id, room, issue) {
-        document.getElementById('currentIncidentId').value = id;
-        document.getElementById('modalRoomName').innerText = room;
-        document.getElementById('modalIssueName').innerText = issue;
-        document.getElementById('incidentReply').value = '';
-        document.getElementById('incidentModal').classList.add('active');
-    }
-    function closeIncidentModal() { document.getElementById('incidentModal').classList.remove('active'); }
-    function fillReply(text) { document.getElementById('incidentReply').value = text; }
     
-    document.querySelectorAll('input[name="status"]').forEach(radio => {
-        radio.addEventListener('change', function() {
-            document.querySelectorAll('.radio-box').forEach(box => {
-                box.style.borderColor = 'var(--border-color)'; box.style.background = 'white'; box.style.color = 'var(--text-secondary)';
-            });
-            const box = this.nextElementSibling;
-            box.style.borderColor = 'var(--primary)'; box.style.background = 'var(--primary-soft)'; box.style.color = 'var(--primary)';
-        });
+
+    function showToast(message, type = "success") {
+	    const toast = $("#toast");
+
+	    // Icon hiển thị theo loại
+	    let iconHTML = "";
+
+	    if (type === "error") {
+	        toast.css("background-color", "#dc2626"); // đỏ
+	        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
+	    } else {
+	        toast.css("background-color", "#2563eb"); // xanh
+	        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
+	    }
+
+	    // Set nội dung kèm icon
+	    toast.html(iconHTML + message);
+
+	    // hiện
+	    toast.css({ opacity: "1", transform: "translateY(0)" });
+
+	    // tự tắt sau 5 giây
+	    setTimeout(() => {
+	        toast.css({ opacity: "0", transform: "translateY(20px)" });
+	    }, 5000);
+	}
+    $(document).on("click", ".btn-delete", function () {
+        let roomId = $(this).data("id");
+        let status = $(this).data("status");
+
+        console.log("Clicked delete:", roomId, status);
+
+        openDeleteModal(roomId, status);
     });
 
-    document.getElementById('incidentForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const btn = this.querySelector('button[type="submit"]');
-        const originalText = btn.innerHTML;
-        const id = document.getElementById('currentIncidentId').value;
-        const status = document.querySelector('input[name="status"]:checked').value;
+    
+    function openDeleteModal(roomId, status) {
+        console.log("Delete ID:", roomId, "Status:", status);
 
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
-        setTimeout(() => {
-            closeIncidentModal();
-            btn.innerHTML = originalText;
-            const badge = document.getElementById('badge-' + id);
-            if(badge) {
-                if (status === 'processing') { badge.className = 'status-badge badge-busy'; badge.innerHTML = '<span class="status-dot"></span>Đang xử lý'; }
-                else if (status === 'done') { badge.className = 'status-badge badge-success'; badge.innerHTML = '<span class="status-dot"></span>Hoàn thành'; }
-                else { badge.className = 'status-badge badge-warn'; badge.innerHTML = '<span class="status-dot"></span>Chờ xử lý'; }
+        $("#deleteRoomId").val(roomId);
+
+        $("#roomStatus").val(status);
+
+        $("#deleteModal").addClass("active");
+    }
+
+function closeDeleteModal() {
+    $("#deleteModal").removeClass("active");
+}
+
+
+function confirmDeleteRoom() {
+    let roomId = $("#deleteRoomId").val();
+    let status = $("#roomStatus").val();
+
+    $.ajax({
+        url: "/DoAnQLThueTro/XoaPhongTro",
+        method: "POST",
+        data: { 
+            id: roomId,
+            status: status 
+        },
+        dataType: "json",
+        success: function (response) {
+            let result = typeof response === "string" ? JSON.parse(response) : response;
+
+            if (result.success) {
+                showToast("Xoá phòng thành công!", "success");
+                setTimeout(() => location.reload(), 1200);
+            } else {
+                showToast(result.message || "Không thể xoá phòng!", "error");
             }
-            alert("Đã cập nhật!");
-        }, 800);
+        },
+        error: function () {
+            showToast("Lỗi server!", "error");
+        }
     });
+
+    closeDeleteModal();
+}
+
 </script>
 </body>
 </html>

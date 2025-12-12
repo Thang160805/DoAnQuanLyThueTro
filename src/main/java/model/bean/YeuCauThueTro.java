@@ -18,6 +18,7 @@ public class YeuCauThueTro {
 	private String SDT;
 	private String Avatar;
 	private PhongTro phongTro;
+	private TaiKhoan taiKhoan;
 	
 	public YeuCauThueTro() {
 		super();
@@ -105,6 +106,22 @@ public class YeuCauThueTro {
 
 	public void setPhongTro(PhongTro phongTro) {
 		this.phongTro = phongTro;
+	}
+	
+	
+
+
+
+
+	public TaiKhoan getTaiKhoan() {
+		return taiKhoan;
+	}
+
+
+
+
+	public void setTaiKhoan(TaiKhoan taiKhoan) {
+		this.taiKhoan = taiKhoan;
 	}
 
 

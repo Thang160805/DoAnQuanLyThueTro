@@ -34,4 +34,8 @@ public class ThongBaoBO {
 	public ArrayList<ThongBao> getTop3TB(int id){
 		return tbDao.getTop3TB(id);
 	}
+	
+	public void insertGuiThongBao(ThongBao tb) {
+		tbDao.insertGuiThongBao(tb);
+	}
 }

@@ -11,6 +11,7 @@ import model.bo.TaiKhoanBO;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * Servlet implementation class UpdateProfile
@@ -51,68 +52,91 @@ public class UpdateProfile extends HttpServlet {
 		}
 		response.setContentType("application/json;charset=UTF-8");
 		TaiKhoanBO tkBO = new TaiKhoanBO();
-		TaiKhoan oldInfo = tkBO.getThongTinCaNhan(user.getId());
-
-		String hoTen = getValue(request.getParameter("HoTen"), oldInfo.getHoTen());
-		String cccd = getValue(request.getParameter("CCCD"), oldInfo.getCCCD());
-		String sdt = getValue(request.getParameter("SDT"), oldInfo.getSDT());
-		String gioiTinhStr = request.getParameter("GioiTinh");
-		int newGender = -1;
-
-		if (gioiTinhStr != null && !gioiTinhStr.trim().isEmpty()) {
-		    newGender = Integer.parseInt(gioiTinhStr);
-		}
-
-		int gioiTinh = getValueInt(newGender, oldInfo.getGioiTinh());
+		String hoTen = request.getParameter("HoTen");
+		String cccd = request.getParameter("CCCD");
+		String sdt = request.getParameter("SDT");
+		String email = request.getParameter("Email");
+		String diaChi = request.getParameter("DiaChi");
 		String nsStr = request.getParameter("NgaySinh");
-		Date newDate = null;
 
-		if (nsStr != null && !nsStr.trim().isEmpty()) {
-		    try {
-		        newDate = Date.valueOf(nsStr);
-		    } catch (Exception e) {
-		        newDate = null;
-		    }
+		java.sql.Date ngaySinh = null;
+		if (nsStr != null && !nsStr.isEmpty()) {
+			ngaySinh = java.sql.Date.valueOf(nsStr);
 		}
 
-		Date ngaySinh = safeDate(newDate, oldInfo.getNgaySinh());
-		String diaChi = getValue(request.getParameter("DiaChi"), oldInfo.getDiaChi());
-		
-		
-		TaiKhoan tk = new TaiKhoan(user.getId(),hoTen,sdt,cccd,diaChi,ngaySinh,gioiTinh);
-		boolean exists = tkBO.existsThongTinNguoiDungById(user.getId());
-		if(!exists) {
-			boolean created = tkBO.insertThongTinNguoiDung(tk);
-			if (created) {
-		        response.getWriter().print("{\"status\":\"success\",\"message\":\"Thêm thông tin thành công\"}");
-		    } else {
-		        response.getWriter().print("{\"status\":\"error\",\"message\":\"Thêm thông tin thất bại\"}");
-		    }
-		    return;
-		}else {
-			boolean updated = tkBO.updateThongTinCaNhan(tk);
-			if (updated) {
-		        response.getWriter().print("{\"status\":\"success\",\"message\":\"Cập nhật thông tin thành công\"}");
-		    } else {
-		        response.getWriter().print("{\"status\":\"error\",\"message\":\"Cập nhật thất bại\"}");
-		    }
-		    return;
+		if (hoTen == null || hoTen.trim().isEmpty()) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Họ tên không được để trống\"}");
+			return;
+		}
+
+		if (!hoTen.matches("^[\\p{L} .'-]+$")) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Họ tên không hợp lệ\"}");
+			return;
+		}
+
+		if (cccd == null || cccd.trim().isEmpty()) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"CCCD không được để trống\"}");
+			return;
+		}
+
+		if (!cccd.matches("\\d+")) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"CCCD không được nhập chữ\"}");
+			return;
+		}
+		if (sdt == null || sdt.trim().isEmpty()) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Số điện thoại không được để trống\"}");
+			return;
+		}
+		if (sdt.length() < 9 || sdt.length() > 11) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Số điện thoại không hợp lệ\"}");
+			return;
+		}
+
+		if (sdt != null && !sdt.trim().isEmpty() && !sdt.matches("\\d+")) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Số điện thoại không được nhập chữ\"}");
+			return;
+		}
+
+		if (email == null || email.trim().isEmpty()) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Email không được để trống\"}");
+			return;
+		}
+
+		if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Email không hợp lệ\"}");
+			return;
+		}
+
+		String gtStr = request.getParameter("GioiTinh");
+		int gioiTinh = -1;
+		try {
+			gioiTinh = Integer.parseInt(gtStr);
+		} catch (Exception e) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Giới tính không hợp lệ\"}");
+			return;
+		}
+
+		if (gioiTinh != 1 && gioiTinh != 2) {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Giới tính không hợp lệ\"}");
+			return;
+		}
+		TaiKhoan tk = new TaiKhoan();
+		tk.setHoTen(hoTen);
+		tk.setCCCD(cccd);
+		tk.setSDT(sdt);
+		tk.setEmail(email);
+		tk.setDiaChi(diaChi);
+		tk.setNgaySinh(ngaySinh);
+		tk.setGioiTinh(gioiTinh);
+		tk.setId(user.getId());
+		boolean updated = tkBO.updateThongTinCaNhan(tk);
+		if (updated) {
+			response.getWriter().print("{\"status\":\"success\",\"message\":\"Cập nhật thông tin thành công\"}");
+		} else {
+			response.getWriter().print("{\"status\":\"error\",\"message\":\"Cập nhật thất bại\"}");
 		}
 		
 
-		
-	}
-	
-	private String getValue(String newVal, String oldVal) {
-        return (newVal == null || newVal.trim().isEmpty()) ? oldVal : newVal;
-    }
-	
-	private int getValueInt(int newVal, int oldVal) {
-	    return (newVal == -1) ? oldVal : newVal;
-	}
-	
-	private Date safeDate(Date newDate, Date oldDate) {
-	    return (newDate == null) ? oldDate : newDate;
 	}
 
 }

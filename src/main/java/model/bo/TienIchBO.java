@@ -15,4 +15,13 @@ public class TienIchBO {
 	public ArrayList<TienIch> getListTienIchByIDPhong(int ID_Phong){
 		return tiDao.getListTienIchByIDPhong(ID_Phong);
 	}
+	
+	public void insertTienIchForPhong(int idPhong, String[] tienIchList) {
+		if (tienIchList == null) return;
+
+        for (String ti : tienIchList) {
+            int idTI = Integer.parseInt(ti);
+            tiDao.insertTienIchPhong(idPhong, idTI);
+        }
+	}
 }

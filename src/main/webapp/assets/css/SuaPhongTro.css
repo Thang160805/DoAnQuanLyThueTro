@@ -1,0 +1,218 @@
+@charset "UTF-8";
+
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* === 2. LAYOUT GRID === */
+        .form-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* Cột form lớn hơn cột ảnh */
+            gap: 30px;
+        }
+
+        /* CARD STYLE */
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #6366f1;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #e0e7ff;
+            display: flex;
+            align-items: center;
+        }
+
+        /* === 3. FORM ELEMENTS (INPUT/SELECT/TEXTAREA) === */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .input-style, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #ffffff;
+            font-size: 15px;
+            color: #1e293b;
+            transition: all 0.2s ease;
+        }
+
+        .input-style:focus, select:focus, textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px #e0e7ff;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        /* Input Addon */
+        .input-with-unit {
+            display: flex;
+        }
+
+        .input-unit {
+            padding: 12px 15px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: none;
+            border-radius: 0 12px 12px 0;
+            color: #64748b;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .input-with-unit .input-style {
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+        }
+        
+        /* === 4. TIỆN ÍCH (CHECKBOX GRID) === */
+        .amenity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .checkbox-container:hover {
+            border-color: #6366f1;
+            background: #e0e7ff;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkbox-container input[type="checkbox"]:checked + span {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+        
+        .checkbox-container input[type="checkbox"]:checked ~ .amenity-label {
+            color: #6366f1;
+            font-weight: 600;
+        }
+
+        .custom-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #94a3b8;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: all 0.2s;
+            font-size: 10px;
+        }
+
+        .amenity-label {
+            font-size: 14px;
+            color: #1e293b;
+        }
+
+        
+
+        /* === 6. ACTIONS === */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            padding: 20px 0;
+            margin-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .btn-cancel {
+            background: #e5e7eb;
+            color: #64748b;
+        }
+
+        .btn-cancel:hover {
+            background: #d1d5db;
+        }

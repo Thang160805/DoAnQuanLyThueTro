@@ -24,6 +24,17 @@
 
 </head>
 <body>
+<%
+	// Ngăn cache để không thể back sau khi logout
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 	<div class="sidebar">
 		<a class="navbar-brand"
 			href="${pageContext.request.contextPath}/QuanLyTro"> <i
@@ -116,8 +127,8 @@
 						<div class="form-group">
 							<label class="form-label">Họ và tên</label>
 							<div class="input-wrapper">
-								<input type="text" name="HoTen" class="form-input" value=""
-									placeholder="<%=(tk != null && tk.getHoTen() != null) ? tk.getHoTen() : ""%>">
+								<input type="text" name="HoTen" class="form-input"
+									value="<%=(tk != null && tk.getHoTen() != null) ? tk.getHoTen() : ""%>">
 								<i class="fa-regular fa-user input-icon"></i>
 							</div>
 						</div>
@@ -125,8 +136,8 @@
 						<div class="form-group">
 							<label class="form-label">Số điện thoại (Zalo)</label>
 							<div class="input-wrapper">
-								<input type="tel" name="SDT" class="form-input" value=""
-									placeholder="<%=(tk != null && tk.getSDT() != null) ? tk.getSDT() : ""%>">
+								<input type="tel" name="SDT" class="form-input"
+									value="<%=(tk != null && tk.getSDT() != null) ? tk.getSDT() : ""%>">
 								<i class="fa-solid fa-phone input-icon"></i>
 							</div>
 						</div>
@@ -134,8 +145,8 @@
 						<div class="form-group">
 							<label class="form-label">Số CCCD / CMND</label>
 							<div class="input-wrapper">
-								<input type="text" name="CCCD" class="form-input" value=""
-									placeholder="<%=(tk != null && tk.getCCCD() != null) ? tk.getCCCD() : ""%>">
+								<input type="text" name="CCCD" class="form-input"
+									value="<%=(tk != null && tk.getCCCD() != null) ? tk.getCCCD() : ""%>">
 								<i class="fa-regular fa-id-card input-icon"></i>
 							</div>
 						</div>
@@ -163,17 +174,16 @@
 							<label class="form-label">Email đăng nhập</label>
 							<div class="input-wrapper">
 								<input type="email" name="Email" class="form-input"
-									placeholder="<%=(tk != null && tk.getEmail() != null) ? tk.getEmail() : ""%>"
-									value="" disabled> <i
-									class="fa-regular fa-envelope input-icon"></i>
+									value="<%=(tk != null && tk.getEmail() != null) ? tk.getEmail() : ""%>"> 
+									<i class="fa-regular fa-envelope input-icon"></i>
 							</div>
 						</div>
 
 						<div class="form-group full">
 							<label class="form-label">Địa chỉ liên hệ</label>
 							<div class="input-wrapper">
-								<input type="text" name="DiaChi" class="form-input" value=""
-									placeholder="<%=(tk != null && tk.getDiaChi() != null) ? tk.getDiaChi() : ""%>">
+								<input type="text" name="DiaChi" class="form-input" 
+									value="<%=(tk != null && tk.getDiaChi() != null) ? tk.getDiaChi() : ""%>">
 								<i class="fa-solid fa-map-pin input-icon"></i>
 							</div>
 						</div>
@@ -364,6 +374,9 @@
                     if (res.status === "success") {
                         showToast("Cập nhật ảnh thành công!");
                         $("#avatar-preview").attr("src", res.newAvatar);
+                        setTimeout(() => {
+                            window.location.href = "/DoAnQLThueTro/CaiDatCT";
+                        }, 3000);
                     } else {
                         showToast(res.message, "error");
                     }
@@ -389,6 +402,9 @@
                     success: function (response) {
                         if (response.status === "success") {
                             showToast("Đổi mật khẩu thành công!");
+                            setTimeout(() => {
+                                window.location.href = "/DoAnQLThueTro/CaiDatCT";
+                            }, 3000);
                         } else {
                             showToast(response.message, "error");
                         }
@@ -408,7 +424,10 @@
                     data: $(this).serialize(),  // Tự động gom tất cả name=""
                     success: function (response) {
                         if (response.status === "success") {
-                            showToast(response.message); // dùng toast bạn đã có
+                            showToast(response.message);
+                            setTimeout(() => {
+                                window.location.href = "/DoAnQLThueTro/CaiDatCT";
+                            }, 3000);// dùng toast bạn đã có
                         } else {
                             showToast(response.message, "error");
                         }

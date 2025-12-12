@@ -60,4 +60,20 @@ public class TienIchDao {
 		return list;
 		
 	}
+	
+	 public void insertTienIchPhong(int idPhong, int idTienIch) {
+		 Connect();
+		 String sql = "INSERT INTO PhongTro_TienIch(Id_TienIch, Id_Phong) VALUES (?, ?)";
+		 try {
+			 PreparedStatement ps = connection.prepareStatement(sql);
+			 ps.setInt(1, idTienIch);
+			 ps.setInt(2, idPhong);
+			 ps.executeUpdate();
+			 
+			 
+		 }catch(Exception e) {
+			 e.printStackTrace();
+		 }
+	 }
+	 
 }

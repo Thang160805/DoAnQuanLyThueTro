@@ -16,9 +16,6 @@
 <!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/DangNhap.css">
 <style>
@@ -86,7 +83,7 @@
 					<div class="input-wrapper">
 						<i class="fa-solid fa-lock input-icon"></i> <input type="password"
 							class="form-control" name="password" placeholder="Mật khẩu"
-							> <i class="fa-regular fa-eye toggle-password"></i>
+							> <i class="fa-regular fa-eye toggle-password" onclick="togglePassword(this)"></i>
 					</div>
 
 				</div>

@@ -9,8 +9,8 @@ public class TaiKhoanBO {
 		return tkDao.checkLogin(TenDangNhap, matKhauPlain);
 	}
 	
-	public boolean insertTaiKhoan(TaiKhoan tk) {
-		return tkDao.insertTaiKhoan(tk);
+	public int insertTaiKhoanReturnID(TaiKhoan tk) {
+		return tkDao.insertTaiKhoanReturnID(tk);
 	}
 	
 	public boolean checkUserName(String username) {
@@ -59,6 +59,10 @@ public class TaiKhoanBO {
 	
 	public TaiKhoan getNgayThamGia(int ID_ChuTro) {
 		return tkDao.getNgayThamGia(ID_ChuTro);
+	}
+	
+	public void insertThongTinNguoiDungMoi(int ID_TaiKhoan) {
+		tkDao.insertThongTinNguoiDungMoi(ID_TaiKhoan);
 	}
 	
 }

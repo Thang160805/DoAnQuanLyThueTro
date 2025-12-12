@@ -34,6 +34,17 @@
 	</style>
 </head>
 <body>
+<%
+	// Ngăn cache để không thể back sau khi logout
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 <% TaiKhoan tk = (TaiKhoan) request.getAttribute("ThongTin");
 int ID_Phong = (int) request.getAttribute("ID_Phong");
 PhongTro pt = (PhongTro) request.getAttribute("ThongTinPhong");
