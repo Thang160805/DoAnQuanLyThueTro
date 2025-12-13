@@ -6,7 +6,9 @@
 <%@ page import="model.bean.TaiKhoan"%>
 <%@ page import="model.bean.ThongBao"%>
 <%@ page import="model.bean.YeuCauThueTro"%>
+<%@ page import="model.bean.HopDong"%>
 <%@ page import="utils.TimeHelper"%>
+<%@ page import="utils.DateHelper"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -144,10 +146,17 @@
 	background: #ef4444;
 	color: white;
 }
+
+.contract-cols {
+	display: grid;
+	/* Mã HĐ | Phòng | Người thuê | Thời hạn | Trạng thái | Hành động */
+	grid-template-columns: 1fr 0.8fr 1.5fr 1.5fr 1fr 120px;
+	align-items: center;
+}
 </style>
 </head>
 <body>
-<%
+	<%
 	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
@@ -190,6 +199,9 @@
 				<div class="nav-item" onclick="navTo('incidents', this)">
 					<i class="fa-solid fa-screwdriver-wrench"></i> Sự cố & Sửa chữa
 				</div>
+				<div class="nav-item" onclick="navTo('contracts', this)">
+					<i class="fa-solid fa-file-contract"></i> Quản lý hợp đồng
+				</div>
 				<div class="nav-item" onclick="navTo('notify', this)">
 					<i class="fa-solid fa-paper-plane"></i> Gửi thông báo
 				</div>
@@ -220,11 +232,10 @@
 					<button class="icon-btn">
 						<i class="fa-solid fa-magnifying-glass"></i>
 					</button>
-					<button class="icon-btn">
-						<i class="fa-regular fa-bell"></i>
+					<a href="${pageContext.request.contextPath}/DanhSachThongBao"
+						class="icon-btn"> <i class="fa-regular fa-bell"></i>
 						<div class="notification-dot"></div>
-					</button>
-					<a href="${pageContext.request.contextPath}/Logout"
+					</a> <a href="${pageContext.request.contextPath}/Logout"
 						class="btn btn-logout"> Đăng xuất</a>
 				</div>
 			</header>
@@ -430,8 +441,8 @@
 											class="fa-solid fa-pen"></i>
 										</a>
 
-										<button class="btn-action btn-delete" data-id="<%=pt.getID_Phong()%>"
-											data-status="<%=status%>">
+										<button class="btn-action btn-delete"
+											data-id="<%=pt.getID_Phong()%>" data-status="<%=status%>">
 											<i class="fa-solid fa-trash"></i>
 										</button>
 
@@ -866,37 +877,149 @@
 					</div>
 				</div>
 
-				<div id="notify" class="section">
-					<div class="table-container"
-						style="max-width: 600px; margin: 0 auto;">
-						<div class="table-title" style="margin-bottom: 20px;">Soạn
-							thông báo mới</div>
-						<div class="form-group">
-							<label class="form-label">Tiêu đề</label> <input
-								class="form-input"
-								placeholder="Ví dụ: Thông báo thu tiền điện tháng 12">
-						</div>
-						<div class="form-group">
-							<label class="form-label">Gửi tới</label> <select
-								class="form-input">
-								<option>Tất cả người thuê</option>
-								<option>Tầng 1</option>
-								<option>Tầng 2</option>
+				<div id="contracts" class="section">
+					<div
+						style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+						<div class="table-title">Danh sách hợp đồng</div>
+						<div style="display: flex; gap: 12px;">
+							<select class="form-input"
+								style="padding: 8px 12px; width: auto;">
+								<option>Tất cả trạng thái</option>
+								<option>Đang hiệu lực</option>
+								<option>Sắp hết hạn</option>
+								<option>Đã kết thúc</option>
 							</select>
 						</div>
-						<div class="form-group">
-							<label class="form-label">Nội dung</label>
-							<textarea class="form-input" rows="5"
-								placeholder="Nhập nội dung..."></textarea>
-						</div>
-						<button class="btn btn-primary">
-							<i class="fa-solid fa-paper-plane"></i> Gửi ngay
-						</button>
 					</div>
-				</div>
+					<%
+					ArrayList<HopDong> listHD = (ArrayList<HopDong>) request.getAttribute("listHD");
+					if (listHD == null || listHD.isEmpty()) {
+					%>
 
+					<div
+						style="padding: 20px; text-align: center; color: #6b7280; font-size: 15px;">
+						<i class="fa-regular fa-circle-xmark"></i> Chưa có hợp đồng nào
+					</div>
+
+					<%
+					} else {
+					%>
+
+					<div class="room-grid-container">
+						<div class="room-grid-header contract-cols">
+							<div>Mã HĐ</div>
+							<div>Phòng</div>
+							<div>Người thuê</div>
+							<div>Thời hạn thuê</div>
+							<div>Trạng thái</div>
+							<div class="col-right">Hành động</div>
+						</div>
+
+						<div class="room-grid-body">
+							<%
+							for (HopDong hd : listHD) {
+							%>
+
+							<div class="room-grid-row contract-cols">
+								<!-- Mã hợp đồng -->
+								<div>
+									<span style="font-weight: 700; color: #64748b;"> HD-2025/<%=hd.getId()%>
+									</span>
+								</div>
+
+								<!-- Phòng -->
+								<div>
+									<span style="font-weight: 700; color: #6366f1;">
+										<%=hd.getTenPhong()%>
+									</span>
+								</div>
+
+								<!-- Người thuê -->
+								<div>
+									<div style="font-weight: 600;">
+										<%=hd.getTenNguoiThue()%>
+									</div>
+								</div>
+
+								<!-- Thời hạn -->
+								<div style="font-size: 13px; color: #64748b;">
+									<%=DateHelper.formatVN(hd.getNgayBatDau())%>
+									-
+									<%=DateHelper.formatVN(hd.getNgayKetThuc())%>
+								</div>
+
+								<!-- Trạng thái -->
+								<div>
+									<%
+									if ("Đang hiệu lực".equals(hd.getTrangThai())) {
+									%>
+									<span class="status-badge badge-success"> <span
+										class="status-dot"></span>Hiệu lực
+									</span>
+									<%
+									} else {
+									%>
+									<span class="status-badge badge-error"> <span
+										class="status-dot"></span>Hết hạn
+									</span>
+									<%
+									}
+									%>
+								</div>
+
+								<!-- Hành động -->
+								<div class="col-right">
+									<a
+										href="${pageContext.request.contextPath}/ChiTietHopDong?id=<%=hd.getId()%>&ID_NguoiThue=<%= hd.getID_NguoiThue() %>&ID_ChuTro=<%=hd.getID_ChuTro() %>&ID_Phong=<%=hd.getID_Phong() %>"
+										class="btn btn-outline btn-sm" title="Xem chi tiết hợp đồng">
+										<i class="fa-regular fa-eye"></i> Xem
+									</a>
+								</div>
+							</div>
+
+							<%
+							}
+							%>
+						</div>
+					</div>
+
+					<%
+					}
+					%>
+
+
+
+				</div>
 			</div>
-		</main>
+	</div>
+
+	<div id="notify" class="section">
+		<div class="table-container" style="max-width: 600px; margin: 0 auto;">
+			<div class="table-title" style="margin-bottom: 20px;">Soạn
+				thông báo mới</div>
+			<div class="form-group">
+				<label class="form-label">Tiêu đề</label> <input class="form-input"
+					placeholder="Ví dụ: Thông báo thu tiền điện tháng 12">
+			</div>
+			<div class="form-group">
+				<label class="form-label">Gửi tới</label> <select class="form-input">
+					<option>Tất cả người thuê</option>
+					<option>Tầng 1</option>
+					<option>Tầng 2</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="form-label">Nội dung</label>
+				<textarea class="form-input" rows="5" placeholder="Nhập nội dung..."></textarea>
+			</div>
+			<button class="btn btn-primary">
+				<i class="fa-solid fa-paper-plane"></i> Gửi ngay
+			</button>
+		</div>
+	</div>
+
+	</div>
+	</main>
 	</div>
 
 
@@ -978,8 +1101,8 @@
 		<div class="modal-box" style="max-width: 350px; text-align: center;">
 			<h3>Xoá phòng?</h3>
 			<p>Bạn có chắc chắn muốn xoá phòng này không?</p>
-			<input type="hidden" id="deleteRoomId" name="id">
-        <input type="hidden" id="roomStatus" name="status">
+			<input type="hidden" id="deleteRoomId" name="id"> <input
+				type="hidden" id="roomStatus" name="status">
 
 			<div style="display: flex; justify-content: center; gap: 12px;">
 				<button onclick="closeDeleteModal()" class="btn btn-outline">Hủy</button>
@@ -1002,7 +1125,7 @@
         
         const titles = {
             'dashboard': 'Tổng quan', 'rooms': 'Quản lý phòng', 'tenants': 'Danh sách người thuê',
-            'requests': 'Yêu cầu thuê', 'incidents': 'Sự cố & Sửa chữa', 'notify': 'Gửi thông báo'
+            'requests': 'Yêu cầu thuê', 'incidents': 'Sự cố & Sửa chữa','contracts': 'Quản lý hợp đồng', 'notify': 'Gửi thông báo'
         };
         document.getElementById('page-heading').innerText = titles[id];
     }

@@ -20,31 +20,33 @@
 <!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/TatCaThongBao.css">
-	<style>
-	a {
+<style>
+a {
 	text-decoration: none;
 	color: inherit;
 	transition: 0.2s;
 }
-	</style>
+.notif-empty{
+display: flex;
+align-items: center;
+gap:10px;
+}
+</style>
 </head>
 <body>
-<%
-    // Ngăn cache để không thể back sau khi logout
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
-    response.setDateHeader("Expires", 0);
+	<%
+	// Ngăn cache để không thể back sau khi logout
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
 
-    if (session.getAttribute("user") == null) {
-        response.sendRedirect(request.getContextPath() + "/index.jsp");
-        return;
-    }
-%>
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 	<div class="container">
 		<%
 		ArrayList<ThongBao> list = (ArrayList<ThongBao>) request.getAttribute("listThongBao");
@@ -52,7 +54,7 @@
 
 		<!-- HEADER SECTION -->
 		<header class="header">
-			<a href="${pageContext.request.contextPath}/ProcessHomeUser" class="page-title">Thông báo</a>
+			<a href="${pageContext.request.contextPath}/QuanLyTro" class="page-title">Thông báo</a>
 			<button class="btn-mark-read" onclick="markAllRead()"
 				title="Đánh dấu tất cả là đã đọc">
 				<i class="fa-solid fa-check-double"></i> <span>Đánh dấu tất
@@ -68,7 +70,7 @@
 				<div class="notif-empty-icon">
 					<i class="fa-regular fa-bell"></i>
 				</div>
-				<h3>Chưa có thông báo nào</h3>
+				<h4>Chưa có thông báo nào</h4>
 			</div>
 			<%
 			} else {
@@ -92,7 +94,7 @@
 			}
 			%>
 			<a
-				href="${pageContext.request.contextPath}/ChiTietThongBao?id=<%= tb.getId() %>"
+				href="${pageContext.request.contextPath}/ChiTietThongBaoCT?id=<%= tb.getId() %>"
 				class="notif-card <%= tb.getIs_read() == 1 ? "is-read" : "" %>">
 
 				<div class="notif-icon <%=iconClass%>">
@@ -114,15 +116,17 @@
 			}
 			%>
 		</div>
+
 	</div>
 	<script
-				src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-				<% TaiKhoan tk = (TaiKhoan) session.getAttribute("user");
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<%
+	TaiKhoan tk = (TaiKhoan) session.getAttribute("user");
 	int id = tk.getId();
 	%>
 	<script>
 	
-	const USER_ID = <%= id  %>
+	const USER_ID = <%=id%>
 	function markAllRead() {
 	    const unreadCards = document.querySelectorAll('.notif-card:not(.is-read)');
 	    const btn = document.querySelector('.btn-mark-read');

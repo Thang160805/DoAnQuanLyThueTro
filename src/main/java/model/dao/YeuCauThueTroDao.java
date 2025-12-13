@@ -183,4 +183,22 @@ public class YeuCauThueTroDao {
 		}
 		return false;
 	}
+	
+	public int getID_PhongByID(int ID_YeuCau) {
+		Connect();
+		int ID_Phong = 1;
+		String sql = "select ID_Phong from YeuCauThueTro where id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_YeuCau);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				ID_Phong = rs.getInt("ID_Phong");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return ID_Phong;
+	}
+	
 }

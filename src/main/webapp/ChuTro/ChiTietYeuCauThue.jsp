@@ -261,7 +261,10 @@ $(document).ready(function () {
                     showToast("Đã duyệt yêu cầu!", "success");
 
                     setTimeout(() => {
-                        window.location.href = "/DoAnQLThueTro/QuanLyTro";
+                    	window.location.replace("/DoAnQLThueTro/TaoHopDong"
+                        	+ "?idNguoiThue=" + res.idNguoiThue
+                            + "&idChuTro=" + res.idChuTro
+                            + "&idPhong=" + res.idPhong);
                     }, 3000);
 
                 } else {

@@ -104,6 +104,10 @@ public class PhongTroBO {
 	 public boolean UpdatePhongTro(PhongTro pt) {
 		 return ptDao.UpdatePhongTro(pt);
 	 }
+	 
+	 public boolean CapNhatTrangThaiPhong(int ID_Phong) {
+		 return ptDao.CapNhatTrangThaiPhong(ID_Phong);
+	 }
 	
 
 }

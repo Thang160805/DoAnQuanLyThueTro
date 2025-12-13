@@ -1,4 +1,4 @@
-package controller.chutro;
+package controller.hopdong;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -10,26 +10,26 @@ import jakarta.servlet.http.HttpSession;
 import model.bean.HopDong;
 import model.bean.PhongTro;
 import model.bean.TaiKhoan;
-import model.bean.YeuCauThueTro;
+import model.bean.TienIch;
 import model.bo.HopDongBO;
 import model.bo.PhongTroBO;
 import model.bo.TaiKhoanBO;
-import model.bo.YeuCauThueTroBO;
+import model.bo.TienIchBO;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Servlet implementation class QuanLyTro
+ * Servlet implementation class ChiTietHopDong
  */
-@WebServlet("/QuanLyTro")
-public class QuanLyTro extends HttpServlet {
+@WebServlet("/ChiTietHopDong")
+public class ChiTietHopDong extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QuanLyTro() {
+    public ChiTietHopDong() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -51,32 +51,26 @@ public class QuanLyTro extends HttpServlet {
 		    response.sendRedirect(request.getContextPath() + "/index.jsp");
 		    return;
 		}
-		
-		TaiKhoanBO tkBO = new TaiKhoanBO();
-		TaiKhoan tk = tkBO.getThongTinCaNhan(user.getId());
-		request.setAttribute("ThongTinCaNhan", tk);
-		
+		int id = Integer.parseInt(request.getParameter("id"));
+		int idNguoiThue = Integer.parseInt(request.getParameter("ID_NguoiThue"));
+		int idChuTro   = Integer.parseInt(request.getParameter("ID_ChuTro"));
+		int idPhong    = Integer.parseInt(request.getParameter("ID_Phong"));
 		PhongTroBO ptBO = new PhongTroBO();
-		ArrayList<PhongTro> listPhongTro = ptBO.getListPhongByIDChuTro(user.getId());
-		request.setAttribute("listPT", listPhongTro);
+		PhongTro pt = ptBO.getPhongTroById(idPhong);
+		request.setAttribute("ChiTietPhong", pt);
+		TaiKhoanBO tkBO = new TaiKhoanBO();
+		TaiKhoan tkNguoiThue = tkBO.getThongTinCaNhan(idNguoiThue);
+		request.setAttribute("TaiKhoanNguoiThue", tkNguoiThue);
+		TaiKhoan tkChuTro = tkBO.getThongTinCaNhan(idChuTro);
+		request.setAttribute("TaiKhoanChuTro", tkChuTro);
 		
-		int countSoPhong = ptBO.getCountSoPhongByIDChutro(user.getId());
-		request.setAttribute("countSoPhong", countSoPhong);
-		int countPhongTrong = ptBO.getCountSoPhongTrongByIDCT(user.getId());
-		request.setAttribute("countPhongTrong", countPhongTrong);
-		int countPhongDaThue = ptBO.getCountSoPhongDaThueByIDCT(user.getId());
-		request.setAttribute("countPhongDaThue", countPhongDaThue);
-		
-		YeuCauThueTroBO ycBO = new YeuCauThueTroBO();
-		ArrayList<YeuCauThueTro> listYeuCau = ycBO.getListYeuCau();
-		request.setAttribute("listYeuCau", listYeuCau);
-		int count = ycBO.getCountYeuCau();
-		request.setAttribute("countYC", count);
-		
+		TienIchBO tiBO = new TienIchBO();
+		ArrayList<TienIch> list = tiBO.getListTienIchByIDPhong(idPhong);
+		request.setAttribute("listTienIch", list);
 		HopDongBO hdBO = new HopDongBO();
-		ArrayList<HopDong> listHD = hdBO.getListHopDong();
-		request.setAttribute("listHD", listHD);
-		RequestDispatcher rs = request.getRequestDispatcher("/ChuTro/QuanLyTro.jsp");
+		HopDong hd = hdBO.getHopDongByID(id);
+		request.setAttribute("ChiTietHD", hd);
+		RequestDispatcher rs = request.getRequestDispatcher("/HopDong/ChiTietHopDong.jsp");
 		rs.forward(request, response);
 	}
 

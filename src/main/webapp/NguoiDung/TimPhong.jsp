@@ -203,7 +203,7 @@
 						class="dropdown-item"><i class="fa-solid fa-gear"
 						style="width: 20px"></i> Cài đặt</a>
 					<div class="dropdown-divider"></div>
-					<a href="#" class="dropdown-item" style="color: #e74c3c;"><i
+					<a href="${pageContext.request.contextPath}/Logout" class="dropdown-item" style="color: #e74c3c;"><i
 						class="fa-solid fa-right-from-bracket" style="width: 20px"></i>
 						Đăng xuất</a>
 				</div>

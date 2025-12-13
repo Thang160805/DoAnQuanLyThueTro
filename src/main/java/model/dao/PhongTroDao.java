@@ -50,7 +50,7 @@ public class PhongTroDao {
 	public ArrayList<PhongTro> getListNewPhongTro(){
 		Connect();
 		ArrayList<PhongTro> list = new ArrayList<PhongTro>();
-		String sql = "SELECT * FROM PhongTro where NgayDang >= DATEADD(DAY, -20, GETDATE()) ORDER BY NgayDang DESC";
+		String sql = "SELECT * FROM PhongTro where TrangThai=N'Còn trống' and NgayDang >= DATEADD(DAY, -20, GETDATE()) ORDER BY NgayDang DESC";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -513,7 +513,22 @@ public class PhongTroDao {
 		return false;
 	}
 	
-
+	public boolean CapNhatTrangThaiPhong(int ID_Phong) {
+		Connect();
+		String sql = "update PhongTro set TrangThai = N'Còn trống' where ID_Phong=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_Phong);
+			int row = ps.executeUpdate();
+			if(row > 0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	
 	
 }

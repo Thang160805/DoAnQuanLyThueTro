@@ -36,4 +36,8 @@ public class YeuCauThueTroBO {
 	public boolean UpdateTrangThaiYeuCauThue(int ID_YeuCau,String TrangThai) {
 		return ycttDao.UpdateTrangThaiYeuCauThue(ID_YeuCau, TrangThai);
 	}
+	
+	public int getID_PhongByID(int ID_YeuCau) {
+		return ycttDao.getID_PhongByID(ID_YeuCau);
+	}
 }

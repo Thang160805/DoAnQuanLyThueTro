@@ -62,9 +62,16 @@ public class CapNhatTrangThaiYeuCau extends HttpServlet {
 		YeuCauThueTroBO ycBO = new YeuCauThueTroBO();
 		ThongBaoBO tbBO = new ThongBaoBO();
 		boolean checked = ycBO.UpdateTrangThaiYeuCauThue(idYeuCau, trangThai);
+		int ID_Phong = ycBO.getID_PhongByID(idYeuCau);
 		if (checked) {
 			tbBO.insertGuiThongBao(tb);
-            response.getWriter().write("{\"success\": true}");
+			String json = "{"
+			        + "\"success\": true,"
+			        + "\"idNguoiThue\": " + idNguoi + ","
+			        + "\"idChuTro\": " + user.getId() + ","
+			        + "\"idPhong\": " + ID_Phong
+			        + "}";
+			response.getWriter().write(json);
         } else {
             response.getWriter().write("{\"success\": false}");
         }
