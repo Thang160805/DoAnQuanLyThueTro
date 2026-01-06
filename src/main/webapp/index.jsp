@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
-<link
-	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-	rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 
 <!-- Bootstrap 5 CSS -->
 <link
@@ -21,6 +21,13 @@
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/index.css">
+	<style>
+	body {
+	font-family: "Open Sans", sans-serif;
+	color: #222222;
+	overflow-x: hidden;
+}
+	</style>
 </head>
 <body>
 	<!-- 1. HEADER -->

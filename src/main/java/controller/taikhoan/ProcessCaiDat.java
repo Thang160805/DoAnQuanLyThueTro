@@ -7,10 +7,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.bean.BaoHong;
+import model.bean.HopDong;
 import model.bean.TaiKhoan;
+import model.bo.BaoHongBO;
+import model.bo.HopDongBO;
 import model.bo.TaiKhoanBO;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Servlet implementation class ProcessCaiDat
@@ -47,6 +52,14 @@ public class ProcessCaiDat extends HttpServlet {
 		TaiKhoanBO tkBO = new TaiKhoanBO();
 		TaiKhoan ThongTin = tkBO.getThongTinCaNhan(user.getId());
 		request.setAttribute("ThongTinCaNhan", ThongTin);
+		
+		HopDongBO hdBO = new HopDongBO();
+		ArrayList<HopDong> listPhongThue = hdBO.getListPhongDaThueById(user.getId());
+		request.setAttribute("listPhongThue", listPhongThue);
+		
+		BaoHongBO bhBO = new BaoHongBO();
+		ArrayList<BaoHong> listBH = bhBO.getTOP3BaoHongByID_NguoiGui(user.getId());
+		request.setAttribute("listBH", listBH);
 		
 		RequestDispatcher rs = request.getRequestDispatcher("/NguoiDung/CaiDat.jsp");
 		rs.forward(request, response);

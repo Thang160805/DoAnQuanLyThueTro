@@ -33,6 +33,74 @@ display: flex;
 align-items: center;
 gap:10px;
 }
+.pagination-wrapper {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.pagination-list {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+}
+
+/* Từng ô số */
+.pagi-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hiệu ứng Hover */
+.pagi-item:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+    background-color: #f5f3ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
+/* Trang hiện tại */
+.pagi-item.active {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+}
+
+/* Dấu ba chấm */
+.pagi-dots {
+    color: #94a3b8;
+    padding: 0 5px;
+}
+
+/* Chữ hiển thị thông tin */
+.pagi-info {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 400;
+}
+
+/* Nút Icon */
+.pagi-item i {
+    font-size: 0.8rem;
+}
 </style>
 </head>
 <body>
@@ -112,8 +180,85 @@ gap:10px;
 				<% } %>
 			</a>
 			<%
+			}%>
+			<%
+			Integer totalPage = (Integer) request.getAttribute("totalPage");
+			Integer currentPage = (Integer) request.getAttribute("currentPage");
+
+			if (totalPage != null && totalPage > 1) {
+			%>
+			<nav class="pagination-wrapper">
+				<ul class="pagination-list">
+					<%
+					if (currentPage > 1) {
+					%>
+					<li><a href="?page=<%=currentPage - 1%>"
+						class="pagi-item prev" title="Trang trước"> <i
+							class="fa-solid fa-chevron-left"></i>
+					</a></li>
+					<%
+					}
+					%>
+
+					<%
+					
+					int start = Math.max(1, currentPage - 2);
+					int end = Math.min(totalPage, currentPage + 2);
+
+					if (start > 1) {
+					%>
+					<li><a href="?page=1" class="pagi-item">1</a></li>
+					<%
+					if (start > 2) {
+					%><li class="pagi-dots">...</li>
+					<%
+					}
+					%>
+					<%
+					}
+					%>
+
+					<%
+					for (int i = start; i <= end; i++) {
+					%>
+					<li><a href="?page=<%=i%>"
+						class="pagi-item <%=(i == currentPage) ? "active" : ""%>"> <%=i%>
+					</a></li>
+					<%
+					}
+					%>
+
+					<%
+					if (end < totalPage) {
+					%>
+					<%
+					if (end < totalPage - 1) {
+					%><li class="pagi-dots">...</li>
+					<%
+					}
+					%>
+					<li><a href="?page=<%=totalPage%>" class="pagi-item"><%=totalPage%></a></li>
+					<%
+					}
+					%>
+
+					<%
+					if (currentPage < totalPage) {
+					%>
+					<li><a href="?page=<%=currentPage + 1%>"
+						class="pagi-item next" title="Trang tiếp"> <i
+							class="fa-solid fa-chevron-right"></i>
+					</a></li>
+					<%
+					}
+					%>
+				</ul>
+				
+			</nav>
+			<%
 			}
-			}
+			%>
+			<%}
 			%>
 		</div>
 

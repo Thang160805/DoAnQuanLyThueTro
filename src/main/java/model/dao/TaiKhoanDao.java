@@ -327,6 +327,60 @@ public class TaiKhoanDao {
 		}
 	}
 	
+	public ArrayList<TaiKhoan> getListTaiKhoan(){
+		Connect();
+		ArrayList<TaiKhoan> list = new ArrayList<TaiKhoan>();
+		String sql = "Select tk.id,tk.Role,tk.TrangThai,tk.NgayTao,tt.* from TaiKhoan tk join ThongTinNguoiDung tt on tk.id=tt.ID_TaiKhoan where tk.role in(1,2)";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				TaiKhoan tk = new TaiKhoan();
+				tk.setId(rs.getInt("id"));
+				tk.setRole(rs.getInt("Role"));
+				tk.setTrangthai(rs.getInt("TrangThai"));
+				tk.setNgayTao(rs.getTimestamp("NgayTao").toLocalDateTime());
+				tk.setHoTen(rs.getString("HoTen"));
+				tk.setEmail(rs.getString("Email"));
+				tk.setSDT(rs.getString("SDT"));
+				tk.setAvatar(rs.getString("Avatar"));
+				list.add(tk);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
+	public int getCountTaiKhoan() {
+		Connect();
+		String sql = "select count(*) as cnt from TaiKhoan where TrangThai=1";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public ArrayList<Integer> getAllAdmins(){
+		Connect();
+		ArrayList<Integer> listID = new ArrayList<Integer>();
+		String sql = "select id from TaiKhoan where Role=0 and TrangThai=1";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				listID.add(rs.getInt("id"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return listID;
+	}
 
 }

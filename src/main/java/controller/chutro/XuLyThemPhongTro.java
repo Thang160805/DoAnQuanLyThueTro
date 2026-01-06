@@ -10,7 +10,10 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import model.bean.PhongTro;
 import model.bean.TaiKhoan;
+import model.bean.ThongBao;
 import model.bo.PhongTroBO;
+import model.bo.TaiKhoanBO;
+import model.bo.ThongBaoBO;
 import model.bo.TienIchBO;
 import utils.ImagesHelper;
 
@@ -23,9 +26,9 @@ import java.util.ArrayList;
  */
 @WebServlet("/XuLyThemPhongTro")
 @MultipartConfig(
-        fileSizeThreshold = 1024 * 1024 * 1,    // 1 MB
-        maxFileSize = 1024 * 1024 * 20,         // 20 MB
-        maxRequestSize = 1024 * 1024 * 50       // 50 MB
+        fileSizeThreshold = 1024 * 1024 * 1,    
+        maxFileSize = 1024 * 1024 * 20,         
+        maxRequestSize = 1024 * 1024 * 50       
 )
 public class XuLyThemPhongTro extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -56,6 +59,7 @@ public class XuLyThemPhongTro extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/index.jsp");
 			return;
 		}
+		
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		String tenPhong = request.getParameter("tenPhong");
@@ -179,12 +183,26 @@ public class XuLyThemPhongTro extends HttpServlet {
         pt.setAnhChinh(anhChinhLink);
         pt.setGiaDien(giaDien);
         pt.setGiaNuoc(giaNuoc);
+        
+        ThongBaoBO tbBO = new ThongBaoBO();
+        TaiKhoanBO tkBO = new TaiKhoanBO();
+        TaiKhoan tk1 = tkBO.getThongTinCaNhan(user.getId());
+        ThongBao tb = new ThongBao();
+        tb.setSender_id(user.getId());
+        tb.setTitle("Phòng trọ mới chờ duyệt");
+        tb.setFull_content(
+            "Chủ trọ \"" + tk1.getHoTen() +
+            "\" vừa đăng phòng \"" + tenPhong +
+            "\" tại " + diaChi +
+            ". Vui lòng kiểm tra và duyệt phòng."
+        );
         boolean checked = ptBO.insertPhongTro(pt);
         if(checked) {
         	int id_Phong = ptBO.getNewId_Phong();
         	ptBO.insertAnhPhu(id_Phong, anhPhuLinks);
         	tiBO.insertTienIchForPhong(id_Phong, tienIchList);
         	response.getWriter().write("{\"success\": true}");
+        	tbBO.sendThongBaoToAdmins(tb);
         }else {
             response.getWriter().write("{\"success\": false}");
         }

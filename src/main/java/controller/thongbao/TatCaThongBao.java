@@ -52,7 +52,22 @@ public class TatCaThongBao extends HttpServlet {
 		
 		
 		ThongBaoBO tbBO = new ThongBaoBO();
-		ArrayList<ThongBao> listThongBao = tbBO.getListThongBaoById(user.getId());
+		int TotalCountTB = tbBO.getTotalCountThongBao(user.getId());
+		
+		int pageSize = 5;
+		int totalPage = (int) Math.ceil(TotalCountTB * 1.0 / pageSize);
+		String pageStr = request.getParameter("page");
+		int page;
+		try { 
+			page = Integer.parseInt(pageStr); 
+		} catch (Exception e) { 
+				page = 1; 
+		}
+		if (page <= 0 || page > totalPage) page = 1;
+		ArrayList<ThongBao> listThongBao = tbBO.getListThongBaoById(user.getId(),page);
+		request.setAttribute("totalPage", totalPage);
+		request.setAttribute("currentPage", page);
+		request.setAttribute("totalCount", TotalCountTB);
 		request.setAttribute("listThongBao", listThongBao);
 		
 		RequestDispatcher rs = request.getRequestDispatcher("/NguoiDung/TatCaThongBao.jsp");

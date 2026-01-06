@@ -20,26 +20,30 @@ import java.util.ArrayList;
 @WebServlet("/DanhSachThongBao")
 public class DanhSachThongBao extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DanhSachThongBao() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public DanhSachThongBao() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 
 		TaiKhoan user = (TaiKhoan) session.getAttribute("user");
@@ -47,11 +51,26 @@ public class DanhSachThongBao extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/index.jsp");
 			return;
 		}
-		
+
 		ThongBaoBO tbBO = new ThongBaoBO();
-		ArrayList<ThongBao> listThongBao = tbBO.getListThongBaoById(user.getId());
+		int TotalCountTB = tbBO.getTotalCountThongBao(user.getId());
+
+		int pageSize = 5;
+		int totalPage = (int) Math.ceil(TotalCountTB * 1.0 / pageSize);
+		String pageStr = request.getParameter("page");
+		int page;
+		try {
+			page = Integer.parseInt(pageStr);
+		} catch (Exception e) {
+			page = 1;
+		}
+		if (page <= 0 || page > totalPage)
+			page = 1;
+		ArrayList<ThongBao> listThongBao = tbBO.getListThongBaoById(user.getId(), page);
 		request.setAttribute("listThongBao", listThongBao);
-		
+		request.setAttribute("totalPage", totalPage);
+		request.setAttribute("currentPage", page);
+		request.setAttribute("totalCount", TotalCountTB);
 		RequestDispatcher rs = request.getRequestDispatcher("/ChuTro/DanhSachThongBao.jsp");
 		rs.forward(request, response);
 	}

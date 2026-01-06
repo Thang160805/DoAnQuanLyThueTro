@@ -37,15 +37,13 @@ public class ProcessLogout extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 HttpSession session = request.getSession(false);
 	        if (session != null) {
-	            session.invalidate(); // Hủy session
+	            session.invalidate();
 	        }
 
-	        // Ngăn cache để khi nhấn Back không quay lại trang profile
 	        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	        response.setHeader("Pragma", "no-cache");
 	        response.setDateHeader("Expires", 0);
 
-	        // Chuyển về index.jsp
 	        response.sendRedirect(request.getContextPath() + "/index.jsp");
 	    }
 	}

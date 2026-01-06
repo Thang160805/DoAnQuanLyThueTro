@@ -40,8 +40,12 @@
     TaiKhoan tkNguoiThue = (TaiKhoan) request.getAttribute("TaiKhoanNguoiThue");
     TaiKhoan tkChuTro = (TaiKhoan) request.getAttribute("TaiKhoanChuTro");
     ArrayList<TienIch> listTI = (ArrayList<TienIch>) request.getAttribute("listTienIch");
+    int idHopDong = (int) request.getAttribute("idHopDong");
+    int idYeuCau = (int) request.getAttribute("idYeuCau");
     %>
     <form id="contractForm">
+    <input type="hidden" name="idYeuCau" value="<%= idYeuCau%>">
+    <input type="hidden" name="idHopDong" value="<%= idHopDong%>">
         <div class="grid-layout">
             
             <div class="col-left">
@@ -344,7 +348,7 @@ function showToast(message, type = "success") {
 function submitContract() {
     if (contractSubmitted) return;
 
-    // ===== VALIDATE FRONTEND CƠ BẢN =====
+
     if (!startDateInput.value || !endDateInput.value) {
         showToast("Vui lòng chọn ngày bắt đầu và thời hạn thuê", "error");
         return;
@@ -360,8 +364,9 @@ function submitContract() {
     btn.disabled = true;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang gửi...';
 
-    // ===== DATA GỬI SERVLET =====
     const data = {
+    	idYeuCau: document.querySelector('input[name="idYeuCau"]').value,
+    	idHopDong: document.querySelector('input[name="idHopDong"]').value,
         ID_NguoiThue: document.querySelector('input[name="ID_NguoiThue"]').value,
         ID_ChuTro: document.querySelector('input[name="ID_ChuTro"]').value,
         ID_Phong: document.querySelector('input[name="ID_Phong"]').value,
@@ -381,7 +386,6 @@ function submitContract() {
         DieuKhoan: dieuKhoan
     };
 
-    // ===== AJAX =====
     $.ajax({
         url: "/DoAnQLThueTro/XuLyTaoHopDong",
         type: "POST",

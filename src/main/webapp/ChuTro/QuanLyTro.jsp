@@ -5,10 +5,14 @@
 <%@ page import="model.bean.PhongTro"%>
 <%@ page import="model.bean.TaiKhoan"%>
 <%@ page import="model.bean.ThongBao"%>
+<%@ page import="model.bean.BaoHong"%>
 <%@ page import="model.bean.YeuCauThueTro"%>
 <%@ page import="model.bean.HopDong"%>
 <%@ page import="utils.TimeHelper"%>
 <%@ page import="utils.DateHelper"%>
+<%@ page import="java.time.format.DateTimeFormatter"%>
+<%@ page import="java.util.HashMap"%>
+<%@ page import="java.util.Map"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,7 +46,7 @@
 
 .room-grid-header {
 	display: grid;
-	grid-template-columns: 2.5fr 1fr 1.5fr 1fr 160px;
+	grid-template-columns: 2.5fr 1fr 1.5fr 160px;
 	padding: 16px 24px;
 	background: #f1f5f9;
 	border-bottom: 1px solid #e2e8f0;
@@ -65,7 +69,7 @@
 
 .room-grid-row {
 	display: grid;
-	grid-template-columns: 2.5fr 1fr 1.5fr 1fr 160px;
+	grid-template-columns: 2.5fr 1fr 1.5fr 160px;
 	padding: 16px 24px;
 	border-bottom: 1px solid
 		linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
@@ -153,6 +157,80 @@
 	grid-template-columns: 1fr 0.8fr 1.5fr 1.5fr 1fr 120px;
 	align-items: center;
 }
+
+.status-badgee {
+	display: inline-block;
+	padding: 8px 24px; /* Tăng padding để badge dài ra giống hình */
+	border-radius: 50px; /* Bo tròn hoàn toàn hai đầu */
+	font-family: sans-serif; /* Hoặc font dự án của bạn */
+	font-size: 14px; /* Chỉnh kích thước chữ */
+	font-weight: 800; /* Làm chữ đậm như trong ảnh */
+	text-align: center;
+	border: 1px solid #FFEBB7; /* Viền rất nhạt */
+}
+
+.badge-waiting {
+	background-color: #FFF8E1; /* Màu nền vàng kem nhạt */
+	color: #E67E22; /* Màu chữ cam đậm */
+}
+
+.header-actions a[title="Tin nhắn"] .notification-dot {
+	background: #6366f1; /* Màu xanh tím đồng bộ với thương hiệu */
+}
+
+/* Đảm bảo các icon-btn có khoảng cách đều nhau */
+.header-actions {
+	display: flex;
+	align-items: center;
+	gap: 12px; /* Khoảng cách giữa các nút */
+}
+
+.badge-warn {
+	background: #fef3c7;
+	color: #92400e;
+}
+
+.badge-process {
+	background: #e0f2fe;
+	color: #2563eb;
+}
+
+/* ===== MỨC ĐỘ ===== */
+.badge-low {
+	background: #dcfce7;
+	color: #166534;
+}
+
+.badge-medium {
+	background: #fef3c7;
+	color: #92400e;
+}
+
+.badge-high {
+	background: #ffedd5;
+	color: #c2410c;
+}
+
+.badge-urgent {
+	background: #fee2e2;
+	color: #dc2626;
+}
+
+.badge-low .status-dot {
+	background: #166534;
+}
+
+.badge-medium .status-dot {
+	background: #92400e;
+}
+
+.badge-high .status-dot {
+	background: #c2410c;
+}
+
+.badge-urgent .status-dot {
+	background: #dc2626;
+}
 </style>
 </head>
 <body>
@@ -229,10 +307,11 @@
 				</div>
 
 				<div class="header-actions">
-					<button class="icon-btn">
-						<i class="fa-solid fa-magnifying-glass"></i>
-					</button>
-					<a href="${pageContext.request.contextPath}/DanhSachThongBao"
+
+					<a href="${pageContext.request.contextPath}/Chat" class="icon-btn"
+						title="Tin nhắn"> <i class="fa-regular fa-comment-dots"></i>
+						<div class="notification-dot" style="background: #6366f1;"></div>
+					</a> <a href="${pageContext.request.contextPath}/DanhSachThongBao"
 						class="icon-btn"> <i class="fa-regular fa-bell"></i>
 						<div class="notification-dot"></div>
 					</a> <a href="${pageContext.request.contextPath}/Logout"
@@ -359,7 +438,6 @@
 						<div class="room-grid-header">
 							<div>Phòng</div>
 							<div>Giá thuê cơ bản</div>
-							<div>Người thuê</div>
 							<div>Trạng thái</div>
 							<div class="col-right">Hành động</div>
 						</div>
@@ -408,10 +486,7 @@
 									₫
 								</div>
 
-								<div>
-									<div style="font-weight: 600; font-size: 13px;"><%="Còn trống".equals(status) ? "Chưa có" : pt.getTenCT()%></div>
-									<div style="font-size: 11px; color: #64748b;"><%="Còn trống".equals(status) ? "" : pt.getPhone()%></div>
-								</div>
+
 
 								<div>
 									<span class="status-badge <%=badgeClass%>"> <span
@@ -751,16 +826,22 @@
 					<div
 						style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
 						<div class="table-title">Sự cố cần xử lý</div>
-						<div style="display: flex; gap: 10px;">
-							<select class="form-input"
-								style="padding: 8px 12px; width: auto;">
-								<option>Tất cả trạng thái</option>
-								<option>Chưa xử lý</option>
-								<option>Đang xử lý</option>
-							</select>
-						</div>
 					</div>
+					<%
+					ArrayList<BaoHong> listBH = (ArrayList<BaoHong>) request.getAttribute("listBH");
+					%>
+					<%
+					if (listBH == null || listBH.isEmpty()) {
+					%>
 
+					<!-- KHÔNG CÓ BÁO HỎNG -->
+					<div
+						style="text-align: center; padding: 40px; color: #6b7280; font-size: 15px; background: #f9fafb; border-radius: 12px; border: 1px dashed #e5e7eb;">
+						Chưa có sự cố nào cần xử lý</div>
+
+					<%
+					} else {
+					%>
 					<div class="room-grid-container">
 
 						<div class="room-grid-header incident-cols">
@@ -773,108 +854,126 @@
 						</div>
 
 						<div class="room-grid-body">
-
+							<%
+							for (BaoHong bh : listBH) {
+							%>
 							<div class="room-grid-row incident-cols">
 								<div>
 									<div
-										style="font-weight: 700; font-size: 16px; color: var(--text-main)">P.101</div>
+										style="font-weight: 700; font-size: 16px; color: var(--text-main)"><%=bh.getTenPhong()%></div>
 								</div>
 
 								<div>
+									<%
+									Map<String, String> iconMap = new HashMap<>();
+									iconMap.put("Điện", "fa-solid fa-bolt");
+									iconMap.put("Nước", "fa-solid fa-faucet-drip");
+									iconMap.put("Nội thất", "fa-solid fa-chair");
+									iconMap.put("Kết cấu", "fa-solid fa-border-all");
+									iconMap.put("Khác", "fa-solid fa-ellipsis");
+									%>
+									<%
+									Map<String, String> bgMap = new HashMap<>();
+									bgMap.put("Điện", "#fef9c3|#a16207");
+									bgMap.put("Nước", "#eff6ff|#2563eb");
+									bgMap.put("Nội thất", "#dcfce7|#16a34a");
+									bgMap.put("Kết cấu", "#ede9fe|#7c3aed");
+									bgMap.put("Khác", "#f3f4f6|#374151");
+									DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+									%>
+									<%
+									String loai = bh.getLoaiHuHong();
+
+									// icon
+									String iconClass = iconMap.getOrDefault(loai, "fa-solid fa-ellipsis");
+
+									// màu nền | màu icon
+									String mau = bgMap.getOrDefault(loai, "#f3f4f6|#374151");
+									String[] colors = mau.split("\\|");
+									String bgColor = colors[0];
+									String iconColor = colors[1];
+									%>
+
 									<div class="user-cell">
 										<div
-											style="width: 40px; height: 40px; background: #fee2e2; color: #ef4444; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">
-											<i class="fa-solid fa-faucet-drip"></i>
+											style="width: 40px;height: 40px;background: <%=bgColor%>;color: <%=iconColor%>;border-radius: 10px;
+                                          display: flex;align-items: center;justify-content: center;font-size: 18px;">
+											<i class="<%=iconClass%>"></i>
 										</div>
+
 										<div>
-											<div style="font-weight: 600">Rò rỉ ống nước nhà tắm</div>
-											<div style="font-size: 12px; color: var(--text-secondary)">10:30
-												AM hôm nay</div>
+											<div style="font-weight: 600">
+												<%=bh.getTieuDe()%>
+											</div>
+											<div style="font-size: 12px; color: var(--text-secondary)">
+												<%=bh.getThoiGianGui().format(formatter)%>
+											</div>
 										</div>
 									</div>
 								</div>
 
 								<div>
 									<div class="user-cell">
-										<img src="https://i.pravatar.cc/150?img=12"
-											class="table-avatar" style="width: 30px; height: 30px;">
-										<span style="font-size: 13px; font-weight: 600">Nguyễn
-											Văn A</span>
+										<img src="<%=bh.getAvatar()%>" class="table-avatar"
+											style="width: 30px; height: 30px;"> <span
+											style="font-size: 13px; font-weight: 600"><%=bh.getTenNguoiGui()%></span>
 									</div>
 								</div>
+								<%
+								String mucDo = bh.getMucDoUuTien();
+								String mucDoClass = "";
+
+								if ("Thấp".equals(mucDo)) {
+									mucDoClass = "badge-low";
+								} else if ("Trung bình".equals(mucDo)) {
+									mucDoClass = "badge-medium";
+								} else if ("Cao".equals(mucDo)) {
+									mucDoClass = "badge-high";
+								} else if ("Khẩn cấp".equals(mucDo)) {
+									mucDoClass = "badge-urgent";
+								}
+								%>
 
 								<div>
-									<span class="status-badge badge-error"><span
-										class="status-dot"></span>Khẩn cấp</span>
+									<span class="status-badge <%=mucDoClass%>"><span
+										class="status-dot"></span> <%=mucDo%> </span>
 								</div>
+								<%
+								String trangThai = bh.getTrangThai();
+								String trangThaiText = "";
+								String trangThaiClass = "";
 
+								if ("Chờ xử lý".equals(trangThai)) {
+									trangThaiText = "Chờ xử lý";
+									trangThaiClass = "badge-warn";
+								} else if ("Đang xử lý".equals(trangThai)) {
+									trangThaiText = "Đang xử lý";
+									trangThaiClass = "badge-process";
+								}
+								%>
 								<div>
-									<span id="badge-101" class="status-badge badge-warn"><span
-										class="status-dot"></span>Chờ xử lý</span>
+									<span class="status-badge <%=trangThaiClass%>"> <span
+										class="status-dot"></span> <%=trangThaiText%>
+									</span>
 								</div>
 
 								<div class="col-right">
-									<button class="btn btn-primary"
-										style="padding: 8px 16px; font-size: 13px;"
-										onclick="openIncidentModal('101', 'P.101', 'Rò rỉ ống nước')">
+									<a href="XuLySuCo?id=<%=bh.getId()%>" class="btn btn-primary"
+										style="padding: 8px 16px; font-size: 13px; text-decoration: none;">
 										<i class="fa-solid fa-screwdriver-wrench"></i> Xử lý
-									</button>
+									</a>
 								</div>
 							</div>
 
-							<div class="room-grid-row incident-cols">
-								<div>
-									<div
-										style="font-weight: 700; font-size: 16px; color: var(--text-main)">P.205</div>
-								</div>
-
-								<div>
-									<div class="user-cell">
-										<div
-											style="width: 40px; height: 40px; background: #fef9c3; color: #b45309; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">
-											<i class="fa-regular fa-lightbulb"></i>
-										</div>
-										<div>
-											<div style="font-weight: 600">Bóng đèn hành lang nhấp
-												nháy</div>
-											<div style="font-size: 12px; color: var(--text-secondary)">Báo
-												cáo: Hôm qua</div>
-										</div>
-									</div>
-								</div>
-
-								<div>
-									<div class="user-cell">
-										<img src="https://i.pravatar.cc/150?img=32"
-											class="table-avatar" style="width: 30px; height: 30px;">
-										<span style="font-size: 13px; font-weight: 600">Lê Thị
-											B</span>
-									</div>
-								</div>
-
-								<div>
-									<span class="status-badge badge-warn"><span
-										class="status-dot"></span>Trung bình</span>
-								</div>
-
-								<div>
-									<span id="badge-205" class="status-badge badge-warn"
-										style="background: #f1f5f9; color: var(--text-secondary)"><span
-										class="status-dot" style="background: var(--text-secondary)"></span>Chờ
-										tiếp nhận</span>
-								</div>
-
-								<div class="col-right">
-									<button class="btn btn-outline"
-										style="padding: 5px 10px; font-size: 13px;"
-										onclick="openIncidentModal('205', 'P.205', 'Bóng đèn hành lang')">
-										<i class="fa-regular fa-pen-to-square"></i> Tiếp nhận
-									</button>
-								</div>
-							</div>
+							<%
+							}
+							%>
 
 						</div>
 					</div>
+					<%
+					}
+					%>
 				</div>
 
 				<div id="contracts" class="section">
@@ -923,14 +1022,14 @@
 							<div class="room-grid-row contract-cols">
 								<!-- Mã hợp đồng -->
 								<div>
-									<span style="font-weight: 700; color: #64748b;"> HD-2025/<%=hd.getId()%>
+									<span style="font-weight: 700; color: #64748b;">
+										HD-2025/<%=hd.getId()%>
 									</span>
 								</div>
 
 								<!-- Phòng -->
 								<div>
-									<span style="font-weight: 700; color: #6366f1;">
-										<%=hd.getTenPhong()%>
+									<span style="font-weight: 700; color: #6366f1;"> <%=hd.getTenPhong()%>
 									</span>
 								</div>
 
@@ -957,6 +1056,10 @@
 										class="status-dot"></span>Hiệu lực
 									</span>
 									<%
+									} else if ("Chờ tạo hợp đồng".equals(hd.getTrangThai())) {
+									%>
+									<span class="status-badgee badge-waiting"> Chờ tạo </span>
+									<%
 									} else {
 									%>
 									<span class="status-badge badge-error"> <span
@@ -967,7 +1070,9 @@
 									%>
 								</div>
 
-								<!-- Hành động -->
+								<%
+								if ((hd != null && "Đang hiệu lực".equals(hd.getTrangThai())) || "Đã kết thúc".equals(hd.getTrangThai())) {
+								%>
 								<div class="col-right">
 									<a
 										href="${pageContext.request.contextPath}/ChiTietHopDong?id=<%=hd.getId()%>&ID_NguoiThue=<%= hd.getID_NguoiThue() %>&ID_ChuTro=<%=hd.getID_ChuTro() %>&ID_Phong=<%=hd.getID_Phong() %>"
@@ -975,8 +1080,20 @@
 										<i class="fa-regular fa-eye"></i> Xem
 									</a>
 								</div>
+								<%
+								} else if (hd != null && "Chờ tạo hợp đồng".equals(hd.getTrangThai())) {
+								%>
+								<div class="col-right">
+									<a
+										href="${pageContext.request.contextPath}/TaoHopDong?id=<%= hd.getId() %>&idYeuCau=<%=hd.getID_YeuCau()%>&ID_NguoiThue=<%= hd.getID_NguoiThue() %>&ID_ChuTro=<%=hd.getID_ChuTro() %>&ID_Phong=<%=hd.getID_Phong() %>"
+										class="btn btn-outline btn-sm" title="Tạo hợp đồng"> <i
+										class="fa-regular fa-eye"></i> Tạo hợp đồng
+									</a>
+								</div>
+								<%
+								}
+								%>
 							</div>
-
 							<%
 							}
 							%>
@@ -991,112 +1108,47 @@
 
 				</div>
 			</div>
-	</div>
+			<% ArrayList<HopDong> listNT = (ArrayList<HopDong>) request.getAttribute("listNT"); %>
+			<form id="sendNotifyForm">
+			<div id="notify" class="table-container" style="max-width: 600px; margin: 0 auto;"> <div class="table-title" style="margin-bottom: 20px;">Soạn thông báo mới</div>
+				<div class="form-group">
+					<label class="form-label">Tiêu đề</label> <input class="form-input"
+						name="tieuDe"
+						placeholder="Ví dụ: Thông báo thu tiền điện tháng 12">
+				</div>
 
-	<div id="notify" class="section">
-		<div class="table-container" style="max-width: 600px; margin: 0 auto;">
-			<div class="table-title" style="margin-bottom: 20px;">Soạn
-				thông báo mới</div>
-			<div class="form-group">
-				<label class="form-label">Tiêu đề</label> <input class="form-input"
-					placeholder="Ví dụ: Thông báo thu tiền điện tháng 12">
-			</div>
-			<div class="form-group">
-				<label class="form-label">Gửi tới</label> <select class="form-input">
-					<option>Tất cả người thuê</option>
-					<option>Tầng 1</option>
-					<option>Tầng 2</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label class="form-label">Nội dung</label>
-				<textarea class="form-input" rows="5" placeholder="Nhập nội dung..."></textarea>
-			</div>
-			<button class="btn btn-primary">
-				<i class="fa-solid fa-paper-plane"></i> Gửi ngay
-			</button>
-		</div>
-	</div>
+				<div class="form-group">
+					<label class="form-label">Gửi tới</label> <select
+						class="form-input" name="ID_NguoiThue">
+						<option value="All">Tất cả người thuê</option>
+						<%
+						for (HopDong hdNT : listNT) {
+						%>
+						<option value="<%=hdNT.getID_NguoiThue()%>">
+							<%=hdNT.getTenNguoiThue()%>
+						</option>
+						<%
+						}
+						%>
+					</select>
+				</div>
 
-	</div>
-	</main>
-	</div>
+				<div class="form-group">
+					<label class="form-label">Nội dung</label>
+					<textarea class="form-input" name="noiDung" rows="5"
+						placeholder="Nhập nội dung..."></textarea>
+				</div>
 
-
-	<div class="modal-overlay" id="incidentModal">
-		<div class="modal-box" style="max-width: 550px;">
-			<div class="modal-header"
-				style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color);">
-				<h3 style="display: flex; align-items: center; gap: 10px;">
-					<i class="fa-solid fa-toolbox" style="color: var(--primary)"></i>
-					Cập nhật tiến độ
-				</h3>
-				<button onclick="closeIncidentModal()"
-					style="background: none; border: none; cursor: pointer;">
-					<i class="fa-solid fa-xmark" style="font-size: 20px;"></i>
+				<button type="submit" class="btn btn-primary">
+					<i class="fa-solid fa-paper-plane"></i> Gửi ngay
 				</button>
-			</div>
-			<div
-				style="background: var(--primary-soft); padding: 12px 16px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between;">
-				<div>
-					<div
-						style="font-size: 12px; color: var(--text-secondary); font-weight: 600;">PHÒNG</div>
-					<div
-						style="font-weight: 800; color: var(--primary); font-size: 16px;"
-						id="modalRoomName">P.101</div>
-				</div>
-				<div style="text-align: right;">
-					<div
-						style="font-size: 12px; color: var(--text-secondary); font-weight: 600;">SỰ
-						CỐ</div>
-					<div style="font-weight: 700; color: var(--text-main);"
-						id="modalIssueName">Rò rỉ ống nước</div>
-				</div>
-			</div>
-			<form id="incidentForm">
-				<input type="hidden" id="currentIncidentId">
-				<div class="form-group">
-					<label class="form-label">1. Trạng thái hiện tại</label>
-					<div
-						style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-						<label style="cursor: pointer;"><input type="radio"
-							name="status" value="pending" class="hidden-radio">
-							<div class="radio-box">Chờ xử lý</div></label> <label
-							style="cursor: pointer;"><input type="radio"
-							name="status" value="processing" class="hidden-radio" checked>
-							<div class="radio-box active">Đang sửa</div></label> <label
-							style="cursor: pointer;"><input type="radio"
-							name="status" value="done" class="hidden-radio">
-							<div class="radio-box">Hoàn thành</div></label>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="form-label">2. Nhắn cho người thuê</label>
-					<div style="display: flex; gap: 8px; margin-bottom: 8px;">
-						<button type="button" class="btn-tag"
-							onclick="fillReply('Đã tiếp nhận, thợ sẽ lên kiểm tra trong 30p tới.')">30p
-							nữa</button>
-						<button type="button" class="btn-tag"
-							onclick="fillReply('Hẹn sáng mai 9h thợ sẽ qua xử lý.')">Hẹn
-							sáng mai</button>
-						<button type="button" class="btn-tag"
-							onclick="fillReply('Đã sửa xong, bạn kiểm tra lại nhé.')">Đã
-							xong</button>
-					</div>
-					<textarea id="incidentReply" class="form-input" rows="4"
-						placeholder="Nhập nội dung phản hồi..."></textarea>
-				</div>
-				<div
-					style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 32px;">
-					<button type="button" class="btn btn-outline"
-						onclick="closeIncidentModal()">Đóng</button>
-					<button type="submit" class="btn btn-primary">
-						<i class="fa-solid fa-paper-plane"></i> Cập nhật & Gửi
-					</button>
 				</div>
 			</form>
-		</div>
+		</main>
 	</div>
+
+
+
 	<div id="deleteModal" class="modal-overlay">
 		<div class="modal-box" style="max-width: 350px; text-align: center;">
 			<h3>Xoá phòng?</h3>
@@ -1215,6 +1267,32 @@ function confirmDeleteRoom() {
     closeDeleteModal();
 }
 
+$(document).ready(function () {
+    $("#sendNotifyForm").on("submit", function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "/DoAnQLThueTro/XuLyGuiThongBao",
+            type: "post",
+            data: {
+                tieuDe: $("input[name='tieuDe']").val(),
+                ID_NguoiThue: $("select[name='ID_NguoiThue']").val(),
+                noiDung: $("textarea[name='noiDung']").val()
+            },
+            success: function (response) {
+                if (response.status === "success") {
+                    showToast("Gửi thông báo thành công!");
+                    $("#sendNotifyForm")[0].reset();
+                } else {
+                    showToast(response.message, "error");
+                }
+            },
+            error: function () {
+                showToast("Có lỗi xảy ra, vui lòng thử lại!", "error");
+            }
+        });
+    });
+});
 </script>
 </body>
 </html>

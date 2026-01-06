@@ -187,7 +187,7 @@
 					<div class="action-group">
 
 						<button class="btn btn-approve" data-yeucau-id="<%=yc.getId()%>"
-							data-nguoi-id="<%=yc.getID_TaiKhoan()%>">
+							data-nguoi-id="<%=yc.getID_TaiKhoan()%>" data-id-phong="<%=pt.getID_Phong()%>"">
 							<i class="fa-solid fa-phone-volume"></i> Duyệt yêu cầu (Đã liên
 							hệ)
 						</button>
@@ -215,24 +215,20 @@
 	function showToast(message, type = "success") {
 	    const toast = $("#toast");
 
-	    // Icon hiển thị theo loại
 	    let iconHTML = "";
 
 	    if (type === "error") {
-	        toast.css("background-color", "#dc2626"); // đỏ
+	        toast.css("background-color", "#dc2626");
 	        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
 	    } else {
-	        toast.css("background-color", "#2563eb"); // xanh
+	        toast.css("background-color", "#2563eb");
 	        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
 	    }
 
-	    // Set nội dung kèm icon
 	    toast.html(iconHTML + message);
 
-	    // hiện
 	    toast.css({ opacity: "1", transform: "translateY(0)" });
 
-	    // tự tắt sau 5 giây
 	    setTimeout(() => {
 	        toast.css({ opacity: "0", transform: "translateY(20px)" });
 	    }, 5000);
@@ -243,6 +239,7 @@ $(document).ready(function () {
    $(".btn-approve").click(function () {
     let idYeuCau = $(this).data("yeucau-id");
     let idNguoi = $(this).data("nguoi-id");
+    let idPhong = $(this).data("idPhong");
 
 
         $.ajax({
@@ -251,9 +248,9 @@ $(document).ready(function () {
             data: {
                 idYeuCau: idYeuCau,
                 idTaiKhoan: idNguoi,
+                idPhong : idPhong,
                 trangThai: "Đã liên hệ",
                 title: "Chủ trọ đã duyệt yêu cầu thuê trọ của bạn",
-                content: "Yêu cầu thuê phòng của bạn đã được chủ trọ chấp nhận.",
                 fullcontent: "Chủ trọ đã duyệt và xác nhận yêu cầu thuê trọ của bạn. Vui lòng chờ chủ trọ liên hệ hoặc chủ động nhắn tin để trao đổi thêm thông tin và tiến hành tạo hợp đồng thuê."
             },
             success: function (res) {
@@ -261,12 +258,8 @@ $(document).ready(function () {
                     showToast("Đã duyệt yêu cầu!", "success");
 
                     setTimeout(() => {
-                    	window.location.replace("/DoAnQLThueTro/TaoHopDong"
-                        	+ "?idNguoiThue=" + res.idNguoiThue
-                            + "&idChuTro=" + res.idChuTro
-                            + "&idPhong=" + res.idPhong);
+                        window.location.href = "/DoAnQLThueTro/QuanLyTro";
                     }, 3000);
-
                 } else {
                     showToast("Cập nhật thất bại!", "error");
                 }
@@ -290,7 +283,6 @@ $(document).ready(function () {
                 idTaiKhoan: idNguoi,
                 trangThai: "Đã hủy",
                 title: "Yêu cầu thuê trọ của bạn đã bị từ chối",
-                content: "Rất tiếc, yêu cầu thuê phòng của bạn không được chấp nhận.",
                 fullcontent: "Chủ trọ đã từ chối yêu cầu thuê phòng của bạn. Có thể phòng không còn trống hoặc không phù hợp điều kiện cho thuê. Bạn có thể tiếp tục tìm phòng khác hoặc gửi yêu cầu mới trong hệ thống."
             },
             success: function (res) {

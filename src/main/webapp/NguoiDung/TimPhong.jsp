@@ -116,6 +116,7 @@
 	gap: 10px;
 	/* Khoảng cách giữa các checkbox */
 }
+
 .card-location {
 	font-size: 0.85rem;
 	color: #666;
@@ -127,7 +128,133 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+/* Container tổng */
+.filter-container {
+	padding: 15px;
+	background: #fff;
+	border-radius: 8px;
+}
 
+.filter-group {
+	margin-bottom: 20px;
+}
+
+.filter-group .label {
+	display: block;
+	font-weight: bold;
+	margin-bottom: 8px;
+	color: #333;
+}
+
+/* Hàng nhập liệu */
+.input-range {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.filter-input {
+	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+	outline: none;
+	transition: border 0.3s;
+}
+
+.filter-input:focus {
+	border-color: #007bff;
+}
+
+.dash {
+	color: #888;
+}
+
+/* Nút bấm */
+.btn-apply-all {
+	width: 100%;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	padding: 10px;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+.btn-apply-all:hover {
+	background-color: #0056b3;
+}
+.pagination-wrapper {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.pagination-list {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+}
+
+/* Từng ô số */
+.pagi-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hiệu ứng Hover */
+.pagi-item:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+    background-color: #f5f3ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
+/* Trang hiện tại */
+.pagi-item.active {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+}
+
+/* Dấu ba chấm */
+.pagi-dots {
+    color: #94a3b8;
+    padding: 0 5px;
+}
+
+/* Chữ hiển thị thông tin */
+.pagi-info {
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 400;
+}
+
+/* Nút Icon */
+.pagi-item i {
+    font-size: 0.8rem;
+}
 </style>
 </head>
 <body>
@@ -158,9 +285,9 @@
 						chủ</a></li>
 				<li class="nav-item active"><a
 					href="${pageContext.request.contextPath}/TimPhong">Tìm phòng</a></li>
-				<li class="nav-item"><a href="#">Phòng đã thuê</a></li>
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/PhongDaThue">Phòng đã thuê</a></li>
 				<li class="nav-item"><a href="#">Lịch thanh toán</a></li>
-				<li class="nav-item"><a href="#">Hợp đồng</a></li>
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/HopDong">Hợp đồng</a></li>
 			</ul>
 		</nav>
 
@@ -176,12 +303,19 @@
 					}
 					%>
 				</div>
-				<% ArrayList<ThongBao> listTB = (ArrayList<ThongBao>) request.getAttribute("listTB"); %>
+				<%
+				ArrayList<ThongBao> listTB = (ArrayList<ThongBao>) request.getAttribute("listTB");
+				%>
 				<div class="dropdown-content" id="notif-drop">
-				<% for(ThongBao tb : listTB){
+					<%
+					for (ThongBao tb : listTB) {
 					%>
-					<a href="${pageContext.request.contextPath}/ChiTietThongBao?id=<%= tb.getId() %>" class="dropdown-item"><%= tb.getTitle() %></a>
-						<%} %> 
+					<a
+						href="${pageContext.request.contextPath}/ChiTietThongBao?id=<%= tb.getId() %>"
+						class="dropdown-item"><%=tb.getTitle()%></a>
+					<%
+					}
+					%>
 					<div class="dropdown-divider"></div>
 					<a href="${pageContext.request.contextPath}/TatCaThongBao"
 						class="dropdown-item" style="text-align: center; color: #1E90FF;">Xem
@@ -191,8 +325,9 @@
 
 			<div class="dropdown" onclick="toggleDropdown('user-drop')">
 				<div class="user-profile">
-					<img src="<%= (tk != null && tk.getAvatar() != null) ? tk.getAvatar() : "" %>" alt="User" class="avatar"> <i
-						class="fa-solid fa-angle-down"
+					<img
+						src="<%=(tk != null && tk.getAvatar() != null) ? tk.getAvatar() : ""%>"
+						alt="User" class="avatar"> <i class="fa-solid fa-angle-down"
 						style="font-size: 0.8rem; color: #666;"></i>
 				</div>
 				<div class="dropdown-content" id="user-drop">
@@ -203,7 +338,8 @@
 						class="dropdown-item"><i class="fa-solid fa-gear"
 						style="width: 20px"></i> Cài đặt</a>
 					<div class="dropdown-divider"></div>
-					<a href="${pageContext.request.contextPath}/Logout" class="dropdown-item" style="color: #e74c3c;"><i
+					<a href="${pageContext.request.contextPath}/Logout"
+						class="dropdown-item" style="color: #e74c3c;"><i
 						class="fa-solid fa-right-from-bracket" style="width: 20px"></i>
 						Đăng xuất</a>
 				</div>
@@ -261,40 +397,31 @@
 				</ul>
 			</div>
 
-			<!-- Khoảng giá (Links) -->
-			<div class="filter-group">
-				<label class="label">Khoảng giá</label>
-				<ul class="filter-list">
-					<li><a
-						href="${pageContext.request.contextPath}/TimPhong?GiaThue=1000000"
-						class="filter-link">Dưới 1 triệu</a></li>
-					<li><a
-						href="${pageContext.request.contextPath}/TimPhong?GiaThue=3000000"
-						class="filter-link">Dưới 3 triệu</a></li>
-					<li><a
-						href="${pageContext.request.contextPath}/TimPhong?GiaThue=5000000"
-						class="filter-link">Dưới 5 triệu</a></li>
-					<li><a
-						href="${pageContext.request.contextPath}/TimPhong?GiaThue=7000000"
-						class="filter-link">Dưới 7 triệu</a></li>
-				</ul>
-			</div>
+			<form action="${pageContext.request.contextPath}/TimPhong"
+				method="GET" class="filter-container">
 
-			<!-- Diện tích (Links) -->
-			<div class="filter-group">
-				<label class="label">Diện tích</label>
-				<ul class="filter-list">
-					<li><a
-						href="${pageContext.request.contextPath}/TimPhong?DienTich=20"
-						class="filter-link">Dưới 50m²</a></li>
-					<li><a
-						href="${pageContext.request.contextPath}/TimPhong?DienTich=30"
-						class="filter-link">Dưới 35m²</a></li>
-					<li><a
-						href="${pageContext.request.contextPath}/TimPhong?DienTich=50"
-						class="filter-link">Dưới 20m²</a></li>
-				</ul>
-			</div>
+				<div class="filter-group">
+					<label class="label">Khoảng giá (VNĐ)</label>
+					<div class="input-range">
+						<input type="number" name="giaMin" placeholder="Từ"
+							class="filter-input" min="0"> <span class="dash">-</span>
+						<input type="number" name="giaMax" placeholder="Đến"
+							class="filter-input" min="0">
+					</div>
+				</div>
+
+				<div class="filter-group">
+					<label class="label">Diện tích (m²)</label>
+					<div class="input-range">
+						<input type="number" name="dtMin" placeholder="Từ"
+							class="filter-input" min="0"> <span class="dash">-</span>
+						<input type="number" name="dtMax" placeholder="Đến"
+							class="filter-input" min="0">
+					</div>
+				</div>
+
+				<button type="submit" class="btn-apply-all">Áp dụng bộ lọc</button>
+			</form>
 
 			<%
 			Map<String, String> iconMap = new HashMap<>();
@@ -407,20 +534,82 @@
 				%>
 			</div>
 			<%
-			int currentPage = (int) request.getAttribute("currentPage");
-			int totalPage = (int) request.getAttribute("totalPage");
+			Integer totalPage = (Integer) request.getAttribute("totalPage");
+			Integer currentPage = (Integer) request.getAttribute("currentPage");
+
+			if (totalPage != null && totalPage > 1) {
 			%>
-			<nav class="pagination">
-				<%
-				for (int i = 1; i <= totalPage; i++) {
-					String url = PageURL.buildPageUrl(request, i, "TimPhong");
-					String active = (i == currentPage) ? "active" : "";
-				%>
-				<a href="<%=url%>" class="<%=active%>"><%=i%></a>
-				<%
-				}
-				%>
+			<nav class="pagination-wrapper">
+				<ul class="pagination-list">
+					<%
+					if (currentPage > 1) {
+					%>
+					<li><a href="?page=<%=currentPage - 1%>"
+						class="pagi-item prev" title="Trang trước"> <i
+							class="fa-solid fa-chevron-left"></i>
+					</a></li>
+					<%
+					}
+					%>
+
+					<%
+					
+					int start = Math.max(1, currentPage - 2);
+					int end = Math.min(totalPage, currentPage + 2);
+
+					if (start > 1) {
+					%>
+					<li><a href="?page=1" class="pagi-item">1</a></li>
+					<%
+					if (start > 2) {
+					%><li class="pagi-dots">...</li>
+					<%
+					}
+					%>
+					<%
+					}
+					%>
+
+					<%
+					for (int i = start; i <= end; i++) {
+					%>
+					<li><a href="?page=<%=i%>"
+						class="pagi-item <%=(i == currentPage) ? "active" : ""%>"> <%=i%>
+					</a></li>
+					<%
+					}
+					%>
+
+					<%
+					if (end < totalPage) {
+					%>
+					<%
+					if (end < totalPage - 1) {
+					%><li class="pagi-dots">...</li>
+					<%
+					}
+					%>
+					<li><a href="?page=<%=totalPage%>" class="pagi-item"><%=totalPage%></a></li>
+					<%
+					}
+					%>
+
+					<%
+					if (currentPage < totalPage) {
+					%>
+					<li><a href="?page=<%=currentPage + 1%>"
+						class="pagi-item next" title="Trang tiếp"> <i
+							class="fa-solid fa-chevron-right"></i>
+					</a></li>
+					<%
+					}
+					%>
+				</ul>
+				
 			</nav>
+			<%
+			}
+			%>
 
 
 

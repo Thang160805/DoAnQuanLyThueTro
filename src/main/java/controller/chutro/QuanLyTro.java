@@ -7,10 +7,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.bean.BaoHong;
 import model.bean.HopDong;
 import model.bean.PhongTro;
 import model.bean.TaiKhoan;
 import model.bean.YeuCauThueTro;
+import model.bo.BaoHongBO;
 import model.bo.HopDongBO;
 import model.bo.PhongTroBO;
 import model.bo.TaiKhoanBO;
@@ -76,6 +78,12 @@ public class QuanLyTro extends HttpServlet {
 		HopDongBO hdBO = new HopDongBO();
 		ArrayList<HopDong> listHD = hdBO.getListHopDong();
 		request.setAttribute("listHD", listHD);
+		ArrayList<HopDong> listNT = hdBO.getListNguoiThue();
+		request.setAttribute("listNT", listNT);
+		
+		BaoHongBO bhBO = new BaoHongBO();
+		ArrayList<BaoHong> listBH = bhBO.listBaoHong();
+		request.setAttribute("listBH", listBH);
 		RequestDispatcher rs = request.getRequestDispatcher("/ChuTro/QuanLyTro.jsp");
 		rs.forward(request, response);
 	}

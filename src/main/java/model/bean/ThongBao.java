@@ -7,7 +7,6 @@ public class ThongBao {
 	private int receiver_id;
 	private int sender_id;
 	private String title;
-	private String content;
 	private String type;
 	private int role;
 	private String full_content;
@@ -50,12 +49,7 @@ public class ThongBao {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
+
 	public String getType() {
 		return type;
 	}

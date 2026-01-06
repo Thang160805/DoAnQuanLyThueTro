@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class HopDong {
 	private int id;
+	private int ID_YeuCau;
 	private int ID_NguoiThue;
 	private int ID_ChuTro;
 	private int ID_Phong;
@@ -20,9 +21,40 @@ public class HopDong {
 	private String TenNguoiThue;
 	private String TenPhong;
 	private String TrangThaiYeuCau;
+	private String AnhPhong;
+	private String DiaChi;
+	
+	
+	
+	
+	public String getDiaChi() {
+		return DiaChi;
+	}
+
+	public void setDiaChi(String diaChi) {
+		DiaChi = diaChi;
+	}
+
+	public String getAnhPhong() {
+		return AnhPhong;
+	}
+
+	public void setAnhPhong(String anhPhong) {
+		AnhPhong = anhPhong;
+	}
+
+	public int getID_YeuCau() {
+		return ID_YeuCau;
+	}
+
+	public void setID_YeuCau(int iD_YeuCau) {
+		ID_YeuCau = iD_YeuCau;
+	}
+
 	public String getTrangThaiYeuCau() {
 		return TrangThaiYeuCau;
 	}
+
 	public void setTrangThaiYeuCau(String trangThaiYeuCau) {
 		TrangThaiYeuCau = trangThaiYeuCau;
 	}

@@ -83,6 +83,30 @@ public class ImagesHelper {
 	    }
 	    return list;
 	}
+	
+	public static ArrayList<String> saveMultipleBaoHongImages(Collection<Part> fileParts, ServletContext context) {
+	    ArrayList<String> list = new ArrayList<>();
+
+	    for (Part part : fileParts) {
+	        if (part.getName().equals("images") && part.getSize() > 0) {
+	            String fileName = System.currentTimeMillis() + "_" +
+	                    Paths.get(part.getSubmittedFileName()).getFileName().toString();
+
+	            String uploadPath = context.getRealPath("") + File.separator + "assets" + File.separator + "img";
+
+	            File folder = new File(uploadPath);
+	            if (!folder.exists()) folder.mkdirs();
+
+	            try {
+	                part.write(uploadPath + File.separator + fileName);
+	                list.add("assets/img/" + fileName);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	    return list;
+	}
 
 
 }

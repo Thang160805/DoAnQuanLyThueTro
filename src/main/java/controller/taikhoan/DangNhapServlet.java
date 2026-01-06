@@ -43,6 +43,7 @@ public class DangNhapServlet extends HttpServlet {
 		session.setAttribute("user", request.getAttribute("user"));
 
 		int role = (Integer) request.getAttribute("Role");
+		System.out.println(role);
 
 		String url = "";
 
@@ -51,7 +52,9 @@ public class DangNhapServlet extends HttpServlet {
 		} 
 		else if (role == 2) {
 		    url = request.getContextPath() + "/ProcessHomeUser";
-		} 
+		} else if(role==0) {
+			url = request.getContextPath() + "/AdminQT";
+		}
 		else {
 		    url = request.getContextPath() + "/user/login.jsp?error=role";
 		}

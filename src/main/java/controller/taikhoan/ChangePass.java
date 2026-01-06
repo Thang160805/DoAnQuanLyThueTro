@@ -46,7 +46,7 @@ public class ChangePass extends HttpServlet {
 		}
 		response.setContentType("application/json;charset=UTF-8");
 		
-		 int userID = user.getId(); // <-- Lấy từ session, không từ Ajax
+		 int userID = user.getId();
 
 	        String currentPass = request.getParameter("CurrentPass");
 	        String newPass = request.getParameter("NewPass");

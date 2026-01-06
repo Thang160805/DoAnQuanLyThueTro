@@ -11,11 +11,13 @@ import model.bean.TaiKhoan;
 import model.bean.ThongBao;
 import model.bo.HopDongBO;
 import model.bo.ThongBaoBO;
+import model.bo.YeuCauThueTroBO;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * Servlet implementation class XuLyTaoHopDong
@@ -54,6 +56,8 @@ public class XuLyTaoHopDong extends HttpServlet {
 		int idNguoiThue = Integer.parseInt(request.getParameter("ID_NguoiThue"));
 		int idChuTro = Integer.parseInt(request.getParameter("ID_ChuTro"));
 		int idPhong = Integer.parseInt(request.getParameter("ID_Phong"));
+		int idYeuCau = Integer.parseInt(request.getParameter("idYeuCau"));
+		int idHopDong = Integer.parseInt(request.getParameter("idHopDong"));
 
 		Date ngayKetThuc = Date.valueOf(request.getParameter("NgayKetThuc"));
 
@@ -118,9 +122,6 @@ public class XuLyTaoHopDong extends HttpServlet {
 		}
 		String TenPhong = request.getParameter("TenPhong");
 		String title = "Hợp đồng thuê phòng đã được tạo";
-
-		String content = "Hợp đồng thuê cho phòng " + TenPhong + " đã được tạo thành công.";
-
 		String full_content =
 		        "Hợp đồng thuê phòng \"" + TenPhong + "\" đã được tạo thành công.\n\n"
 		      + "• Ngày bắt đầu: " + ngayBatDau + "\n"
@@ -130,20 +131,23 @@ public class XuLyTaoHopDong extends HttpServlet {
 
 		String type = "important";
 		
+		String titleYC = "Yêu cầu thuê trọ của bạn đã bị từ chối";
+		String fullContentYC = "Chủ trọ đã từ chối yêu cầu thuê phòng của bạn. Có thể phòng không còn trống hoặc không phù hợp điều kiện cho thuê. Bạn có thể tiếp tục tìm phòng khác hoặc gửi yêu cầu mới trong hệ thống.";
+		
 			
 		ThongBaoBO tbBO = new ThongBaoBO();
 		ThongBao tb = new ThongBao();
 		tb.setReceiver_id(idNguoiThue);
 		tb.setSender_id(idChuTro);
 		tb.setTitle(title);
-		tb.setContent(content);
 		tb.setType(type);
 		tb.setFull_content(full_content);
 		
 		
+		
+		
 		HopDong hd = new HopDong();
-		hd.setID_NguoiThue(idNguoiThue);
-		hd.setID_ChuTro(idChuTro);
+		hd.setId(idHopDong);
 		hd.setID_Phong(idPhong);
 		hd.setNgayBatDau(ngayBatDau);
 		hd.setNgayKetThuc(ngayKetThuc);
@@ -152,10 +156,24 @@ public class XuLyTaoHopDong extends HttpServlet {
 		hd.setNgayThanhToanHangThang(ngayThanhToan);
 		hd.setTongThuBanDau(tongTien);
 		hd.setDieuKhoan(dieuKhoan);
-		
+		YeuCauThueTroBO ycBO = new YeuCauThueTroBO();
 		boolean success = hdBO.taoHopDongVaCapNhatPhong(hd);
 		if (success) {
 			tbBO.insertGuiThongBao(tb);
+			hdBO.deleteHopDongKoDuocDuyet(idPhong, idHopDong);
+			ArrayList<Integer> ID_TaiKhoanCD = ycBO.getID_TaiKhoanChuaDuyet(idPhong, idYeuCau);
+
+			for (int idTK : ID_TaiKhoanCD) {
+			    ThongBao tb2 = new ThongBao();
+			    tb2.setReceiver_id(idTK);
+			    tb2.setSender_id(idChuTro);
+			    tb2.setTitle(titleYC);
+			    tb2.setFull_content(fullContentYC);
+			    tb2.setType(type);
+
+			    tbBO.insertGuiThongBao(tb2);
+			}
+			ycBO.UpdateTrangThaiYCDuyetChoYeuCauKhac(idYeuCau, idPhong);
 		    out.print("{\"success\":true,\"message\":\"Tạo hợp đồng thành công\"}");
 		} else {
 		    out.print("{\"success\":false,\"message\":\"Không thể tạo hợp đồng\"}");

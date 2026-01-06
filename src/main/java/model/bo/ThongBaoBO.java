@@ -7,8 +7,8 @@ import model.dao.ThongBaoDao;
 
 public class ThongBaoBO {
 	ThongBaoDao tbDao =  new ThongBaoDao();
-	public ArrayList<ThongBao> getListThongBaoById(int Id_TaiKhoan){
-		return tbDao.getListThongBaoById(Id_TaiKhoan);
+	public ArrayList<ThongBao> getListThongBaoById(int Id_TaiKhoan, int page){
+		return tbDao.getListThongBaoById(Id_TaiKhoan, page);
 	}
 	
 	public void DocTatCa(int ID_TaiKhoan) {
@@ -37,5 +37,13 @@ public class ThongBaoBO {
 	
 	public void insertGuiThongBao(ThongBao tb) {
 		tbDao.insertGuiThongBao(tb);
+	}
+	
+	public int getTotalCountThongBao(int TaiKhoan_id) {
+		return tbDao.getTotalCountThongBao(TaiKhoan_id);
+	}
+	
+	public void sendThongBaoToAdmins(ThongBao tb) {
+		tbDao.sendThongBaoToAdmins(tb);
 	}
 }

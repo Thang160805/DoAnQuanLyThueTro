@@ -22,8 +22,15 @@ public class PhongTro {
 	private int GiaDien;
 	private int GiaNuoc;
 	private String Avatar;
+	private String TenKhuVuc;
 	
 	
+	public String getTenKhuVuc() {
+		return TenKhuVuc;
+	}
+	public void setTenKhuVuc(String tenKhuVuc) {
+		TenKhuVuc = tenKhuVuc;
+	}
 	public String getAvatar() {
 		return Avatar;
 	}

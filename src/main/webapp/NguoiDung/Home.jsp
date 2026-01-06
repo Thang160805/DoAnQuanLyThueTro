@@ -96,9 +96,9 @@
 						chủ</a></li>
 				<li class="nav-item"><a
 					href="${pageContext.request.contextPath}/TimPhong">Tìm phòng</a></li>
-				<li class="nav-item"><a href="#">Phòng đã thuê</a></li>
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/PhongDaThue">Phòng đã thuê</a></li>
 				<li class="nav-item"><a href="#">Lịch thanh toán</a></li>
-				<li class="nav-item"><a href="#">Hợp đồng</a></li>
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/HopDong">Hợp đồng</a></li>
 			</ul>
 		</nav>
 

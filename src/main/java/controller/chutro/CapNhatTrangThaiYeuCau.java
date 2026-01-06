@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.bean.TaiKhoan;
 import model.bean.ThongBao;
+import model.bo.HopDongBO;
 import model.bo.ThongBaoBO;
 import model.bo.YeuCauThueTroBO;
 
@@ -48,29 +49,24 @@ public class CapNhatTrangThaiYeuCau extends HttpServlet {
 		}
 		response.setContentType("application/json;charset=UTF-8");
 		int idYeuCau = Integer.parseInt(request.getParameter("idYeuCau"));
-		int idNguoi = Integer.parseInt(request.getParameter("idTaiKhoan"));
+		int idNguoiThue = Integer.parseInt(request.getParameter("idTaiKhoan"));
+		int idPhong = Integer.parseInt(request.getParameter("idPhong"));
 		String trangThai = request.getParameter("trangThai");
 		String title = request.getParameter("title");
-		String content = request.getParameter("content");
 		String full_content = request.getParameter("fullcontent");
 		ThongBao tb = new ThongBao();
-		tb.setReceiver_id(idNguoi);
+		tb.setReceiver_id(idNguoiThue);
 		tb.setSender_id(user.getId());
 		tb.setTitle(title);
-		tb.setContent(content);
 		tb.setFull_content(full_content);
 		YeuCauThueTroBO ycBO = new YeuCauThueTroBO();
 		ThongBaoBO tbBO = new ThongBaoBO();
+		HopDongBO hdBO = new HopDongBO();
 		boolean checked = ycBO.UpdateTrangThaiYeuCauThue(idYeuCau, trangThai);
-		int ID_Phong = ycBO.getID_PhongByID(idYeuCau);
 		if (checked) {
+			hdBO.insertHopDong(idYeuCau,idNguoiThue, user.getId(), idPhong);
 			tbBO.insertGuiThongBao(tb);
-			String json = "{"
-			        + "\"success\": true,"
-			        + "\"idNguoiThue\": " + idNguoi + ","
-			        + "\"idChuTro\": " + user.getId() + ","
-			        + "\"idPhong\": " + ID_Phong
-			        + "}";
+			String json ="{\"success\": true}";
 			response.getWriter().write(json);
         } else {
             response.getWriter().write("{\"success\": false}");

@@ -26,7 +26,7 @@ public class PhongTroDao {
 	public ArrayList<PhongTro> getListPhongTroTrong(){
 		Connect();
 		ArrayList<PhongTro> list = new ArrayList<PhongTro>();
-		String sql = "SELECT TOP 4 * FROM PhongTro WHERE TrangThai = N'Còn trống'";
+		String sql = "SELECT TOP 4 * FROM PhongTro WHERE TrangThai = N'Còn trống' and TrangThaiDuyet=N'Đã duyệt'";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -50,7 +50,7 @@ public class PhongTroDao {
 	public ArrayList<PhongTro> getListNewPhongTro(){
 		Connect();
 		ArrayList<PhongTro> list = new ArrayList<PhongTro>();
-		String sql = "SELECT * FROM PhongTro where TrangThai=N'Còn trống' and NgayDang >= DATEADD(DAY, -20, GETDATE()) ORDER BY NgayDang DESC";
+		String sql = "SELECT * FROM PhongTro where TrangThai=N'Còn trống' and TrangThaiDuyet=N'Đã duyệt' and NgayDang >= DATEADD(DAY, -20, GETDATE()) ORDER BY NgayDang DESC";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -73,7 +73,7 @@ public class PhongTroDao {
 	
 	public int getTotalCountsPhongTrong(String filter) {
 		Connect();
-		String sql = "SELECT COUNT(*) as cnt FROM PhongTro pt WHERE pt.TrangThai = N'Còn trống' "
+		String sql = "SELECT COUNT(*) as cnt FROM PhongTro pt WHERE pt.TrangThai = N'Còn trống' and TrangThaiDuyet=N'Đã duyệt' "
 	               + (filter == null || filter.isEmpty() ? "" : " " + filter);
 		int totalCount=1;
 		try {
@@ -93,7 +93,7 @@ public class PhongTroDao {
 		ArrayList<PhongTro> list = new ArrayList<PhongTro>();
 		int pageSize = 12; 
 		int start = (page - 1) * pageSize;
-		String sql = "SELECT * FROM PhongTro WHERE TrangThai = N'Còn trống' "+(filter.isEmpty() ? "" : " " + filter + " ")
+		String sql = "SELECT * FROM PhongTro WHERE TrangThai = N'Còn trống' and TrangThaiDuyet=N'Đã duyệt' "+(filter.isEmpty() ? "" : " " + filter + " ")
 				+"Order by ID_Phong "
 				+ "OFFSET " + start + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
 		try {
@@ -118,7 +118,7 @@ public class PhongTroDao {
 	
 	public int getToTalCountKV() {
 		Connect();
-		String sql = "Select count(*) as cnt from PhongTro WHERE TrangThai = N'Còn trống' and ID_KhuVuc is not null";
+		String sql = "Select count(*) as cnt from PhongTro WHERE TrangThai = N'Còn trống' and TrangThaiDuyet=N'Đã duyệt' and ID_KhuVuc is not null";
 		int totalCount=1;
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
@@ -148,7 +148,7 @@ public class PhongTroDao {
 		int pageSize = 12; 
 		int start = (page - 1) * pageSize;
 		String sql = "SELECT pt.* FROM PhongTro pt "
-				+ "WHERE pt.TrangThai = N'Còn trống' "+(filter.isEmpty() ? "" : " " + filter + " ")
+				+ "WHERE pt.TrangThai = N'Còn trống' and TrangThaiDuyet=N'Đã duyệt' "+(filter.isEmpty() ? "" : " " + filter + " ")
 				+"ORDER BY pt." + orderBy + " " + order +" "
 				+ "OFFSET " + start + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
 		try {
@@ -217,7 +217,8 @@ public class PhongTroDao {
 	public PhongTro getPhongTroById(int ID_Phong) {
 		Connect();
 		PhongTro pt = null;
-		String sql = "select pt.*,tt.HoTen,tt.SDT,tt.Avatar from PhongTro pt join TaiKhoan tk on pt.ID_ChuTro=tk.id join ThongTinNguoiDung tt on tk.id=tt.ID_TaiKhoan where pt.ID_Phong=?";
+		String sql = "select pt.*,tt.HoTen,tt.SDT,tt.Avatar,kv.TenKhuVuc from PhongTro pt join TaiKhoan tk on pt.ID_ChuTro=tk.id join ThongTinNguoiDung tt on tk.id=tt.ID_TaiKhoan"
+				+ " join KhuVuc kv on pt.ID_KhuVuc=kv.id where pt.ID_Phong=?";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, ID_Phong);
@@ -225,6 +226,7 @@ public class PhongTroDao {
 			if(rs.next()) {
 				pt = new PhongTro();
 				pt.setID_Phong(rs.getInt("ID_Phong"));
+				pt.setID_ChuTro(rs.getInt("ID_ChuTro"));
 				pt.setTenPhong(rs.getString("TenPhong"));
 				pt.setDiaChi(rs.getString("DiaChi"));
 				pt.setTrangThai(rs.getString("TrangThai"));
@@ -234,9 +236,11 @@ public class PhongTroDao {
 				pt.setGiaNuoc(rs.getInt("GiaNuoc"));
 				pt.setMoTa(rs.getString("MoTa"));
 				pt.setAnhChinh(rs.getString("AnhChinh"));
+				pt.setNgayDang(rs.getTimestamp("NgayDang").toLocalDateTime());
 				pt.setTenCT(rs.getString("HoTen"));
 				pt.setPhone(rs.getString("SDT"));
 				pt.setAvatar(rs.getString("Avatar"));
+				pt.setTenKhuVuc(rs.getString("TenKhuVuc"));;
 				ArrayList<Comment> cm = getListCommentByIDPhong(ID_Phong);
 				pt.setComment(cm);
 				ArrayList<String> img = getListHinhAnhByIDPhong(ID_Phong);
@@ -303,7 +307,7 @@ public class PhongTroDao {
 		Connect();
 		ArrayList<PhongTro> list = new ArrayList<PhongTro>();
 		String sql = "select pt.ID_Phong,pt.AnhChinh,pt.TenPhong,pt.GiaThue,tt.HoTen,tt.SDT,pt.TrangThai from PhongTro pt join TaiKhoan tk on pt.ID_ChuTro=tk.id "
-				+ "join ThongTinNguoiDung tt on tk.id=tt.ID_TaiKhoan where pt.ID_ChuTro=?";
+				+ "join ThongTinNguoiDung tt on tk.id=tt.ID_TaiKhoan where pt.ID_ChuTro=? and pt.TrangThaiDuyet=N'Đã duyệt'";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, ID_TaiKhoan);
@@ -329,7 +333,7 @@ public class PhongTroDao {
 	public int getCountSoPhongByIDChutro(int ID_ChuTro) {
 		Connect();
 		int count=0;
-		String sql = "select count(*) as rc from PhongTro where ID_ChuTro=?";
+		String sql = "select count(*) as rc from PhongTro where ID_ChuTro=? and TrangThaiDuyet=N'Đã duyệt'";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, ID_ChuTro);
@@ -346,7 +350,7 @@ public class PhongTroDao {
 	public int getCountSoPhongTrongByIDCT(int ID_ChuTro) {
 		Connect();
 		int count=0;
-		String sql = "select count(*) as rc from PhongTro where ID_ChuTro=? and TrangThai=N'Còn Trống'";
+		String sql = "select count(*) as rc from PhongTro where ID_ChuTro=? and TrangThai=N'Còn Trống' and TrangThaiDuyet=N'Đã duyệt'";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, ID_ChuTro);
@@ -529,6 +533,74 @@ public class PhongTroDao {
 		return false;
 	}
 	
+	public ArrayList<PhongTro> getListPhongTroChuaDuyet(){
+		Connect();
+		ArrayList<PhongTro> list = new ArrayList<PhongTro>();
+		String sql = "select pt.*,tt.HoTen from PhongTro pt join TaiKhoan tk on pt.ID_ChuTro=tk.id join ThongTinNguoiDung tt on tk.id=tt.ID_TaiKhoan where pt.TrangThaiDuyet=N'Chờ duyệt'";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				PhongTro pt = new PhongTro();
+				pt.setID_Phong(rs.getInt("ID_Phong"));
+				pt.setTenPhong(rs.getString("TenPhong"));
+				pt.setTenCT(rs.getString("HoTen"));
+				pt.setGiaThue(rs.getInt("GiaThue"));
+				pt.setNgayDang(rs.getTimestamp("NgayDang").toLocalDateTime());
+				pt.setAnhChinh(rs.getString("AnhChinh"));
+				list.add(pt);
+				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
+	public int getCountPhongChoDuyet() {
+		Connect();
+		String sql = "select count(*) as cnt from PhongTro where TrangThaiDuyet = N'Chờ duyệt'";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public int getCountPhongDaDuyet() {
+		Connect();
+		String sql = "select count(*) as cnt from PhongTro where TrangThaiDuyet = N'Đã duyệt'";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	public boolean UpdateTrangThaiDuyet(int ID_Phong) {
+		Connect();
+		String sql = "update PhongTro set TrangThaiDuyet = N'Đã duyệt' where ID_Phong=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_Phong);
+			int row = ps.executeUpdate();
+			if(row>0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 }

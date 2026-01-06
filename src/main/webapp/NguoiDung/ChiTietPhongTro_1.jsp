@@ -352,24 +352,68 @@
 	}
 }
 
-/* --- 8. PRINT STYLE --- */
-@media print {
-	body * {
-		visibility: hidden;
-	}
-	#printableArea, #printableArea * {
-		visibility: visible;
-	}
-	#printableArea {
-		position: absolute;
-		left: 0;
-		top: 0;
-		width: 100%;
-	}
-	.modal-container {
-		box-shadow: none;
-		border: none;
-	}
+/* Container chung */
+.booking-action {
+    margin-top: 15px;
+}
+
+/* Nút thuê chính */
+.btn-rent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+}
+
+.btn-rent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+    color: white;
+}
+
+/* Các khối thông báo trạng thái */
+.status-notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: var(--radius);
+    font-weight: 500;
+    font-size: 0.95rem;
+    border: 1px solid transparent;
+}
+
+/* Style cho Đã thuê */
+.notice-rented {
+    background-color: #f1f5f9;
+    color: #64748b;
+    border-color: #e2e8f0;
+    cursor: not-allowed;
+}
+
+/* Style cho Đang sửa chữa */
+.notice-repair {
+    background-color: #fff7ed;
+    color: #c2410c;
+    border-color: #ffedd5;
+}
+.rating .star {
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.15s ease;
+}
+
+.rating .star:hover {
+    transform: scale(1.15);
 }
 </style>
 </head>
@@ -401,9 +445,12 @@
 						chủ</a></li>
 				<li class="nav-item"><a
 					href="${pageContext.request.contextPath}/TimPhong">Tìm phòng</a></li>
-				<li class="nav-item"><a href="#">Phòng đã thuê</a></li>
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/PhongDaThue">Phòng đã
+						thuê</a></li>
 				<li class="nav-item"><a href="#">Lịch thanh toán</a></li>
-				<li class="nav-item"><a href="#">Hợp đồng</a></li>
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/HopDong">Hợp đồng</a></li>
 			</ul>
 		</nav>
 
@@ -419,12 +466,19 @@
 					}
 					%>
 				</div>
-				<% ArrayList<ThongBao> listTB = (ArrayList<ThongBao>) request.getAttribute("listTB"); %>
+				<%
+				ArrayList<ThongBao> listTB = (ArrayList<ThongBao>) request.getAttribute("listTB");
+				%>
 				<div class="dropdown-content" id="notif-drop">
-				<% for(ThongBao tb : listTB){
+					<%
+					for (ThongBao tb : listTB) {
 					%>
-					<a href="${pageContext.request.contextPath}/ChiTietThongBao?id=<%= tb.getId() %>" class="dropdown-item"><%= tb.getTitle() %></a>
-						<%} %> 
+					<a
+						href="${pageContext.request.contextPath}/ChiTietThongBao?id=<%= tb.getId() %>"
+						class="dropdown-item"><%=tb.getTitle()%></a>
+					<%
+					}
+					%>
 					<div class="dropdown-divider"></div>
 					<a href="${pageContext.request.contextPath}/TatCaThongBao"
 						class="dropdown-item" style="text-align: center; color: #1E90FF;">Xem
@@ -434,8 +488,9 @@
 
 			<div class="dropdown" onclick="toggleDropdown('user-drop')">
 				<div class="user-profile">
-					<img src="<%= (tk != null && tk.getAvatar() != null) ? tk.getAvatar() : "" %>" alt="User" class="avatar"> <i
-						class="fa-solid fa-angle-down"
+					<img
+						src="<%=(tk != null && tk.getAvatar() != null) ? tk.getAvatar() : ""%>"
+						alt="User" class="avatar"> <i class="fa-solid fa-angle-down"
 						style="font-size: 0.8rem; color: #666;"></i>
 				</div>
 				<div class="dropdown-content" id="user-drop">
@@ -502,8 +557,10 @@
 					</div>
 					<div class="room-tags">
 						<span class="tag tag-status"><%=pt.getTrangThai()%></span> <span
-							class="tag tag-area"><i class="fa-solid fa-ruler-combined"></i>
-							<%=pt.getDienTich()%>m²</span>
+							class="tag tag-location"> <i
+							class="fa-solid fa-location-dot"></i> <%=pt.getTenKhuVuc()%>
+						</span> <span class="tag tag-area"><i
+							class="fa-solid fa-ruler-combined"></i> <%=pt.getDienTich()%>m²</span>
 					</div>
 				</div>
 
@@ -514,10 +571,10 @@
 							<div class="landlord-name"><%=pt.getTenCT()%></div>
 							<div class="landlord-sub">Chủ nhà • Phản hồi nhanh</div>
 						</div>
-						<button
+						<a href="${pageContext.request.contextPath}/TroChuyenCTro?ID_ChuTro=<%= pt.getID_ChuTro() %>"
 							class="btn btn-outline-primary btn-sm ms-auto rounded-pill px-3">
 							<i class="fa-brands fa-whatsapp"></i> Chat ngay
-						</button>
+						</a>
 					</div>
 					<p class="text-secondary"><%=pt.getMoTa()%></p>
 				</div>
@@ -565,15 +622,18 @@
 						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.6573463462786!2d105.7812523148837!3d21.046392985988864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab3b4220c2bd%3A0x1c9e359e2a4f618c!2zQ2Hduw!5e0!3m2!1svi!2s!4v1646814758000!5m2!1svi!2s"
 						class="map-frame" allowfullscreen="" loading="lazy"></iframe>
 				</div>
-				<% int countComment = (int) request.getAttribute("countComment");
+				<%
+				int countComment = (int) request.getAttribute("countComment");
 				int avgStar = (int) request.getAttribute("avgStar");
 				%>
 				<!-- 5. BÌNH LUẬN -->
 				<div class="section-box">
 					<div class="review-summary">
-						<i class="fa-solid fa-star text-warning"></i> <%= (avgStar !=-1) ? avgStar : "" %>.0 <span
-							style="font-size: 1.1rem; font-weight: 400; color: #777;">(<%= (countComment !=-1) ? countComment : "" %>
-							đánh giá)</span>
+						<i class="fa-solid fa-star text-warning"></i>
+						<%=(avgStar != -1) ? avgStar : ""%>.0 <span
+							style="font-size: 1.1rem; font-weight: 400; color: #777;">(<%=(countComment != -1) ? countComment : ""%>
+							đánh giá)
+						</span>
 					</div>
 
 					<!-- Form đăng bình luận -->
@@ -653,8 +713,33 @@
 					</div>
 
 					<div class="booking-action">
-						<!-- 4. NÚT THUÊ PHÒNG (Trigger Modal) -->
-						<a href="${pageContext.request.contextPath}/YeuCauThueTro?ID_Phong=<%= pt.getID_Phong() %>" class="btn-rent">Yêu cầu thuê</a>
+						<%
+						String status = pt.getTrangThai(); // Giả sử: 0: Trống, 1: Đã thuê, 2: Đang sửa chữa
+
+						if (status.equals("Còn trống")) {
+						%>
+						<a
+							href="${pageContext.request.contextPath}/YeuCauThueTro?ID_Phong=<%= pt.getID_Phong() %>"
+							class="btn-rent"> <i class="fa-solid fa-key"></i> Yêu cầu
+							thuê
+						</a>
+
+						<%
+						} else if (status.equals("Đã thuê")) {
+						%>
+						<div class="status-notice notice-rented">
+							<i class="fa-solid fa-user-check"></i> Phòng đã được thuê
+						</div>
+
+						<%
+						} else if (status.equals("Đang sửa chữa")) {
+						%>
+						<div class="status-notice notice-repair">
+							<i class="fa-solid fa-screwdriver-wrench"></i> Đang sửa chữa
+						</div>
+						<%
+						}
+						%>
 					</div>
 
 					<div class="mt-4 pt-3 border-top">
@@ -734,114 +819,28 @@
             });
         }
     }
-        // Gallery Image Switcher
-        function changeImage(element) {
-            // Change main image
-            document.getElementById('currentImg').src = element.src.replace('w=200', 'w=1200'); // Load high res
-            
-            // Update active class
-            document.querySelectorAll('.thumb-img').forEach(img => img.classList.remove('active'));
-            element.classList.add('active');
-            function toggleDropdown(id) {
-                // Đóng các dropdown khác
-                const allDropdowns = document.querySelectorAll('.dropdown-content');
-                allDropdowns.forEach(d => {
-                    if(d.id !== id) d.parentElement.classList.remove('active');
-                });
-
-                // Mở/Đóng cái hiện tại
-                const element = document.getElementById(id);
-                element.parentElement.classList.toggle('active');
-            }
-
-            // Click ra ngoài thì đóng
-            window.onclick = function(event) {
-                if (!event.target.closest('.dropdown')) {
-                    const dropdowns = document.querySelectorAll(".dropdown");
-                    dropdowns.forEach(openDropdown => {
-                        openDropdown.classList.remove('active');
-                    });
-                }
-            }
-        }
         
-        const modal = document.getElementById('contractModal');
-        const openBtn = document.getElementById('openModalBtn');
-        const closeIconBtn = document.getElementById('closeIconBtn');
-        const agreeCheckbox = document.getElementById('agreeTerms');
-        const submitBtn = document.getElementById('submitBtn');
-
-        function openModal() {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            closeIconBtn.focus();
-        }
-
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-            agreeCheckbox.checked = false;
-            submitBtn.disabled = true;
-        }
-
-        openBtn.addEventListener('click', openModal);
-        closeIconBtn.addEventListener('click', closeModal);
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        // CHECKBOX EVENT
-        agreeCheckbox.addEventListener('change', function () {
-            submitBtn.disabled = !this.checked;
-        });
-
-        // --- 4. CHỨC NĂNG GIẢ LẬP ---
-
-        // In hợp đồng
-        function printContract() {
-            window.print();
-        }
-
-        // Tải xuống PDF
-        function downloadContract() {
-            // Logic thực tế: Gọi API backend để tải file PDF thật
-            // Ở đây dùng giả lập tạo file text đơn giản
-            const element = document.createElement('a');
-            const text = document.querySelector('.contract-content').innerText;
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-            element.setAttribute('download', 'Mau_Hop_Dong.txt'); // Demo tải file text
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-
-            alert('Đang tải xuống bản mẫu hợp đồng...');
-        }
-
-        // Ký hợp đồng (Submit)
-        function signContract() {
-            if (!submitBtn.disabled) {
-                alert('Bạn đã đồng ý ký hợp đồng! Hệ thống sẽ chuyển sang bước thanh toán.');
-                closeModal();
-                // window.location.href = '/payment-step'; // Chuyển trang
-            }
-        }
         
         const stars = document.querySelectorAll("#ratingStars i");
         const ratingInput = document.getElementById("ratingInput");
 
         stars.forEach(star => {
             star.addEventListener("click", function () {
-                let value = this.getAttribute("data-value");
+                const value = parseInt(this.dataset.value);
 
-                // tô sao
-                stars.forEach(s => s.classList.replace("fa-solid","fa-regular"));
+                // Reset tất cả sao
+                stars.forEach(s => {
+                    s.classList.remove("fa-solid");
+                    s.classList.add("fa-regular");
+                });
+
+                // Tô sao từ 1 → value
                 for (let i = 0; i < value; i++) {
-                    stars[i].classList.replace("fa-regular","fa-solid");
+                    stars[i].classList.remove("fa-regular");
+                    stars[i].classList.add("fa-solid");
                 }
 
-                // gán vào input để form tự gửi
+                // Gán giá trị cho form
                 ratingInput.value = value;
             });
         });

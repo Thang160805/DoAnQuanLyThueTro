@@ -108,6 +108,20 @@ public class PhongTroBO {
 	 public boolean CapNhatTrangThaiPhong(int ID_Phong) {
 		 return ptDao.CapNhatTrangThaiPhong(ID_Phong);
 	 }
-	
-
+	 
+	 public ArrayList<PhongTro> getListPhongTroChuaDuyet(){
+		 return ptDao.getListPhongTroChuaDuyet();
+	 }
+	 
+	 public int getCountPhongChoDuyet() {
+		 return ptDao.getCountPhongChoDuyet();
+	 }
+	 
+	 public int getCountPhongDaDuyet() {
+		 return ptDao.getCountPhongDaDuyet();
+	 }
+	 
+	 public boolean UpdateTrangThaiDuyet(int ID_Phong) {
+		 return ptDao.UpdateTrangThaiDuyet(ID_Phong);
+	 }
 }

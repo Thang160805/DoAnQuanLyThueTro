@@ -46,8 +46,6 @@ public class XoaPhongTro extends HttpServlet {
 		
 		int idPhong = Integer.parseInt(request.getParameter("id"));
 		String TrangThai = request.getParameter("status");
-		System.out.println(idPhong);
-		System.out.println(TrangThai);
 		PhongTroBO ptBO = new PhongTroBO();
 		
 		if (TrangThai != null && TrangThai.trim().equals("Còn trống")) {

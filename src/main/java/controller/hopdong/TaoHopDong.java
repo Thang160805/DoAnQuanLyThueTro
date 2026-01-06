@@ -49,9 +49,11 @@ public class TaoHopDong extends HttpServlet {
 		    response.sendRedirect(request.getContextPath() + "/index.jsp");
 		    return;
 		}
-		int idNguoiThue = Integer.parseInt(request.getParameter("idNguoiThue"));
-		int idChuTro   = Integer.parseInt(request.getParameter("idChuTro"));
-		int idPhong    = Integer.parseInt(request.getParameter("idPhong"));
+		int idHopDong = Integer.parseInt(request.getParameter("id"));
+		int idYeuCau = Integer.parseInt(request.getParameter("idYeuCau"));
+		int idNguoiThue = Integer.parseInt(request.getParameter("ID_NguoiThue"));
+		int idChuTro   = Integer.parseInt(request.getParameter("ID_ChuTro"));
+		int idPhong    = Integer.parseInt(request.getParameter("ID_Phong"));
 		PhongTroBO ptBO = new PhongTroBO();
 		PhongTro pt = ptBO.getPhongTroById(idPhong);
 		request.setAttribute("ChiTietPhong", pt);
@@ -60,10 +62,11 @@ public class TaoHopDong extends HttpServlet {
 		request.setAttribute("TaiKhoanNguoiThue", tkNguoiThue);
 		TaiKhoan tkChuTro = tkBO.getThongTinCaNhan(idChuTro);
 		request.setAttribute("TaiKhoanChuTro", tkChuTro);
-		
+		request.setAttribute("idYeuCau", idYeuCau);
 		TienIchBO tiBO = new TienIchBO();
 		ArrayList<TienIch> list = tiBO.getListTienIchByIDPhong(idPhong);
 		request.setAttribute("listTienIch", list);
+		request.setAttribute("idHopDong", idHopDong);
 		RequestDispatcher rs = request.getRequestDispatcher("/HopDong/TaoHopDong.jsp");
 		rs.forward(request, response);
 	}

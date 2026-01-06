@@ -40,4 +40,12 @@ public class YeuCauThueTroBO {
 	public int getID_PhongByID(int ID_YeuCau) {
 		return ycttDao.getID_PhongByID(ID_YeuCau);
 	}
+	
+	public void UpdateTrangThaiYCDuyetChoYeuCauKhac(int idYeuCau,int ID_Phong) {
+		ycttDao.UpdateTrangThaiYCDuyetChoYeuCauKhac(idYeuCau, ID_Phong);
+	}
+	
+	public ArrayList<Integer> getID_TaiKhoanChuaDuyet(int ID_Phong,int idYeuCau){
+		return ycttDao.getID_TaiKhoanChuaDuyet(ID_Phong, idYeuCau);
+	}
 }

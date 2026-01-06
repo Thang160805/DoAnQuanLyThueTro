@@ -86,15 +86,17 @@ public class DangKyServlet extends HttpServlet {
 		    return;
 		}
 		
+		String hashedPassword = HashUtil.md5(Password);
+
+		
 
 		TaiKhoan tk = new TaiKhoan();
 		tk.setTenDangNhap(TenDangNhap);
-		tk.setMatKhau(Password);
+		tk.setMatKhau(hashedPassword);
 		tk.setRole(role);
 
 		try {
 			int ID_TaiKhoan = tkBO.insertTaiKhoanReturnID(tk);
-			System.out.println(ID_TaiKhoan);
 			if (ID_TaiKhoan > 0) {
 			    tkBO.insertThongTinNguoiDungMoi(ID_TaiKhoan);
 			    String url = request.getContextPath() + "/auth/DangNhap.jsp";

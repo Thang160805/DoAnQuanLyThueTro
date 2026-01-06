@@ -56,9 +56,6 @@ public class XuLyKetThucHopDong extends HttpServlet {
 	    int idNguoiThue = Integer.parseInt(request.getParameter("ID_NguoiThue"));
 	    String TenPhong = request.getParameter("TenPhong");
 	    String title = "Hợp đồng thuê phòng đã kết thúc";
-
-	    String content = "Hợp đồng thuê phòng " + TenPhong + " đã được kết thúc.";
-
 	    String full_content =
 	            "Hợp đồng thuê phòng \"" + TenPhong + "\" đã được kết thúc thành công.\n"
 	          + "Phòng hiện đã được cập nhật trạng thái \"Còn trống\".";
@@ -69,7 +66,6 @@ public class XuLyKetThucHopDong extends HttpServlet {
 		tb.setReceiver_id(idNguoiThue);
 		tb.setSender_id(user.getId());
 		tb.setTitle(title);
-		tb.setContent(content);
 		tb.setType(type);
 		tb.setFull_content(full_content);
 	    HopDongBO hdBO = new HopDongBO();

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.bean.ThongBao;
+import model.bo.TaiKhoanBO;
 
 public class ThongBaoDao {
 	public Connection connection;
@@ -22,10 +23,13 @@ public class ThongBaoDao {
 		}
 	}
 	
-	public ArrayList<ThongBao> getListThongBaoById(int Id_TaiKhoan){
+	public ArrayList<ThongBao> getListThongBaoById(int Id_TaiKhoan, int page){
 		Connect();
+		int pageSize = 5; 
+		int start = (page - 1) * pageSize;
 		ArrayList<ThongBao> list = new ArrayList<ThongBao>();
-		String sql = "select tb.*,tk.Role from ThongBao tb left join TaiKhoan tk on tb.sender_id=tk.id where tb.receiver_id=? order by tb.created_at desc";
+		String sql = "select tb.*,tk.Role from ThongBao tb left join TaiKhoan tk on tb.sender_id=tk.id where tb.receiver_id=? order by tb.created_at desc "
+				+ "OFFSET " + start + " ROWS FETCH NEXT " + pageSize + " ROWS ONLY";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, Id_TaiKhoan);
@@ -36,7 +40,6 @@ public class ThongBaoDao {
 				tb.setReceiver_id(rs.getInt("receiver_id"));
 				tb.setSender_id(rs.getInt("sender_id"));
 				tb.setTitle(rs.getString("title"));
-				tb.setContent(rs.getString("content"));
 				tb.setType(rs.getString("type"));
 				tb.setIs_read(rs.getInt("is_read"));
 				tb.setCreate_at(rs.getTimestamp("created_at").toLocalDateTime());
@@ -158,15 +161,51 @@ public class ThongBaoDao {
 	
 	public void insertGuiThongBao(ThongBao tb) {
 		Connect();
-		String sql = "insert into ThongBao(receiver_id,sender_id,title,content,full_content) values(?,?,?,?,?)";
+		String sql = "insert into ThongBao(receiver_id,sender_id,title,full_content) values(?,?,?,?)";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, tb.getReceiver_id());
 			ps.setInt(2, tb.getSender_id());
 			ps.setString(3, tb.getTitle());
-			ps.setString(4, tb.getContent());
-			ps.setString(5, tb.getFull_content());
+			ps.setString(4, tb.getFull_content());
 			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int getTotalCountThongBao(int TaiKhoan_id) {
+		Connect();
+		int totalCount = 1;
+		String sql = "Select count(*) as cnt from ThongBao where receiver_id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, TaiKhoan_id);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				totalCount = rs.getInt("cnt");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return totalCount;
+	}
+	
+	public void sendThongBaoToAdmins(ThongBao tb) {
+		Connect();
+		String sql = "insert into ThongBao(receiver_id,sender_id,title,full_content) values(?,?,?,?)";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			TaiKhoanBO tkBO = new TaiKhoanBO();
+			ArrayList<Integer> listID = tkBO.getAllAdmins();
+			for(int ID_Admin : listID) {
+				ps.setInt(1, ID_Admin);
+				ps.setInt(2, tb.getSender_id());
+				ps.setString(3, tb.getTitle());
+				ps.setString(4, tb.getFull_content());
+				ps.executeUpdate();
+			}
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

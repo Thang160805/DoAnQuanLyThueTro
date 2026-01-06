@@ -59,49 +59,107 @@ public class ProcessTimPhong extends HttpServlet {
 		PhongTroBO ptBO = new PhongTroBO();
 		String orderBy = (String) request.getParameter("orderBy");
 		String order = (String) request.getParameter("order");
-		String filter="";
-		String KhuVuc = request.getParameter("KhuVuc");
-		if (KhuVuc == null || KhuVuc.equals("all")) {
-		    filter = "and pt.ID_KhuVuc IS NOT NULL";
+		StringBuilder filter = new StringBuilder(" AND pt.ID_Phong IS NOT NULL ");
+
+		// ===== LỌC THEO KHU VỰC =====
+		String khuVuc = request.getParameter("KhuVuc");
+		if (khuVuc != null && !khuVuc.equals("all")) {
+		    filter.append(" AND pt.ID_KhuVuc = ").append(khuVuc);
 		}
-		else{
-			filter = "and pt.ID_KhuVuc ="+KhuVuc;
-		}
+
+		// ===== LỌC THEO TỪ KHÓA =====
 		String keyword = request.getParameter("keyword");
-		if(keyword != null) {
-			filter = "and (pt.TenPhong like N'%"+keyword+"%' or pt.DiaChi like N'%"+keyword+"%')";
+		if (keyword != null && !keyword.trim().isEmpty()) {
+		    filter.append(" AND (pt.TenPhong LIKE N'%")
+		          .append(keyword.trim())
+		          .append("%' OR pt.DiaChi LIKE N'%")
+		          .append(keyword.trim())
+		          .append("%')");
 		}
-		
 
-		String GiaThue = (String) request.getParameter("GiaThue");
-		if(GiaThue != null && !GiaThue.isEmpty()) {
-		    filter = "AND pt.GiaThue <= " + GiaThue;
+		// ===== LỌC THEO GIÁ (INT) =====
+		String giaMinStr = request.getParameter("giaMin");
+		String giaMaxStr = request.getParameter("giaMax");
+
+		try {
+		    if (giaMinStr != null && !giaMinStr.isEmpty()) {
+		        int giaMin = Integer.parseInt(giaMinStr);
+		        filter.append(" AND pt.GiaThue >= ").append(giaMin);
+		    }
+
+		    if (giaMaxStr != null && !giaMaxStr.isEmpty()) {
+		        int giaMax = Integer.parseInt(giaMaxStr);
+		        filter.append(" AND pt.GiaThue <= ").append(giaMax);
+		    }
+		} catch (NumberFormatException e) {
+		    request.setAttribute("error", "Giá thuê không hợp lệ");
 		}
-		
-		String DienTich = request.getParameter("DienTich");
-		if(DienTich != null && !DienTich.isEmpty()) {
-		    filter = "AND pt.DienTich <= " + DienTich;
+
+		// ===== LỌC THEO DIỆN TÍCH (FLOAT) =====
+		String dtMinStr = request.getParameter("dtMin");
+		String dtMaxStr = request.getParameter("dtMax");
+
+		try {
+		    if (dtMinStr != null && !dtMinStr.isEmpty()) {
+		        float dtMin = Float.parseFloat(dtMinStr);
+		        filter.append(" AND pt.DienTich >= ").append(dtMin);
+		    }
+
+		    if (dtMaxStr != null && !dtMaxStr.isEmpty()) {
+		        float dtMax = Float.parseFloat(dtMaxStr);
+		        filter.append(" AND pt.DienTich <= ").append(dtMax);
+		    }
+		} catch (NumberFormatException e) {
+		    request.setAttribute("error", "Diện tích không hợp lệ");
 		}
-		
+
+		// ===== VALIDATE LOGIC (MIN <= MAX) =====
+		if (giaMinStr != null && giaMaxStr != null &&
+		    !giaMinStr.isEmpty() && !giaMaxStr.isEmpty()) {
+
+		    int giaMin = Integer.parseInt(giaMinStr);
+		    int giaMax = Integer.parseInt(giaMaxStr);
+
+		    if (giaMin > giaMax) {
+		        request.setAttribute("error",
+		            "Giá từ không được lớn hơn giá đến");
+		    }
+		}
+
+		if (dtMinStr != null && dtMaxStr != null &&
+		    !dtMinStr.isEmpty() && !dtMaxStr.isEmpty()) {
+
+		    float dtMin = Float.parseFloat(dtMinStr);
+		    float dtMax = Float.parseFloat(dtMaxStr);
+
+		    if (dtMin > dtMax) {
+		        request.setAttribute("error",
+		            "Diện tích từ không được lớn hơn diện tích đến");
+		    }
+		}
+
+		// ===== LỌC THEO TIỆN ÍCH (CHECKBOX) =====
 		String[] tienIch = request.getParameterValues("TienIch");
-
 		if (tienIch != null && tienIch.length > 0) {
 
 		    String listIds = String.join(",", tienIch);
 		    int count = tienIch.length;
 
-		    filter = "AND pt.ID_Phong IN (" +
-		              "SELECT pti.Id_Phong " +
-		              "FROM PhongTro_TienIch pti " +
-		              "WHERE pti.Id_Tienich IN (" + listIds +") " +
-		              "GROUP BY pti.Id_Phong " +
-		              "HAVING COUNT(DISTINCT pti.Id_Tienich) = " + count +
-		              ")";
+		    filter.append(
+		        " AND pt.ID_Phong IN ( " +
+		        "   SELECT pti.Id_Phong " +
+		        "   FROM PhongTro_TienIch pti " +
+		        "   WHERE pti.Id_Tienich IN (" + listIds + ") " +
+		        "   GROUP BY pti.Id_Phong " +
+		        "   HAVING COUNT(DISTINCT pti.Id_Tienich) = " + count +
+		        " )"
+		    );
 		}
+		String filterSQL = filter.toString();
 		int ToTalCountKV = ptBO.getToTalCountKV();
 		int pageSize = 12;
 		String pageStr = request.getParameter("page");
-		int totalCount = ptBO.getTotalCountsPhongTrong(filter);
+		int totalCount = ptBO.getTotalCountsPhongTrong(filterSQL);
 		int totalPage = (int) Math.ceil(totalCount * 1.0 / pageSize);
 		int page;
 		try { 
@@ -110,7 +168,7 @@ public class ProcessTimPhong extends HttpServlet {
 				page = 1; 
 		}
 		if (page <= 0 || page > totalPage) page = 1;
-		ArrayList<PhongTro> listPhongTro = ptBO.getListPhongTro(orderBy, order, filter, page);
+		ArrayList<PhongTro> listPhongTro = ptBO.getListPhongTro(orderBy, order, filterSQL, page);
 		request.setAttribute("listPhongTro", listPhongTro);
 		request.setAttribute("totalPage", totalPage);
 		request.setAttribute("currentPage", page);

@@ -1,5 +1,7 @@
 package model.bo;
 
+import java.util.ArrayList;
+
 import model.bean.TaiKhoan;
 import model.dao.TaiKhoanDao;
 
@@ -65,4 +67,15 @@ public class TaiKhoanBO {
 		tkDao.insertThongTinNguoiDungMoi(ID_TaiKhoan);
 	}
 	
+	public ArrayList<TaiKhoan> getListTaiKhoan(){
+		return tkDao.getListTaiKhoan();
+	}
+	
+	public int getCountTaiKhoan() {
+		return tkDao.getCountTaiKhoan();
+	}
+	
+	public ArrayList<Integer> getAllAdmins(){
+		return tkDao.getAllAdmins();
+	}
 }

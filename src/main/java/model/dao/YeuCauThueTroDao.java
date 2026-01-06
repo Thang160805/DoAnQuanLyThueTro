@@ -201,4 +201,37 @@ public class YeuCauThueTroDao {
 		return ID_Phong;
 	}
 	
+	public void UpdateTrangThaiYCDuyetChoYeuCauKhac(int idYeuCau,int ID_Phong) {
+		Connect();
+		String sql = "update YeuCauThueTro set TrangThai = N'Đã hủy' where ID_Phong=? and id!=? and TrangThai = N'Chờ duyệt'";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_Phong);
+			ps.setInt(2, idYeuCau);
+			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Integer> getID_TaiKhoanChuaDuyet(int ID_Phong,int idYeuCau){
+		Connect();
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		String sql = "select ID_TaiKhoan from YeuCauThueTro where ID_Phong=? and id!=? and TrangThai = N'Chờ duyệt'";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, ID_Phong);
+			ps.setInt(2, idYeuCau);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getInt("ID_TaiKhoan"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	
+	
 }
