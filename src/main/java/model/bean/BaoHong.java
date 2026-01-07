@@ -1,6 +1,7 @@
 package model.bean;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class BaoHong {
 	private int id;
@@ -12,9 +13,11 @@ public class BaoHong {
 	private String MoTa;
 	private String TrangThai;
 	private LocalDateTime ThoiGianGui;
+	private LocalDateTime Updated_At;
 	private String TenPhong;
 	private String TenNguoiGui;
 	private String Avatar;
+	private ArrayList<String> anhBaoHong;
 	
 	public int getId() {
 		return id;
@@ -70,6 +73,13 @@ public class BaoHong {
 	public void setThoiGianGui(LocalDateTime thoiGianGui) {
 		ThoiGianGui = thoiGianGui;
 	}
+	
+	public LocalDateTime getUpdated_At() {
+		return Updated_At;
+	}
+	public void setUpdated_At(LocalDateTime updated_At) {
+		Updated_At = updated_At;
+	}
 	public String getTenPhong() {
 		return TenPhong;
 	}
@@ -88,6 +98,13 @@ public class BaoHong {
 	public void setAvatar(String avatar) {
 		Avatar = avatar;
 	}
+	public ArrayList<String> getAnhBaoHong() {
+		return anhBaoHong;
+	}
+	public void setAnhBaoHong(ArrayList<String> anhBaoHong) {
+		this.anhBaoHong = anhBaoHong;
+	}
+	
 	
 	
 	

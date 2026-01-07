@@ -22,4 +22,20 @@ public class BaoHongBO {
 	public ArrayList<BaoHong> listBaoHong(){
 		return bhDao.listBaoHong();
 	}
+	
+	public BaoHong getBaoHongById(int idBaoHong) {
+		return bhDao.getBaoHongById(idBaoHong);
+	}
+	
+	public boolean updateTrangThaiXuLy(int idBaoHong) {
+		return bhDao.updateTrangThaiXuLy(idBaoHong);
+	}
+	
+	public boolean updateTrangThaiHoanThanh(int idBaoHong) {
+		return bhDao.updateTrangThaiHoanThanh(idBaoHong);
+	}
+	
+	public boolean updateTrangThaiTuChoi(int idBaoHong) {
+		return bhDao.updateTrangThaiTuChoi(idBaoHong);
+	}
 }

@@ -55,4 +55,8 @@ public class HopDongBO {
 	public ArrayList<HopDong> getListPhongDaThueById(int ID_NguoiThue){
 		return hdDao.getListPhongDaThueById(ID_NguoiThue);
 	}
+	
+	public ArrayList<HopDong> getListHDByIdCT(int idChuTro){
+		return hdDao.getListHDByIdCT(idChuTro);
+	}
 }

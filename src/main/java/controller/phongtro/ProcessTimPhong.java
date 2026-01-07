@@ -60,14 +60,10 @@ public class ProcessTimPhong extends HttpServlet {
 		String orderBy = (String) request.getParameter("orderBy");
 		String order = (String) request.getParameter("order");
 		StringBuilder filter = new StringBuilder(" AND pt.ID_Phong IS NOT NULL ");
-
-		// ===== LỌC THEO KHU VỰC =====
 		String khuVuc = request.getParameter("KhuVuc");
 		if (khuVuc != null && !khuVuc.equals("all")) {
 		    filter.append(" AND pt.ID_KhuVuc = ").append(khuVuc);
 		}
-
-		// ===== LỌC THEO TỪ KHÓA =====
 		String keyword = request.getParameter("keyword");
 		if (keyword != null && !keyword.trim().isEmpty()) {
 		    filter.append(" AND (pt.TenPhong LIKE N'%")
@@ -76,8 +72,6 @@ public class ProcessTimPhong extends HttpServlet {
 		          .append(keyword.trim())
 		          .append("%')");
 		}
-
-		// ===== LỌC THEO GIÁ (INT) =====
 		String giaMinStr = request.getParameter("giaMin");
 		String giaMaxStr = request.getParameter("giaMax");
 
@@ -94,8 +88,6 @@ public class ProcessTimPhong extends HttpServlet {
 		} catch (NumberFormatException e) {
 		    request.setAttribute("error", "Giá thuê không hợp lệ");
 		}
-
-		// ===== LỌC THEO DIỆN TÍCH (FLOAT) =====
 		String dtMinStr = request.getParameter("dtMin");
 		String dtMaxStr = request.getParameter("dtMax");
 
@@ -113,7 +105,6 @@ public class ProcessTimPhong extends HttpServlet {
 		    request.setAttribute("error", "Diện tích không hợp lệ");
 		}
 
-		// ===== VALIDATE LOGIC (MIN <= MAX) =====
 		if (giaMinStr != null && giaMaxStr != null &&
 		    !giaMinStr.isEmpty() && !giaMaxStr.isEmpty()) {
 
@@ -137,8 +128,6 @@ public class ProcessTimPhong extends HttpServlet {
 		            "Diện tích từ không được lớn hơn diện tích đến");
 		    }
 		}
-
-		// ===== LỌC THEO TIỆN ÍCH (CHECKBOX) =====
 		String[] tienIch = request.getParameterValues("TienIch");
 		if (tienIch != null && tienIch.length > 0) {
 

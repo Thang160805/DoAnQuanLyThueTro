@@ -23,10 +23,38 @@ public class HopDong {
 	private String TrangThaiYeuCau;
 	private String AnhPhong;
 	private String DiaChi;
+	private int GiaThue;
+	private int GiaDien;
+	private int GiaNuoc;
 	
 	
 	
 	
+	
+	public int getGiaThue() {
+		return GiaThue;
+	}
+
+	public void setGiaThue(int giaThue) {
+		GiaThue = giaThue;
+	}
+
+	public int getGiaDien() {
+		return GiaDien;
+	}
+
+	public void setGiaDien(int giaDien) {
+		GiaDien = giaDien;
+	}
+
+	public int getGiaNuoc() {
+		return GiaNuoc;
+	}
+
+	public void setGiaNuoc(int giaNuoc) {
+		GiaNuoc = giaNuoc;
+	}
+
 	public String getDiaChi() {
 		return DiaChi;
 	}

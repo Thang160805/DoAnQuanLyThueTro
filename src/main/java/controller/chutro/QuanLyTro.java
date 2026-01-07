@@ -8,11 +8,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.bean.BaoHong;
+import model.bean.HoaDon;
 import model.bean.HopDong;
 import model.bean.PhongTro;
 import model.bean.TaiKhoan;
 import model.bean.YeuCauThueTro;
 import model.bo.BaoHongBO;
+import model.bo.HoaDonBO;
 import model.bo.HopDongBO;
 import model.bo.PhongTroBO;
 import model.bo.TaiKhoanBO;
@@ -84,6 +86,16 @@ public class QuanLyTro extends HttpServlet {
 		BaoHongBO bhBO = new BaoHongBO();
 		ArrayList<BaoHong> listBH = bhBO.listBaoHong();
 		request.setAttribute("listBH", listBH);
+		
+		StringBuilder filter = new StringBuilder(" AND hd.ThangNam IS NOT NULL ");
+		String ThangNam = request.getParameter("ThangNam");
+		if(ThangNam != null && !ThangNam.isEmpty()) {
+			 filter.append(" AND hd.ThangNam = ").append(ThangNam);
+		}
+		String filterSQL = filter.toString();
+		HoaDonBO hdBo = new HoaDonBO();
+		ArrayList<HoaDon> listHoaDon = hdBo.getListHoaDonByIdCT(user.getId(), filterSQL);
+		request.setAttribute("listHoaDon", listHoaDon);
 		RequestDispatcher rs = request.getRequestDispatcher("/ChuTro/QuanLyTro.jsp");
 		rs.forward(request, response);
 	}

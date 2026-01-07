@@ -286,4 +286,30 @@ public class HopDongDao {
 		return listID;
 	}
 	
+	public ArrayList<HopDong> getListHDByIdCT(int idChuTro){
+		Connect();
+		ArrayList<HopDong> list = new ArrayList<HopDong>();
+		String sql = "select hd.id,pt.TenPhong,pt.GiaThue,pt.GiaDien,pt.GiaNuoc,tt.HoTen from HopDong hd "
+				+ "join ThongTinNguoiDung tt on hd.ID_NguoiThue=tt.ID_TaiKhoan "
+				+ "join PhongTro pt on hd.ID_Phong=pt.ID_Phong where hd.TrangThai = N'Đang hiệu lực' and hd.ID_ChuTro=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idChuTro);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				HopDong hd = new HopDong();
+				hd.setId(rs.getInt("id"));
+				hd.setTenPhong(rs.getString("TenPhong"));
+				hd.setGiaThue(rs.getInt("GiaThue"));
+				hd.setGiaDien(rs.getInt("GiaDien"));
+				hd.setGiaNuoc(rs.getInt("GiaNuoc"));
+				hd.setTenNguoiThue(rs.getString("HoTen"));
+				list.add(hd);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 }

@@ -115,4 +115,103 @@ public class BaoHongDao {
 		}
 		return list;
 	}
+	
+	public ArrayList<String> getListAnhBaoHongById(int idBaoHong){
+		Connect();
+		ArrayList<String> list = new ArrayList<String>();
+		String sql = "select linkAnh from AnhBaoHong where ID_BaoHong=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idBaoHong);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getString("linkAnh"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public BaoHong getBaoHongById(int idBaoHong) {
+		Connect();
+		BaoHong bh = null;
+		String sql = "select bh.*,tt.HoTen,tt.Avatar,pt.TenPhong from BaoHong bh "
+				+ "join ThongTinNguoiDung tt on bh.ID_NguoiGui=tt.ID_TaiKhoan "
+				+ "join PhongTro pt on bh.ID_Phong=pt.ID_Phong where bh.id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idBaoHong);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				bh = new BaoHong();
+				bh.setId(rs.getInt("id"));
+				bh.setID_Phong(rs.getInt("ID_Phong"));
+				bh.setID_NguoiGui(rs.getInt("ID_NguoiGui"));
+				bh.setTieuDe(rs.getString("TieuDe"));
+				bh.setLoaiHuHong(rs.getString("LoaiHuHong"));
+				bh.setMucDoUuTien(rs.getString("MucDoUuTien"));
+				bh.setMoTa(rs.getString("MoTa"));
+				bh.setTrangThai(rs.getString("TrangThai"));
+				bh.setThoiGianGui(rs.getTimestamp("ThoiGianGui").toLocalDateTime());
+				bh.setUpdated_At(rs.getTimestamp("updated_at").toLocalDateTime());
+				bh.setTenNguoiGui(rs.getString("HoTen"));
+				bh.setAvatar(rs.getString("Avatar"));
+				bh.setTenPhong(rs.getString("TenPhong"));
+				ArrayList<String> listAnh = getListAnhBaoHongById(idBaoHong);
+				bh.setAnhBaoHong(listAnh);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return bh;
+	}
+	
+	public boolean updateTrangThaiXuLy(int idBaoHong) {
+		Connect();
+		String sql = "update BaoHong set TrangThai = N'Đang xử lý' where id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idBaoHong);
+			int row = ps.executeUpdate();
+			if(row>0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean updateTrangThaiHoanThanh(int idBaoHong) {
+		Connect();
+		String sql = "update BaoHong set TrangThai = N'Hoàn thành' where id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idBaoHong);
+			int row = ps.executeUpdate();
+			if(row>0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean updateTrangThaiTuChoi(int idBaoHong) {
+		Connect();
+		String sql = "update BaoHong set TrangThai = N'Từ chối' where id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idBaoHong);
+			int row = ps.executeUpdate();
+			if(row>0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

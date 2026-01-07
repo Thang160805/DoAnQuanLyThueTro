@@ -1,0 +1,430 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'Poppins', sans-serif;
+	background-color: #f8fafc;
+	color: #1e293b;
+	line-height: 1.6;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+.breadcrumb {
+	display: flex;
+	gap: 8px;
+	font-size: 14px;
+	margin-bottom: 24px;
+	color: #64748b;
+}
+
+.breadcrumb a {
+	text-decoration: none;
+	color: #6366f1;
+	font-weight: 500;
+}
+
+.breadcrumb span::before {
+	content: '/';
+	margin-right: 8px;
+	color: #e2e8f0;
+}
+
+/* Layout Grid */
+.grid-layout {
+	display: grid;
+	grid-template-columns: 1fr 380px;
+	gap: 24px;
+	align-items: start;
+}
+
+.card {
+	background: #ffffff;
+	border-radius: 16px;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	padding: 24px;
+	border: 1px solid #e2e8f0;
+	margin-bottom: 24px;
+}
+
+.card-title {
+	font-size: 18px;
+	font-weight: 700;
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.incident-header {
+	margin-bottom: 20px;
+}
+
+.incident-title {
+	font-size: 24px;
+	font-weight: 800;
+	color: #1e293b;
+	margin-bottom: 12px;
+}
+
+.meta-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.meta-item {
+	display: flex;
+	flex-direction: column;
+}
+
+.label {
+	font-size: 12px;
+	font-weight: 600;
+	color: #64748b;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.value {
+	font-weight: 500;
+	color: #1e293b;
+}
+
+.reporter-info {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px;
+	background: #f8fafc;
+	border-radius: 12px;
+}
+
+.avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.badge {
+	padding: 6px 12px;
+	border-radius: 50px;
+	font-size: 12px;
+	font-weight: 600;
+	display: inline-block;
+}
+
+.priority-high {
+	background: #fee2e2;
+	color: #ef4444;
+}
+
+.status-pending {
+	background: #fef3c7;
+	color: #f59e0b;
+}
+
+.status-processing {
+	background: #e0e7ff;
+	color: #6366f1;
+}
+
+.gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+	gap: 12px;
+}
+
+.gallery-img {
+	width: 100%;
+	aspect-ratio: 1;
+	object-fit: cover;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: transform 0.2s;
+	border: 1px solid #e2e8f0;
+}
+
+.gallery-img:hover {
+	transform: scale(1.05);
+	border-color: #6366f1;
+}
+
+.form-group {
+	margin-bottom: 20px;
+}
+
+.form-label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 8px;
+	font-size: 14px;
+}
+
+.form-select, .form-textarea {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #e2e8f0;
+	border-radius: 10px;
+	font-family: inherit;
+	font-size: 14px;
+	outline: none;
+	transition: 0.3s;
+}
+
+.form-select:focus, .form-textarea:focus {
+	border-color: #6366f1;
+	box-shadow: 0 0 0 3px #e0e7ff;
+}
+
+.form-textarea {
+	resize: none;
+}
+
+.btn-group {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.btn {
+	border: none;
+	padding: 14px 24px;
+	border-radius: 12px;
+	font-weight: 700;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	transition: 0.3s;
+	font-size: 15px;
+	width: 100%;
+}
+
+.btn-success {
+	background: #10b981;
+	color: white;
+}
+
+.btn-success:hover {
+	background: #059669;
+}
+
+.btn-danger {
+	background: #ef4444;
+	color: white;
+}
+
+.btn-danger:hover {
+	background: #dc2626;
+}
+
+.btn-primary {
+	background: #6366f1;
+	color: white;
+}
+
+.btn-primary:hover {
+	background: #4338ca;
+}
+
+.btn-back {
+	background: transparent;
+	color: #64748b;
+	border: 1px solid #e2e8f0;
+}
+
+.btn-back:hover {
+	background: #f8fafc;
+	color: #1e293b;
+}
+
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	backdrop-filter: blur(4px);
+}
+
+.modal {
+	background: white;
+	width: 100%;
+	max-width: 450px;
+	border-radius: 16px;
+	padding: 32px;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+
+
+@keyframes slideIn {from { transform:translateX(100%);
+	opacity: 0;
+}
+
+to {
+	transform: translateX(0);
+	opacity: 1;
+}
+
+}
+.timeline {
+	padding-left: 10px;
+	border-left: 2px dashed #e2e8f0;
+	margin-left: 10px;
+}
+
+.timeline-item {
+	position: relative;
+	padding-bottom: 20px;
+	padding-left: 20px;
+}
+
+.timeline-dot {
+	position: absolute;
+	left: -17px;
+	top: 5px;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #cbd5e1;
+	border: 2px solid white;
+}
+
+.timeline-item.active .timeline-dot {
+	background: #10b981;
+}
+
+.timeline-item.current .timeline-dot {
+	background: #6366f1;
+	box-shadow: 0 0 0 4px #e0e7ff;
+}
+
+.timeline-status {
+	font-weight: 700;
+	font-size: 14px;
+}
+
+.timeline-time {
+	font-size: 12px;
+	color: #64748b;
+}
+
+.contact-profile {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin-bottom: 20px;
+	padding: 15px;
+	background: #f8fafc;
+	border-radius: 12px;
+}
+
+.contact-profile img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+}
+
+.quick-actions {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
+
+.action-btn {
+	padding: 10px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.btn-call {
+	background: #dcfce7;
+	color: #166534;
+}
+
+.btn-chat {
+	background: #e0e7ff;
+	color: #3730a3;
+}
+
+.btn-stack {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.btn-danger-outline {
+	background: transparent;
+	color: #ef4444;
+	border: 1px solid #ef4444;
+}
+
+.btn-danger-outline:hover {
+	background: #fee2e2;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-processing {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.priority-low {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.priority-medium {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.priority-high {
+    background-color: #ffeeba;
+    color: #856404;
+}
+
+.priority-urgent {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.timeline-item .timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ccc;
+}
+
+.timeline-item.active .timeline-dot {
+    background: #28a745;
+}
+
+.timeline-item.current .timeline-dot {
+    background: #007bff;
+    box-shadow: 0 0 0 4px rgba(0,123,255,0.2);
+}

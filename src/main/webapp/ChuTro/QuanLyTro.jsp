@@ -8,6 +8,7 @@
 <%@ page import="model.bean.BaoHong"%>
 <%@ page import="model.bean.YeuCauThueTro"%>
 <%@ page import="model.bean.HopDong"%>
+<%@ page import="model.bean.HoaDon"%>
 <%@ page import="utils.TimeHelper"%>
 <%@ page import="utils.DateHelper"%>
 <%@ page import="java.time.format.DateTimeFormatter"%>
@@ -279,6 +280,9 @@
 				</div>
 				<div class="nav-item" onclick="navTo('contracts', this)">
 					<i class="fa-solid fa-file-contract"></i> Quản lý hợp đồng
+				</div>
+				<div class="nav-item" onclick="navTo('invoices', this)">
+					<i class="fa-solid fa-file-invoice-dollar"></i> Quản lý hóa đơn
 				</div>
 				<div class="nav-item" onclick="navTo('notify', this)">
 					<i class="fa-solid fa-paper-plane"></i> Gửi thông báo
@@ -958,7 +962,8 @@
 								</div>
 
 								<div class="col-right">
-									<a href="XuLySuCo?id=<%=bh.getId()%>" class="btn btn-primary"
+									<a href="ChiTietBaoHong?id=<%=bh.getId()%>"
+										class="btn btn-primary"
 										style="padding: 8px 16px; font-size: 13px; text-decoration: none;">
 										<i class="fa-solid fa-screwdriver-wrench"></i> Xử lý
 									</a>
@@ -1108,42 +1113,162 @@
 
 				</div>
 			</div>
-			<% ArrayList<HopDong> listNT = (ArrayList<HopDong>) request.getAttribute("listNT"); %>
-			<form id="sendNotifyForm">
-			<div id="notify" class="table-container" style="max-width: 600px; margin: 0 auto;"> <div class="table-title" style="margin-bottom: 20px;">Soạn thông báo mới</div>
-				<div class="form-group">
-					<label class="form-label">Tiêu đề</label> <input class="form-input"
-						name="tieuDe"
-						placeholder="Ví dụ: Thông báo thu tiền điện tháng 12">
+			<div id="invoices" class="section">
+				<div
+					style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 30px;">
+					<div class="table-title">Lịch sử hóa đơn</div>
+					<div style="display: flex; gap: 12px;">
+						<div class="form-input"
+							style="display: flex; align-items: center; padding: 5px 15px; background: white;">
+							<i class="fa-regular fa-calendar-days"
+								style="color: #64748b; margin-right: 8px;"></i> <select
+								id="filterMonth" class="form-select" name="ThangNam"
+								style="border: none; font-size: 14px; font-weight: 600;">
+								<option value="12">Tháng 12/2025</option>
+								<option value="11">Tháng 11/2025</option>
+								<option value="10">Tháng 10/2025</option>
+							</select>
+						</div>
+
+						<a href="${pageContext.request.contextPath}/TaoHoaDon"
+							class="btn btn-primary"
+							style="box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);"> <i
+							class="fa-solid fa-plus"></i> Tạo hóa đơn mới
+						</a>
+					</div>
+				</div>
+				<%
+				ArrayList<HoaDon> listHoaDon = (ArrayList<HoaDon>) request.getAttribute("listHoaDon");
+				%>
+				<%
+				if (listHoaDon == null || listHoaDon.isEmpty()) {
+				%>
+				<div
+					style="height: 300px; margin: 0 20px; display: flex; align-items: center; justify-content: center; background: #f9fafb; border-radius: 16px; border: 1px dashed #e5e7eb; color: #6b7280; font-size: 15px; font-weight: 500;">
+					<i class="fa-regular fa-file-lines"
+						style="font-size: 28px; margin-right: 12px;"></i> Chưa có hóa đơn
+					nào
 				</div>
 
-				<div class="form-group">
-					<label class="form-label">Gửi tới</label> <select
-						class="form-input" name="ID_NguoiThue">
-						<option value="All">Tất cả người thuê</option>
+				<%
+				} else {
+				%>
+				<div class="room-grid-container"
+					style="height: 475px; margin: 0 20px;">
+
+					<div class="room-grid-header"
+						style="grid-template-columns: 1fr 1.5fr 1fr 1fr 1.2fr 100px;">
+						<div>Phòng</div>
+						<div>Người thuê</div>
+						<div>Kỳ thanh toán</div>
+						<div>Tổng tiền</div>
+						<div>Trạng thái</div>
+						<div class="col-right">Xem</div>
+					</div>
+
+					<div class="room-grid-body">
 						<%
-						for (HopDong hdNT : listNT) {
+						for (HoaDon hd : listHoaDon) {
+							String trangThai = hd.getTrangThai();
+							String badgeClass = "";
+
+							if ("Đã thanh toán".equals(trangThai)) {
+								badgeClass = "badge-success";
+							} else if ("Chưa thanh toán".equals(trangThai)) {
+								badgeClass = "badge-warn";
+							} else if ("Trễ hạn".equals(trangThai)) {
+								badgeClass = "badge-error";
+							}
 						%>
-						<option value="<%=hdNT.getID_NguoiThue()%>">
-							<%=hdNT.getTenNguoiThue()%>
-						</option>
+
+						<div class="room-grid-row"
+							style="grid-template-columns: 1fr 1.5fr 1fr 1fr 1.2fr 100px;">
+
+							<div style="font-weight: 700; color: #6366f1;">
+								<%=hd.getTenPhong()%>
+							</div>
+
+							<div style="font-weight: 600;">
+								<%=hd.getTenNguoiThue()%>
+							</div>
+
+							<div style="color: #64748b;">
+								<%=hd.getThangNam()%>
+							</div>
+
+							<div style="font-weight: 700; color: #1e293b;">
+								<%=utils.CurrencyHelper.format(hd.getTongTien())%>
+								₫
+							</div>
+
+							<div>
+								<span class="status-badge <%=badgeClass%>"> <span
+									class="status-dot"></span> <%=trangThai%>
+								</span>
+							</div>
+
+							<div class="col-right">
+								<a href="ChiTietHoaDon?id=<%=hd.getId()%>"
+									class="btn-icon-plain" title="Chi tiết"> <i
+									class="fa-regular fa-eye"></i>
+								</a>
+							</div>
+
+						</div>
+
 						<%
 						}
 						%>
-					</select>
+					</div>
 				</div>
 
-				<div class="form-group">
-					<label class="form-label">Nội dung</label>
-					<textarea class="form-input" name="noiDung" rows="5"
-						placeholder="Nhập nội dung..."></textarea>
-				</div>
+				<%
+				}
+				%>
+			</div>
+			<div id="notify" class="section">
+				<%
+				ArrayList<HopDong> listNT = (ArrayList<HopDong>) request.getAttribute("listNT");
+				%>
+				<form id="sendNotifyForm">
+					<div id="notify" class="table-container"
+						style="max-width: 600px; margin: 0 auto;">
+						<div class="table-title" style="margin-bottom: 20px;">Soạn
+							thông báo mới</div>
+						<div class="form-group">
+							<label class="form-label">Tiêu đề</label> <input
+								class="form-input" name="tieuDe"
+								placeholder="Ví dụ: Thông báo thu tiền điện tháng 12">
+						</div>
 
-				<button type="submit" class="btn btn-primary">
-					<i class="fa-solid fa-paper-plane"></i> Gửi ngay
-				</button>
-				</div>
-			</form>
+						<div class="form-group">
+							<label class="form-label">Gửi tới</label> <select
+								class="form-input" name="ID_NguoiThue">
+								<option value="All">Tất cả người thuê</option>
+								<%
+								for (HopDong hdNT : listNT) {
+								%>
+								<option value="<%=hdNT.getID_NguoiThue()%>">
+									<%=hdNT.getTenNguoiThue()%>
+								</option>
+								<%
+								}
+								%>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label class="form-label">Nội dung</label>
+							<textarea class="form-input" name="noiDung" rows="5"
+								placeholder="Nhập nội dung..."></textarea>
+						</div>
+
+						<button type="submit" class="btn btn-primary">
+							<i class="fa-solid fa-paper-plane"></i> Gửi ngay
+						</button>
+					</div>
+				</form>
+			</div>
 		</main>
 	</div>
 
@@ -1177,7 +1302,7 @@
         
         const titles = {
             'dashboard': 'Tổng quan', 'rooms': 'Quản lý phòng', 'tenants': 'Danh sách người thuê',
-            'requests': 'Yêu cầu thuê', 'incidents': 'Sự cố & Sửa chữa','contracts': 'Quản lý hợp đồng', 'notify': 'Gửi thông báo'
+            'requests': 'Yêu cầu thuê', 'incidents': 'Sự cố & Sửa chữa','contracts': 'Quản lý hợp đồng', 'notify': 'Gửi thông báo','invoices': 'Quản lý hóa đơn'
         };
         document.getElementById('page-heading').innerText = titles[id];
     }
