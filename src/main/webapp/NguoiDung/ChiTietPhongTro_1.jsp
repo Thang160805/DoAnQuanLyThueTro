@@ -16,11 +16,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Chi tiết phòng</title>
 <!-- Font Google: Poppins & Inter -->
-<link
-	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
-	rel="stylesheet">
+<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 <!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -36,6 +37,12 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/ChiTietPhong.css">
 <style>
+body {
+	font-family: "Open Sans", sans-serif;
+	background-color: #f5f5f5;
+	color: #222222;
+	line-height: 1.6;
+}
 .back-btn {
 	display: inline-flex;
 	align-items: center;
@@ -314,44 +321,6 @@
 	color: #222222;
 }
 
-/* --- 7. RESPONSIVE --- */
-@media ( max-width : 768px) {
-	.modal-container {
-		width: 100%;
-		height: 100%;
-		max-width: 100%;
-		max-height: 100%;
-		border-radius: 0;
-	}
-	.modal-header {
-		padding: 16px;
-	}
-	.header-title h2 {
-		font-size: 20px;
-	}
-	.meta-item i {
-		display: none;
-	}
-
-	/* Ẩn icon nhỏ trên mobile cho gọn */
-	.modal-footer {
-		padding: 16px;
-		border-top: 1px solid #eee;
-		position: sticky;
-		bottom: 0;
-	}
-	.footer-buttons {
-		flex-direction: column-reverse;
-		gap: 12px;
-	}
-	.btn-group-main {
-		width: 100%;
-	}
-	.btn-text-close {
-		margin-bottom: 5px;
-	}
-}
-
 /* Container chung */
 .booking-action {
     margin-top: 15px;
@@ -414,6 +383,22 @@
 
 .rating .star:hover {
     transform: scale(1.15);
+}
+.btn-rent {
+	width: 100%;
+	padding: 14px;
+	background: #1E90FF;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-weight: 700;
+	font-size: 1.1rem;
+	transition: 0.2s;
+}
+
+.btn-rent:hover {
+	background: #104E8B;
+	transform: translateY(-2px);
 }
 </style>
 </head>

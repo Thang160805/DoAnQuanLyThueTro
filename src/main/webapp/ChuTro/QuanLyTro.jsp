@@ -18,9 +18,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Quản lý</title>
+<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+	href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
 	rel="stylesheet">
 <!-- Bootstrap 5 CSS -->
 <link
@@ -34,6 +37,15 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/ChuTro.css">
 <style>
+body {
+	margin: 0;
+	font-family: "Open Sans", sans-serif;
+	background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+	color: #1e293b;
+	height: 100vh;
+	overflow: hidden;
+}
+
 .room-grid-container {
 	background: #ffffff;
 	border-radius: 24px;
@@ -548,7 +560,8 @@
 						style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
 						<div class="table-title">Danh sách người thuê trọ</div>
 
-						<form id="timKiemNguoiThue" style="display: flex; gap: 12px;">
+						<form action="QuanLyTro" method="GET"
+							style="display: flex; gap: 12px;">
 							<button class="btn btn-outline" style="padding: 10px 16px;">
 								<i class="fa-solid fa-filter"></i> Lọc
 							</button>
@@ -556,177 +569,108 @@
 								style="padding: 8px 12px; display: flex; align-items: center; gap: 8px; width: 250px;">
 								<i class="fa-solid fa-magnifying-glass"
 									style="color: var(--text-light)"></i> <input type="text"
-									placeholder="Tìm theo tên người thuê..."
+									name="TenNguoiThue" placeholder="Tìm theo tên người thuê..."
 									style="border: none; outline: none; background: transparent; width: 100%;">
 							</div>
 						</form>
 					</div>
+					<%
+					ArrayList<HopDong> listHDNT = (ArrayList<HopDong>) request.getAttribute("listHDNT");
+					%>
+
+					<%
+					if (listHDNT == null || listHDNT.isEmpty()) {
+					%>
+
+					<!-- ===== EMPTY STATE ===== -->
+					<div style="padding: 40px; text-align: center; color: #64748b;">
+						<i class="fa-solid fa-users-slash"
+							style="font-size: 36px; margin-bottom: 12px; color: #94a3b8;"></i>
+						<div style="font-size: 18px; font-weight: 600;">Chưa có
+							người thuê nào</div>
+						<div style="font-size: 14px; margin-top: 6px;">Hiện tại chưa
+							có hợp đồng thuê đang hiệu lực.</div>
+					</div>
+
+					<%
+					} else {
+					%>
 
 					<div class="room-grid-container">
 
+						<!-- HEADER -->
 						<div class="room-grid-header tenant-cols">
 							<div>Cư dân</div>
 							<div>Phòng</div>
 							<div>Liên hệ</div>
 							<div>Ngày bắt đầu HĐ</div>
-							<div>Trạng thái đóng tiền</div>
+							<div>Trạng thái</div>
 							<div class="col-right">Thao tác</div>
 						</div>
 
 						<div class="room-grid-body">
 
-							<div class="room-grid-row tenant-cols">
-								<div>
-									<div class="user-cell">
-										<img src="https://i.pravatar.cc/150?img=12"
-											class="table-avatar">
-										<div>
-											<div style="font-weight: 700;">Nguyễn Văn A</div>
-											<div style="font-size: 12px; color: var(--text-secondary);">Sinh
-												viên ĐH Vinh</div>
-										</div>
-									</div>
-								</div>
-								<div>
-									<span style="font-weight: 700; color: var(--primary);">P.101</span>
-								</div>
-								<div>
-									<div style="font-size: 13px;">
-										<i class="fa-solid fa-phone"
-											style="font-size: 11px; color: var(--text-light)"></i> 0987
-										654 321
-									</div>
-									<div style="font-size: 12px; color: var(--text-secondary);">Zalo:
-										0987...</div>
-								</div>
-								<div style="font-size: 13px; color: var(--text-main);">15/08/2024</div>
-								<div>
-									<span class="status-badge badge-success"><span
-										class="status-dot"></span>Đã đóng đủ</span>
-								</div>
-								<div class="col-right">
-									<div class="action-group">
-										<button class="btn-icon-plain" title="Chat Zalo">
-											<i class="fa-solid fa-comment-dots"></i>
-										</button>
-										<button class="btn-icon-plain" title="Xem hợp đồng">
-											<i class="fa-solid fa-file-contract"></i>
-										</button>
-									</div>
-								</div>
-							</div>
+							<%
+							for (HopDong hd : listHDNT) {
+							%>
 
 							<div class="room-grid-row tenant-cols">
+
 								<div>
 									<div class="user-cell">
-										<img src="https://i.pravatar.cc/150?img=44"
+										<img
+											src="<%=hd.getAvatar()%>"
 											class="table-avatar">
 										<div>
-											<div style="font-weight: 700;">Lê Thị Mai</div>
-											<div style="font-size: 12px; color: var(--text-secondary);">Nhân
-												viên VP</div>
+											<div style="font-weight: 700;"><%=hd.getTenNguoiThue()%></div>
 										</div>
 									</div>
 								</div>
+
 								<div>
-									<span style="font-weight: 700; color: var(--text-main);">P.205</span>
+									<span style="font-weight: 700; color: #6366f1;">
+										<%=hd.getTenPhong()%>
+									</span>
+								</div>
+
+								<!-- Liên hệ -->
+								<div style="font-size: 13px;">
+									<%=hd.getSDT() != null ? hd.getSDT() : "—"%>
+								</div>
+
+								<!-- Ngày bắt đầu -->
+								<div style="font-size: 13px;">
+									<%=utils.DateHelper.formatVN(hd.getNgayBatDau())%>
 								</div>
 								<div>
-									<div style="font-size: 13px;">
-										<i class="fa-solid fa-phone"
-											style="font-size: 11px; color: var(--text-light)"></i> 0912
-										345 678
-									</div>
+									<span class="status-badge badge-success"> <span
+										class="status-dot"></span>Đang thuê
+									</span>
 								</div>
-								<div style="font-size: 13px; color: var(--text-main);">01/12/2024</div>
-								<div>
-									<span class="status-badge badge-error"><span
-										class="status-dot"></span>Nợ phí T12</span>
-								</div>
+
 								<div class="col-right">
 									<div class="action-group">
-										<button class="btn-icon-plain" title="Gửi nhắc nhở"
-											style="color: #ef4444; background: #fee2e2;">
-											<i class="fa-solid fa-bell"></i>
-										</button>
-										<button class="btn-icon-plain" title="Xem hợp đồng">
-											<i class="fa-solid fa-file-contract"></i>
-										</button>
+										<a
+											href="<%=request.getContextPath()%>/ChiTietHopDong?id=<%=hd.getId()%>&ID_NguoiThue=<%= hd.getID_NguoiThue() %>
+											&ID_ChuTro=<%=hd.getID_ChuTro() %>&ID_Phong=<%= hd.getID_Phong() %>"
+											class="btn-icon-plain" title="Xem hợp đồng"> <i
+											class="fa-solid fa-file-contract"></i>
+										</a>
 									</div>
 								</div>
+
 							</div>
 
-							<div class="room-grid-row tenant-cols">
-								<div>
-									<div class="user-cell">
-										<img src="https://i.pravatar.cc/150?img=60"
-											class="table-avatar">
-										<div>
-											<div style="font-weight: 700;">Trần Văn C</div>
-											<div style="font-size: 12px; color: var(--text-secondary);">Công
-												nhân</div>
-										</div>
-									</div>
-								</div>
-								<div>
-									<span style="font-weight: 700; color: var(--text-main);">P.301</span>
-								</div>
-								<div>
-									<div style="font-size: 13px;">0345 678 999</div>
-								</div>
-								<div style="font-size: 13px;">10/06/2024</div>
-								<div>
-									<span class="status-badge badge-success"><span
-										class="status-dot"></span>Đã đóng đủ</span>
-								</div>
-								<div class="col-right">
-									<div class="action-group">
-										<button class="btn-icon-plain">
-											<i class="fa-solid fa-comment-dots"></i>
-										</button>
-										<button class="btn-icon-plain">
-											<i class="fa-solid fa-file-contract"></i>
-										</button>
-									</div>
-								</div>
-							</div>
-							<div class="room-grid-row tenant-cols">
-								<div>
-									<div class="user-cell">
-										<img src="https://i.pravatar.cc/150?img=15"
-											class="table-avatar">
-										<div>
-											<div style="font-weight: 700;">Phạm Văn D</div>
-											<div style="font-size: 12px; color: var(--text-secondary);">Sinh
-												viên</div>
-										</div>
-									</div>
-								</div>
-								<div>
-									<span style="font-weight: 700; color: var(--text-main);">P.302</span>
-								</div>
-								<div>
-									<div style="font-size: 13px;">0988 777 666</div>
-								</div>
-								<div style="font-size: 13px;">01/01/2025</div>
-								<div>
-									<span class="status-badge badge-success"><span
-										class="status-dot"></span>Đã đóng đủ</span>
-								</div>
-								<div class="col-right">
-									<div class="action-group">
-										<button class="btn-icon-plain">
-											<i class="fa-solid fa-comment-dots"></i>
-										</button>
-										<button class="btn-icon-plain">
-											<i class="fa-solid fa-file-contract"></i>
-										</button>
-									</div>
-								</div>
-							</div>
+							<%
+							}
+							%>
 
 						</div>
 					</div>
+
+					<%
+					}
+					%>
 				</div>
 
 				<div id="requests" class="section">
@@ -1118,17 +1062,22 @@
 					style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 30px;">
 					<div class="table-title">Lịch sử hóa đơn</div>
 					<div style="display: flex; gap: 12px;">
-						<div class="form-input"
-							style="display: flex; align-items: center; padding: 5px 15px; background: white;">
-							<i class="fa-regular fa-calendar-days"
-								style="color: #64748b; margin-right: 8px;"></i> <select
-								id="filterMonth" class="form-select" name="ThangNam"
-								style="border: none; font-size: 14px; font-weight: 600;">
-								<option value="12">Tháng 12/2025</option>
-								<option value="11">Tháng 11/2025</option>
-								<option value="10">Tháng 10/2025</option>
-							</select>
-						</div>
+						<form method="get" action="QuanLyTro">
+							<div class="form-input"
+								style="display: flex; align-items: center; padding: 5px 15px; background: white;">
+								<i class="fa-regular fa-calendar-days"
+									style="color: #64748b; margin-right: 8px;"></i> <select
+									id="filterMonth" class="form-select" name="ThangNam"
+									onchange="this.form.submit()"
+									style="border: none; font-size: 14px; font-weight: 600;">
+									<option value="">Vui lòng chọn tháng</option>
+									<option value="2026-01">Tháng 01/2026</option>
+									<option value="2025-12">Tháng 12/2025</option>
+									<option value="2025-11">Tháng 11/2025</option>
+									<option value="2025-10">Tháng 10/2025</option>
+								</select>
+							</div>
+						</form>
 
 						<a href="${pageContext.request.contextPath}/TaoHoaDon"
 							class="btn btn-primary"

@@ -69,6 +69,7 @@ public class HopDongServlet extends HttpServlet {
 		}
 		if (page <= 0 || page > totalPage)
 			page = 1;
+		
 		ArrayList<HopDong> listHD = hdBO.getListHopDongByIDNguoiThue(user.getId(),page);
 		request.setAttribute("totalPage", totalPage);
 		request.setAttribute("currentPage", page);

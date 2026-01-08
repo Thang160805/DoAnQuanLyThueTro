@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Phòng đã thuê</title>
 <!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +30,12 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/PhongDaThue.css">
 	<style>
+	body {
+	font-family: "Open Sans", sans-serif;
+	background-color: #f5f5f5;
+	color: #222222;
+	line-height: 1.6;
+}
 	.dropdown-item{
 	padding: 10px 20px;
 	}
@@ -65,7 +71,7 @@
 				<li class="nav-item"><a
 					href="${pageContext.request.contextPath}/TimPhong">Tìm phòng</a></li>
 				<li class="nav-item active"><a href="${pageContext.request.contextPath}/PhongDaThue">Phòng đã thuê</a></li>
-				<li class="nav-item"><a href="#">Lịch thanh toán</a></li>
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/LichThanhToan">Lịch thanh toán</a></li>
 				<li class="nav-item"><a href="${pageContext.request.contextPath}/HopDong">Hợp đồng</a></li>
 			</ul>
 		</nav>

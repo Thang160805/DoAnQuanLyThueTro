@@ -1,5 +1,6 @@
 package model.bean;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class HoaDon {
 	private int id;
@@ -18,7 +19,14 @@ public class HoaDon {
 	private String GhiChu;
 	private HopDong hopDongPhong;
 	private String TenNguoiThue;
+	private String TenChuTro;
 	private String TenPhong;
+	private String DiaChiPhong;
+	private int GiaDien;
+	private int GiaNuoc;
+	private String AnhPhong;
+	private LocalDateTime created_at;
+	private String QRThanhToan;
 	
 	public int getId() {
 		return id;
@@ -116,11 +124,55 @@ public class HoaDon {
 	public void setTenNguoiThue(String tenNguoiThue) {
 		TenNguoiThue = tenNguoiThue;
 	}
+	
+	public String getTenChuTro() {
+		return TenChuTro;
+	}
+	public void setTenChuTro(String tenChuTro) {
+		TenChuTro = tenChuTro;
+	}
 	public String getTenPhong() {
 		return TenPhong;
 	}
 	public void setTenPhong(String tenPhong) {
 		TenPhong = tenPhong;
+	}
+	public String getDiaChiPhong() {
+		return DiaChiPhong;
+	}
+	public void setDiaChiPhong(String diaChiPhong) {
+		DiaChiPhong = diaChiPhong;
+	}
+	public int getGiaDien() {
+		return GiaDien;
+	}
+	public void setGiaDien(int giaDien) {
+		GiaDien = giaDien;
+	}
+	public int getGiaNuoc() {
+		return GiaNuoc;
+	}
+	public void setGiaNuoc(int giaNuoc) {
+		GiaNuoc = giaNuoc;
+	}
+	
+	public String getAnhPhong() {
+		return AnhPhong;
+	}
+	public void setAnhPhong(String anhPhong) {
+		AnhPhong = anhPhong;
+	}
+	public LocalDateTime getCreated_at() {
+		return created_at;
+	}
+	public void setCreated_at(LocalDateTime created_at) {
+		this.created_at = created_at;
+	}
+	public String getQRThanhToan() {
+		return QRThanhToan;
+	}
+	public void setQRThanhToan(String qRThanhToan) {
+		QRThanhToan = qRThanhToan;
 	}
 	
 	

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import model.bean.HopDong;
 import model.bean.TaiKhoan;
 import model.bo.HopDongBO;
+import model.bo.TaiKhoanBO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +50,9 @@ public class TaoHoaDon extends HttpServlet {
 		HopDongBO hdBO = new HopDongBO();
 		ArrayList<HopDong> listHD = hdBO.getListHDByIdCT(user.getId());
 		request.setAttribute("listHD", listHD);
+		TaiKhoanBO tkBO = new TaiKhoanBO();
+		TaiKhoan tk = tkBO.getThongTinCaNhan(user.getId());
+		request.setAttribute("ThongTin", tk);
 		
 		RequestDispatcher rs = request.getRequestDispatcher("/ChuTro/TaoHoaDonThanhToan.jsp");
 		rs.forward(request, response);

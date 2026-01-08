@@ -3,14 +3,7 @@
 	outline: none;
 }
 
-body {
-	margin: 0;
-	font-family: 'Poppins', sans-serif;
-	background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
-	color: #1e293b;
-	height: 100vh;
-	overflow: hidden;
-}
+
 
 a {
 	text-decoration: none;

@@ -87,15 +87,14 @@ public class QuanLyTro extends HttpServlet {
 		ArrayList<BaoHong> listBH = bhBO.listBaoHong();
 		request.setAttribute("listBH", listBH);
 		
-		StringBuilder filter = new StringBuilder(" AND hd.ThangNam IS NOT NULL ");
 		String ThangNam = request.getParameter("ThangNam");
-		if(ThangNam != null && !ThangNam.isEmpty()) {
-			 filter.append(" AND hd.ThangNam = ").append(ThangNam);
-		}
-		String filterSQL = filter.toString();
 		HoaDonBO hdBo = new HoaDonBO();
-		ArrayList<HoaDon> listHoaDon = hdBo.getListHoaDonByIdCT(user.getId(), filterSQL);
+		ArrayList<HoaDon> listHoaDon = hdBo.getListHoaDonByIdCT(user.getId(), ThangNam);
 		request.setAttribute("listHoaDon", listHoaDon);
+		
+		String filter = request.getParameter("TenNguoiThue");
+		ArrayList<HopDong> listHDNT = hdBO.getListNguoiThueByIdCT(user.getId(), filter);
+		request.setAttribute("listHDNT", listHDNT);
 		RequestDispatcher rs = request.getRequestDispatcher("/ChuTro/QuanLyTro.jsp");
 		rs.forward(request, response);
 	}

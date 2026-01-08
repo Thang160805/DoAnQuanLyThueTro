@@ -1,20 +1,6 @@
 @charset "UTF-8";
 
-body {
-            font-family: 'Poppins', sans-serif;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f0f2f5;
-            /* Ảnh nền phòng trọ/urban style */
-            background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=2500&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;
-            overflow: hidden;
-        }
+
 
         /* Overlay nền mờ tối */
         body::before {

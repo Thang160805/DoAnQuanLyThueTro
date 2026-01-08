@@ -8,11 +8,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- Font Google: Poppins & Inter -->
-<link
-	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
-	rel="stylesheet">
+<title>Thông tin cá nhân</title>
+<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 <!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -27,6 +27,14 @@
 	href="${pageContext.request.contextPath}/assets/css/footer.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/ThongTinCaNhan.css">
+	<style>
+	body {
+	font-family: "Open Sans", sans-serif;
+	background-color: #f5f5f5;
+	color: #222222;
+	line-height: 1.6;
+}
+	</style>
 </head>
 <body>
 	<%
@@ -57,7 +65,7 @@
 				<li class="nav-item"><a
 					href="${pageContext.request.contextPath}/TimPhong">Tìm phòng</a></li>
 				<li class="nav-item"><a href="${pageContext.request.contextPath}/PhongDaThue">Phòng đã thuê</a></li>
-				<li class="nav-item"><a href="#">Lịch thanh toán</a></li>
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/LichThanhToan">Lịch thanh toán</a></li>
 				<li class="nav-item"><a href="${pageContext.request.contextPath}/HopDong">Hợp đồng</a></li>
 			</ul>
 		</nav>

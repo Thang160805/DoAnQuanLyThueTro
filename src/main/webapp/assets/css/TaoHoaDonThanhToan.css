@@ -1,10 +1,6 @@
 @charset "UTF-8";
 
-body {
-	font-family: "Inder", sans-serif;
-	background: #f8fafc;
-	color: #1e293b;
-}
+
 
 .invoice-wrapper {
 	max-width: 1200px;

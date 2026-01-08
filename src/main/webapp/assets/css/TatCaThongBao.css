@@ -6,13 +6,7 @@
     box-sizing: border-box; 
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f9fafb;      /* bg-body */
-    color: #111827;                 /* text-main */
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-}
+
 
 /* --- 2. LAYOUT --- */
 .container {

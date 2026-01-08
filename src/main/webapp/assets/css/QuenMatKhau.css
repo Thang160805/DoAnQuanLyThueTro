@@ -2,16 +2,7 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    position: relative;
-    background-color: #f0f2f5;
-}
+
 
 /* Ảnh nền mờ */
 .bg-image {

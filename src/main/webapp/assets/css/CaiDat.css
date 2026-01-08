@@ -7,14 +7,7 @@
 	outline: none;
 }
 
-body {
-	font-family: 'Poppins', sans-serif;
-	background-color: #f3f4f6;
-	color: #1f2937;
-	height: 100vh;
-	display: flex;
-	overflow: hidden; /* Ngăn scroll body chính */
-}
+
 
 a {
 	text-decoration: none;

@@ -26,6 +26,8 @@ public class HopDong {
 	private int GiaThue;
 	private int GiaDien;
 	private int GiaNuoc;
+	private String SDT;
+	private String Avatar;
 	
 	
 	
@@ -176,6 +178,23 @@ public class HopDong {
 	public void setCreate_at(LocalDateTime create_at) {
 		this.create_at = create_at;
 	}
+
+	public String getSDT() {
+		return SDT;
+	}
+
+	public void setSDT(String sDT) {
+		SDT = sDT;
+	}
+
+	public String getAvatar() {
+		return Avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		Avatar = avatar;
+	}
+	
 	
 	
 }

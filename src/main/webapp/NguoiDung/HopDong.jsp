@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Hợp đồng</title>
 <!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -129,7 +129,7 @@
 				<li class="nav-item"><a
 					href="${pageContext.request.contextPath}/TimPhong">Tìm phòng</a></li>
 				<li class="nav-item"><a href="${pageContext.request.contextPath}/PhongDaThue">Phòng đã thuê</a></li>
-				<li class="nav-item"><a href="#">Lịch thanh toán</a></li>
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/LichThanhToan">Lịch thanh toán</a></li>
 				<li class="nav-item active"><a href="${pageContext.request.contextPath}/HopDong">Hợp đồng</a></li>
 			</ul>
 		</nav>

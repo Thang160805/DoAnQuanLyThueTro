@@ -312,4 +312,66 @@ public class HopDongDao {
 		return list;
 	}
 	
+	public HopDong getInfoByIdHopDong(int idHopDong) {
+		Connect();
+		HopDong hd = null;
+		String sql = "select * from HopDong where id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idHopDong);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				hd = new HopDong();
+				hd.setID_NguoiThue(rs.getInt("ID_NguoiThue"));
+				hd.setID_Phong(rs.getInt("ID_Phong"));
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return hd;
+	}
+	
+	public ArrayList<HopDong> getListNguoiThueByIdCT(int idChuTro,String filter){
+		Connect();
+		ArrayList<HopDong> list = new ArrayList<HopDong>();
+		String sql = "select hd.*,tt.HoTen,tt.SDT,tt.Avatar,pt.TenPhong from HopDong hd "
+				+ "join ThongTinNguoiDung tt on hd.ID_NguoiThue=tt.ID_TaiKhoan "
+				+ "join PhongTro pt on hd.ID_Phong=pt.ID_Phong "
+				+ "where hd.TrangThai=N'Đang hiệu lực' and hd.ID_ChuTro=?";
+		if (filter != null && !filter.trim().isEmpty()) {
+	        sql += " AND tt.HoTen LIKE ?";
+	    }
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idChuTro);
+
+	        if (filter != null && !filter.trim().isEmpty()) {
+	            ps.setString(2, "%" + filter.trim() + "%");
+	        }
+	        ResultSet rs = ps.executeQuery();
+	        while(rs.next()) {
+	        	HopDong hd = new HopDong();
+				hd.setId(rs.getInt("id"));
+				hd.setID_ChuTro(rs.getInt("ID_ChuTro"));
+				hd.setID_NguoiThue(rs.getInt("ID_NguoiThue"));
+				hd.setID_Phong(rs.getInt("ID_Phong"));
+				hd.setID_YeuCau(rs.getInt("ID_YeuCau"));
+				hd.setNgayBatDau(rs.getDate("NgayBatDau"));
+				hd.setNgayKetThuc(rs.getDate("NgayKetThuc"));
+				hd.setThoiHanThue(rs.getString("ThoiHanThue"));
+				hd.setTongThuBanDau(rs.getInt("TongThuBanDau"));
+				hd.setTrangThai(rs.getString("TrangThai"));
+				hd.setTenNguoiThue(rs.getString("HoTen"));
+				hd.setSDT(rs.getString("SDT"));
+				hd.setAvatar(rs.getString("Avatar"));
+				hd.setTenPhong(rs.getString("TenPhong"));
+				
+				list.add(hd);
+	        }
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 }

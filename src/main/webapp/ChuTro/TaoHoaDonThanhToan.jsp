@@ -13,11 +13,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Tạo hóa đơn</title>
+<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inder&display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -25,6 +25,13 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/TaoHoaDonThanhToan.css">
+	<style>
+	body {
+	font-family: "Open Sans", sans-serif;
+	background: #f8fafc;
+	color: #1e293b;
+}
+	</style>
 </head>
 <body>
 	<div class="invoice-wrapper">
@@ -34,7 +41,7 @@
 				toán</p>
 		</header>
 
-		<form id="invoiceForm" action="LuuHoaDon" method="POST">
+		<form id="invoiceForm">
 			<div class="grid-container">
 				<div class="column-main">
 					<div class="card">
@@ -84,10 +91,11 @@
 									readonly placeholder="Tự động điền"> <input
 									type="hidden" name="ID_NguoiThue" id="tenantID">
 							</div>
+							<%TaiKhoan tk = (TaiKhoan) request.getAttribute("ThongTin"); %>
 							<div class="form-group full-width">
 								<label class="form-label">Chủ trọ (Readonly)</label> <input
 									type="text" class="form-input readonly" readonly
-									value="Phạm Võ Tuấn (Bạn)"> <input type="hidden"
+									value="<%= tk.getHoTen()%>"> <input type="hidden"
 									name="ID_ChuTro" value="999">
 							</div>
 						</div>
@@ -173,8 +181,7 @@
 							disabled>
 							<i class="fa-solid fa-paper-plane"></i> Tạo & Gửi hóa đơn
 						</button>
-						<button type="button" class="btn btn-outline"
-							onclick="history.back()">Hủy</button>
+						<a href="${pageContext.request.contextPath}/QuanLyTro" class="btn btn-outline">Hủy</a>
 					</div>
 					<div id="warningText" class="alert-text mt-2">
 						<i class="fa-solid fa-circle-info"></i> Vui lòng nhập đủ tiền
@@ -184,6 +191,11 @@
 			</div>
 		</form>
 	</div>
+	<div id="toast"
+			style="position: fixed; top: 20px; right: 20px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 14px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); opacity: 0; transition: 0.3s; transform: translateY(-20px); pointer-events: none;">
+		</div>
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 	<script>
 		window.onload = function() {
 			const now = new Date();
@@ -274,6 +286,76 @@
         warning.style.display = 'block';
     }
 }
+		
+		function showToast(message, type = "success") {
+		    const toast = $("#toast");
+
+		    // Icon hiển thị theo loại
+		    let iconHTML = "";
+
+		    if (type === "error") {
+		        toast.css("background-color", "#dc2626"); // đỏ
+		        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
+		    } else {
+		        toast.css("background-color", "#2563eb"); // xanh
+		        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
+		    }
+
+		    // Set nội dung kèm icon
+		    toast.html(iconHTML + message);
+
+		    // hiện
+		    toast.css({ opacity: "1", transform: "translateY(0)" });
+
+		    // tự tắt sau 5 giây
+		    setTimeout(() => {
+		        toast.css({ opacity: "0", transform: "translateY(20px)" });
+		    }, 5000);
+		}
+		$("#invoiceForm").on("submit", function (e) {
+		    e.preventDefault();
+
+		    const idHopDong = $("#contractSelect").val();
+		    const thangNam = $("#currentMonth").val(); // YYYY-MM
+
+		    if (!idHopDong || !thangNam) {
+		        showToast("Vui lòng chọn hợp đồng và kỳ thanh toán", "error");
+		        return;
+		    }
+
+		    const data = {
+		        ID_HopDong: idHopDong,
+		        ThangNam: thangNam,
+		        HanThanhToan: $("#dueDate").val(),
+
+		        TienPhong: $("#rentPrice").val(),
+		        TienDien: $("#elecTotal").val(),
+		        TienNuoc: $("#waterTotal").val(),
+
+		        GhiChu: $("textarea[name='GhiChu']").val() || null
+		    };
+
+		    $.ajax({
+		        url: "/DoAnQLThueTro/XuLyThemHoaDonThanhToan",
+		        type: "POST",
+		        dataType: "json",
+		        data: data,
+		        success: function (res) {
+		            if (res.success) {
+		                showToast(res.message || "Tạo hóa đơn thành công");
+		                setTimeout(() => {
+		                    window.location.href =
+		                        "<%=request.getContextPath()%>/QuanLyTro";
+		                }, 1200);
+		            } else {
+		                showToast(res.message || "Không thể tạo hóa đơn", "error");
+		            }
+		        },
+		        error: function () {
+		            showToast("Lỗi server khi tạo hóa đơn", "error");
+		        }
+		    });
+		});
 </script>
 </body>
 </html>
