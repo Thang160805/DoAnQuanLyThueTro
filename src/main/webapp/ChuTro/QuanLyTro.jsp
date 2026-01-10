@@ -340,6 +340,7 @@ body {
 				int countSoPhong = (int) request.getAttribute("countSoPhong");
 				int countPhongTrong = (int) request.getAttribute("countPhongTrong");
 				int countPhongDaThue = (int) request.getAttribute("countPhongDaThue");
+				int DoanhThu = (int) request.getAttribute("DoanhThu");
 				%>
 				<div id="dashboard" class="section active">
 					<div class="stats-grid">
@@ -368,49 +369,9 @@ body {
 							<div class="stat-icon stat-warning">
 								<i class="fa-solid fa-sack-dollar"></i>
 							</div>
-							<div class="stat-value">45.2tr</div>
+							<div class="stat-value"><%= CurrencyHelper.format(DoanhThu) %> VNĐ</div>
 							<div class="stat-label" style="color: #b45309">Doanh thu
-								tháng</div>
-						</div>
-					</div>
-
-					<div class="revenue-section">
-						<div class="chart-header">
-							<div class="chart-title">Thống kê doanh thu (6 tháng gần
-								nhất)</div>
-							<select class="form-input"
-								style="width: auto; padding: 6px 12px;">
-								<option>Năm 2025</option>
-								<option>Năm 2024</option>
-							</select>
-						</div>
-						<div class="chart-container">
-							<div class="chart-bar-group">
-								<div class="chart-bar" style="height: 40%;" data-value="32tr"></div>
-								<span class="chart-label">Tháng 7</span>
-							</div>
-							<div class="chart-bar-group">
-								<div class="chart-bar" style="height: 55%;" data-value="38tr"></div>
-								<span class="chart-label">Tháng 8</span>
-							</div>
-							<div class="chart-bar-group">
-								<div class="chart-bar" style="height: 45%;" data-value="35tr"></div>
-								<span class="chart-label">Tháng 9</span>
-							</div>
-							<div class="chart-bar-group">
-								<div class="chart-bar" style="height: 70%;" data-value="41tr"></div>
-								<span class="chart-label">Tháng 10</span>
-							</div>
-							<div class="chart-bar-group">
-								<div class="chart-bar" style="height: 65%;" data-value="40tr"></div>
-								<span class="chart-label">Tháng 11</span>
-							</div>
-							<div class="chart-bar-group">
-								<div class="chart-bar"
-									style="height: 85%; background: var(--primary);"
-									data-value="45.2tr"></div>
-								<span class="chart-label">Tháng 12</span>
-							</div>
+								</div>
 						</div>
 					</div>
 				</div>
@@ -891,8 +852,8 @@ body {
 								String trangThaiText = "";
 								String trangThaiClass = "";
 
-								if ("Chờ xử lý".equals(trangThai)) {
-									trangThaiText = "Chờ xử lý";
+								if ("Chưa xử lý".equals(trangThai)) {
+									trangThaiText = "Chưa xử lý";
 									trangThaiClass = "badge-warn";
 								} else if ("Đang xử lý".equals(trangThai)) {
 									trangThaiText = "Đang xử lý";

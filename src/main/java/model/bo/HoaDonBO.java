@@ -38,4 +38,20 @@ public class HoaDonBO {
 	public boolean updateTrangThaiHoaDon(int idHoaDon) {
 		return hdDao.updateTrangThaiHoaDon(idHoaDon);
 	}
+	
+	public void updateNgayThanhToan(int idHoaDon) {
+		hdDao.updateNgayThanhToan(idHoaDon);
+	}
+	
+	public int DoanhThuPhongTro(int idChuTro) {
+		return hdDao.DoanhThuPhongTro(idChuTro);
+	}
+	
+	public boolean updateHoaDon(HoaDon hd) {
+		return hdDao.updateHoaDon(hd);
+	}
+	
+	public boolean deleteHoaDon(int idHoaDon) {
+		return hdDao.deleteHoaDon(idHoaDon);
+	}
 }

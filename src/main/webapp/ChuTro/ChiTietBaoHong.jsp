@@ -91,7 +91,7 @@
 						String statusClass = "";
 
 						switch (status) {
-							case "Chờ xử lý" :
+							case "Chưa xử lý" :
 								statusClass = "status-pending";
 								break;
 							case "Đang xử lý" :
@@ -142,7 +142,7 @@
 					%>
 					<div class="gallery">
 						<%
-						if (listAnh != null && listAnh.size() > 1) {
+						if (listAnh != null && listAnh.size() > 0) {
 							for (int i = 0; i < listAnh.size(); i++) {
 						%>
 						<img src="<%=listAnh.get(i)%>" class="gallery-img"
@@ -188,13 +188,13 @@
 					<div class="timeline">
 
 						<div
-							class="timeline-item <%=status.equals("Chờ xử lý") || status.equals("Đang xử lý") ? "active" : ""%>">
+							class="timeline-item <%=status.equals("Chưa xử lý") || status.equals("Đang xử lý") ? "active" : ""%>">
 							<div class="timeline-dot"></div>
 							<div class="timeline-content">
 								<div class="timeline-status">Đã tiếp nhận</div>
 
 								<div class="timeline-time">
-									<%=status.equals("Chờ xử lý") ? "Chờ xử lý" : bh.getUpdated_At().format(formatter)%>
+									<%=status.equals("Chờ xử lý") ? "Chưa xử lý" : bh.getUpdated_At().format(formatter)%>
 								</div>
 							</div>
 						</div>
@@ -254,7 +254,7 @@
 				<div class="card action-group-card">
 					<div class="btn-stack">
 						<%
-						if ("Chờ xử lý".equals(status)) {
+						if ("Chưa xử lý".equals(status)) {
 						%>
 
 						<button class="btn btn-primary"
@@ -381,7 +381,8 @@
 	            dataType: "json",
 	            data: {
 	                idBaoHong: idBaoHong,
-	                idNguoiGui: idNguoiGui
+	                idNguoiGui: idNguoiGui,
+	                idPhong : idPhong
 	            },
 	            success: function (res) {
 	                if (res.success) {
@@ -406,7 +407,8 @@
 	            dataType: "json",
 	            data: {
 	                idBaoHong: idBaoHong,
-	                idNguoiGui: idNguoiGui
+	                idNguoiGui: idNguoiGui,
+	                idPhong : idPhong
 	            },
 	            success: function (res) {
 	                if (res.success) {

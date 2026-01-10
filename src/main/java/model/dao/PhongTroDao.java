@@ -603,4 +603,28 @@ public class PhongTroDao {
 		return false;
 	}
 	
+	public void updateTrangThaiPhongSua(int idPhong) {
+		Connect();
+		String sql = "update PhongTro set TrangThai = N'Đang sửa chữa' where ID_Phong=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idPhong);
+			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateTrangThaiPhongSuaHT(int idPhong) {
+		Connect();
+		String sql = "update PhongTro set TrangThai = N'Đã thuê' where ID_Phong=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idPhong);
+			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import model.bean.TaiKhoan;
 import model.bean.ThongBao;
 import model.bo.BaoHongBO;
+import model.bo.PhongTroBO;
 import model.bo.ThongBaoBO;
 
 import java.io.IOException;
@@ -53,6 +54,7 @@ public class XuLyBaoHong extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		int idBaoHong = Integer.parseInt(request.getParameter("idBaoHong"));
 		int idNguoiGui = Integer.parseInt(request.getParameter("idNguoiGui"));
+		int idPhong = Integer.parseInt(request.getParameter("idPhong"));
 		String title = "Tiếp nhận xử lý báo hỏng";
 
 		String full_content = "Báo hỏng của bạn đã được tiếp nhận và đang được xử lý. "
@@ -63,11 +65,13 @@ public class XuLyBaoHong extends HttpServlet {
 		tb.setReceiver_id(idNguoiGui);
 		tb.setTitle(title);
 		tb.setFull_content(full_content);
+		PhongTroBO ptBO = new PhongTroBO();
 		BaoHongBO bhBO = new BaoHongBO();
 		ThongBaoBO tbBO = new ThongBaoBO();
 		boolean checked = bhBO.updateTrangThaiXuLy(idBaoHong);
 		if(checked) {
 			tbBO.insertGuiThongBao(tb);
+			ptBO.updateTrangThaiPhongSua(idPhong);
 			 out.print("{\"success\": true, \"message\": \"Đã tiếp nhận và bắt đầu xử lý báo hỏng\"}");
 		}else {
 			out.print("{\"success\": false, \"message\": \"Không thể cập nhật trạng thái báo hỏng\"}");

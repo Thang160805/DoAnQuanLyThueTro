@@ -76,6 +76,11 @@ public class XuLyThemHoaDonThanhToan extends HttpServlet {
 		if (hanThanhToanStr != null && !hanThanhToanStr.isEmpty()) {
 			hanThanhToan = Date.valueOf(hanThanhToanStr);
 		}
+		Date ngayHienTai = new Date(System.currentTimeMillis());
+		if (!hanThanhToan.after(ngayHienTai)) {
+		    out.print("{\"success\":false,\"message\":\"Hạn thanh toán phải lớn hơn ngày hiện tại\"}");
+		    return;
+		}
 		String title = "Có hóa đơn thanh toán mới";
 		String full_content = "Hóa đơn thanh toán cho kỳ " + thangNam + " đã được tạo với tổng số tiền "
 				+ CurrencyHelper.format(tongTien) + " VNĐ. " + "Vui lòng thanh toán trước hạn " + hanThanhToanStr

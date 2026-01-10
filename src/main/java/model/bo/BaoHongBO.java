@@ -19,8 +19,8 @@ public class BaoHongBO {
 		return bhDao.getTOP3BaoHongByID_NguoiGui(ID_NguoiGui);
 	}
 	
-	public ArrayList<BaoHong> listBaoHong(){
-		return bhDao.listBaoHong();
+	public ArrayList<BaoHong> listBaoHongByIdCT(int idChuTro){
+		return bhDao.listBaoHongByIdCT(idChuTro);
 	}
 	
 	public BaoHong getBaoHongById(int idBaoHong) {

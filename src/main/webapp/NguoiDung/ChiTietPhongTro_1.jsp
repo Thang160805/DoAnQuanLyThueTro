@@ -21,7 +21,9 @@
 <!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+	rel="stylesheet">
 <!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -43,6 +45,7 @@ body {
 	color: #222222;
 	line-height: 1.6;
 }
+
 .back-btn {
 	display: inline-flex;
 	align-items: center;
@@ -323,67 +326,69 @@ body {
 
 /* Container chung */
 .booking-action {
-    margin-top: 15px;
+	margin-top: 15px;
 }
 
 /* Nút thuê chính */
 .btn-rent {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
-    color: white;
-    padding: 12px 20px;
-    border-radius: var(--radius);
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
+	color: white;
+	padding: 12px 20px;
+	border-radius: var(--radius);
+	text-decoration: none;
+	font-weight: 600;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
 }
 
 .btn-rent:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
-    color: white;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+	color: white;
 }
 
 /* Các khối thông báo trạng thái */
 .status-notice {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px;
-    border-radius: var(--radius);
-    font-weight: 500;
-    font-size: 0.95rem;
-    border: 1px solid transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 12px;
+	border-radius: var(--radius);
+	font-weight: 500;
+	font-size: 0.95rem;
+	border: 1px solid transparent;
 }
 
 /* Style cho Đã thuê */
 .notice-rented {
-    background-color: #f1f5f9;
-    color: #64748b;
-    border-color: #e2e8f0;
-    cursor: not-allowed;
+	background-color: #f1f5f9;
+	color: #64748b;
+	border-color: #e2e8f0;
+	cursor: not-allowed;
 }
 
 /* Style cho Đang sửa chữa */
 .notice-repair {
-    background-color: #fff7ed;
-    color: #c2410c;
-    border-color: #ffedd5;
+	background-color: #fff7ed;
+	color: #c2410c;
+	border-color: #ffedd5;
 }
+
 .rating .star {
-    cursor: pointer;
-    font-size: 20px;
-    transition: transform 0.15s ease;
+	cursor: pointer;
+	font-size: 20px;
+	transition: transform 0.15s ease;
 }
 
 .rating .star:hover {
-    transform: scale(1.15);
+	transform: scale(1.15);
 }
+
 .btn-rent {
 	width: 100%;
 	padding: 14px;
@@ -517,7 +522,7 @@ body {
 			</div>
 			<div class="thumb-row">
 				<%
-				if (img != null && img.size() > 1) {
+				if (img != null && img.size() > 0) {
 					for (int i = 0; i < img.size(); i++) {
 				%>
 				<img src="<%=img.get(i)%>" class="thumb-img active"
@@ -556,7 +561,8 @@ body {
 							<div class="landlord-name"><%=pt.getTenCT()%></div>
 							<div class="landlord-sub">Chủ nhà • Phản hồi nhanh</div>
 						</div>
-						<a href="${pageContext.request.contextPath}/TroChuyenCTro?ID_ChuTro=<%= pt.getID_ChuTro() %>"
+						<a
+							href="${pageContext.request.contextPath}/TroChuyenCTro?ID_ChuTro=<%= pt.getID_ChuTro() %>"
 							class="btn btn-outline-primary btn-sm ms-auto rounded-pill px-3">
 							<i class="fa-brands fa-whatsapp"></i> Chat ngay
 						</a>
@@ -603,9 +609,10 @@ body {
 				<!-- 3. BẢN ĐỒ -->
 				<div class="section-box">
 					<h3 class="section-title">Vị trí</h3>
-					<iframe
-						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.6573463462786!2d105.7812523148837!3d21.046392985988864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab3b4220c2bd%3A0x1c9e359e2a4f618c!2zQ2Hduw!5e0!3m2!1svi!2s!4v1646814758000!5m2!1svi!2s"
-						class="map-frame" allowfullscreen="" loading="lazy"></iframe>
+					<iframe class="map-frame"
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3780.1101298370354!2d105.69316507496644!3d18.659053382461565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3139cddf0bf20f23%3A0x86154b56a284fa6d!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBWaW5o!5e0!3m2!1svi!2s!4v1767967008956!5m2!1svi!2s"
+						width="600" height="450" style="border: 0;" allowfullscreen=""
+						loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 				</div>
 				<%
 				int countComment = (int) request.getAttribute("countComment");

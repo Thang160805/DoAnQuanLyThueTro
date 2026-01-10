@@ -78,6 +78,10 @@ public class UpdateProfile extends HttpServlet {
 			response.getWriter().print("{\"status\":\"error\",\"message\":\"CCCD không được để trống\"}");
 			return;
 		}
+		if (!cccd.matches("\\d{11}")) {
+		    response.getWriter().print("{\"status\":\"error\",\"message\":\"CCCD phải gồm đúng 11 chữ số\"}");
+		    return;
+		}
 
 		if (!cccd.matches("\\d+")) {
 			response.getWriter().print("{\"status\":\"error\",\"message\":\"CCCD không được nhập chữ\"}");

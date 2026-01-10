@@ -84,14 +84,15 @@ public class QuanLyTro extends HttpServlet {
 		request.setAttribute("listNT", listNT);
 		
 		BaoHongBO bhBO = new BaoHongBO();
-		ArrayList<BaoHong> listBH = bhBO.listBaoHong();
+		ArrayList<BaoHong> listBH = bhBO.listBaoHongByIdCT(user.getId());
 		request.setAttribute("listBH", listBH);
 		
 		String ThangNam = request.getParameter("ThangNam");
 		HoaDonBO hdBo = new HoaDonBO();
 		ArrayList<HoaDon> listHoaDon = hdBo.getListHoaDonByIdCT(user.getId(), ThangNam);
 		request.setAttribute("listHoaDon", listHoaDon);
-		
+		int DoanhThu = hdBo.DoanhThuPhongTro(user.getId());
+		request.setAttribute("DoanhThu", DoanhThu);
 		String filter = request.getParameter("TenNguoiThue");
 		ArrayList<HopDong> listHDNT = hdBO.getListNguoiThueByIdCT(user.getId(), filter);
 		request.setAttribute("listHDNT", listHDNT);

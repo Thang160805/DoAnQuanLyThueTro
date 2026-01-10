@@ -124,4 +124,12 @@ public class PhongTroBO {
 	 public boolean UpdateTrangThaiDuyet(int ID_Phong) {
 		 return ptDao.UpdateTrangThaiDuyet(ID_Phong);
 	 }
+	 
+	 public void updateTrangThaiPhongSua(int idPhong) {
+		 ptDao.updateTrangThaiPhongSua(idPhong);
+	 }
+	 
+	 public void updateTrangThaiPhongSuaHT(int idPhong) {
+		 ptDao.updateTrangThaiPhongSuaHT(idPhong);
+	 }
 }

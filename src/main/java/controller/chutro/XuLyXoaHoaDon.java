@@ -1,4 +1,4 @@
-package controller.phongtro;
+package controller.chutro;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,16 +13,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Servlet implementation class XuLyThanhToanHoaDon
+ * Servlet implementation class XuLyXoaHoaDon
  */
-@WebServlet("/XuLyThanhToanHoaDon")
-public class XuLyThanhToanHoaDon extends HttpServlet {
+@WebServlet("/XuLyXoaHoaDon")
+public class XuLyXoaHoaDon extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public XuLyThanhToanHoaDon() {
+    public XuLyXoaHoaDon() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,23 +39,22 @@ public class XuLyThanhToanHoaDon extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-
 		TaiKhoan user = (TaiKhoan) session.getAttribute("user");
 		if (user == null) {
-			response.sendRedirect(request.getContextPath() + "/index.jsp");
-			return;
+		    response.sendRedirect(request.getContextPath() + "/index.jsp");
+		    return;
 		}
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		int idHoaDon = Integer.parseInt(request.getParameter("idHoaDon"));
+		int idHoaDon = Integer.parseInt(request.getParameter("id"));
 		HoaDonBO hdBO = new HoaDonBO();
-		boolean checked = hdBO.updateTrangThaiHoaDon(idHoaDon);
+		boolean checked = hdBO.deleteHoaDon(idHoaDon);
 		if (checked) {
-			hdBO.updateNgayThanhToan(idHoaDon);
-            out.print("{\"success\": true, \"message\": \"Đã ghi nhận thanh toán. Vui lòng chờ chủ trọ xác nhận.\"}");
-        } else {
-            out.print("{\"success\": false, \"message\": \"Không thể cập nhật trạng thái hóa đơn\"}");
-        }
+		    out.print("{\"success\": true, \"message\": \"Xóa hóa đơn thành công\"}");
+		} else {
+		    out.print("{\"success\": false, \"message\": \"Không thể xóa hóa đơn\"}");
+		}
+
 	}
 
 }

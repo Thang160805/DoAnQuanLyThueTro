@@ -254,6 +254,78 @@ public class HoaDonDao {
 		}
 		return false;
 	}
+	
+	public void updateNgayThanhToan(int idHoaDon) {
+		Connect();
+		String sql = "update HoaDon set NgayThanhToan= GETDATE() where id = ?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idHoaDon);
+			ps.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int DoanhThuPhongTro(int idChuTro) {
+		Connect();
+		String sql = "select sum(TongTien) as TT from HoaDon where TrangThai = N'Đã thanh toán' and ID_ChuTro=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idChuTro);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("TT");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+	
+	public boolean updateHoaDon(HoaDon hd) {
+		Connect();
+		String sql = "update HoaDon set ThangNam=?,TienDien=?,TienNuoc=?,TongTien=?,HanThanhToan=?,GhiChu=? where id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, hd.getThangNam());
+			ps.setInt(2, hd.getTienDien());
+			ps.setInt(3, hd.getTienNuoc());
+			ps.setInt(4, hd.getTongTien());
+			ps.setDate(5, hd.getHanThanhToan());
+			String ghiChu = hd.getGhiChu();
+
+			if (ghiChu == null || ghiChu.trim().isEmpty()) {
+			    ps.setNull(6, java.sql.Types.NVARCHAR);
+			} else {
+			    ps.setString(6, ghiChu);
+			}
+			ps.setInt(7, hd.getId());
+			int row = ps.executeUpdate();
+			if(row > 0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean deleteHoaDon(int idHoaDon) {
+		Connect();
+		String sql = "delete from HoaDon where id=?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idHoaDon);
+			int row = ps.executeUpdate();
+			if(row > 0) {
+				return true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 
 }

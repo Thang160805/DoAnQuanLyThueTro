@@ -181,33 +181,7 @@ body {
 						</div>
 					</div>
 
-					<div class="revenue-section">
-						<div class="chart-header">
-							<div class="chart-title">Phân tích tăng trưởng (6 tháng gần
-								nhất)</div>
-							<select class="form-select w-auto">
-								<option>Năm 2025</option>
-								<option>Năm 2024</option>
-							</select>
-						</div>
-						<div class="chart-container"
-							style="background: #fcfcfd; border-radius: 16px; padding: 20px;">
-							<div class="chart-bar-group">
-								<div class="chart-bar" style="height: 40%;" data-value="32M"></div>
-								<span class="chart-label">Th7</span>
-							</div>
-							<div class="chart-bar-group">
-								<div class="chart-bar" style="height: 55%;" data-value="38M"></div>
-								<span class="chart-label">Th8</span>
-							</div>
-							<div class="chart-bar-group">
-								<div class="chart-bar"
-									style="height: 85%; background: var(--primary-gradient);"
-									data-value="45M"></div>
-								<span class="chart-label">Th12</span>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 
 				<div id="accounts" class="section">

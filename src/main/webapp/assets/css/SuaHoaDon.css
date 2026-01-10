@@ -1,0 +1,179 @@
+@charset "UTF-8";
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	background: #f8fafc;
+	padding: 40px 0;
+}
+
+.container {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+.card {
+	background: #fff;
+	border-radius: 16px;
+	padding: 32px;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+	border: 1px solid #e2e8f0;
+}
+
+.header-edit {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	margin-bottom: 30px;
+	border-bottom: 1px solid #f1f5f9;
+	padding-bottom: 20px;
+}
+
+.header-edit i {
+	font-size: 24px;
+	color: #6366f1;
+}
+
+.form-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+
+.full {
+	grid-column: span 2;
+}
+
+.label {
+	font-size: 13px;
+	font-weight: 700;
+	color: #64748b;
+	text-transform: uppercase;
+	margin-bottom: 8px;
+	display: block;
+}
+
+.form-control {
+	width: 100%;
+	padding: 12px 16px;
+	border-radius: 12px;
+	border: 1.5px solid #e2e8f0;
+	outline: none;
+	transition: 0.3s;
+}
+
+.form-control:focus {
+	border-color: #6366f1;
+	box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.readonly {
+	background: #f1f5f9;
+	cursor: not-allowed;
+	font-weight: 600;
+}
+
+.calc-box {
+	background: #fcfcfd;
+	padding: 20px;
+	border-radius: 14px;
+	border: 1px solid #f1f5f9;
+	margin-top: 20px;
+}
+
+.total-display {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 2px dashed #e2e8f0;
+}
+
+.total-amount {
+	font-size: 24px;
+	font-weight: 800;
+	color: #6366f1;
+}
+
+.btn-group {
+	display: flex;
+	justify-content: flex-end;
+	gap: 12px;
+	margin-top: 30px;
+}
+
+.btn {
+	padding: 12px 28px;
+	border-radius: 12px;
+	font-weight: 700;
+	cursor: pointer;
+	border: none;
+	transition: 0.3s;
+}
+
+.btn-save {
+	background: #6366f1;
+	color: white;
+}
+
+.btn-save:hover {
+	background: #4338ca;
+	transform: translateY(-2px);
+}
+
+.btn-cancel {
+	background: transparent;
+	color: #64748b;
+}
+
+.cost-entry-row {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.cost-label {
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #475569;
+}
+
+.entry-inputs {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+.input-unit {
+    flex: 1;
+}
+
+.input-unit span, .result-unit span {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.result-unit {
+    flex: 1.2;
+    text-align: right;
+}
+
+.result-input {
+    border: none;
+    background: #f1f5f9;
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: right;
+    font-weight: 700;
+    color: #6366f1;
+    outline: none;
+}

@@ -88,14 +88,15 @@ public class BaoHongDao {
 		return list;
 	}
 	
-	public ArrayList<BaoHong> listBaoHong(){
+	public ArrayList<BaoHong> listBaoHongByIdCT(int idChuTro){
 		Connect();
 		ArrayList<BaoHong> list = new ArrayList<BaoHong>();
 		String sql = "select bh.*,tt.HoTen,tt.Avatar,pt.TenPhong from BaoHong bh "
 				+ "join ThongTinNguoiDung tt on bh.ID_NguoiGui=tt.ID_TaiKhoan "
-				+ "join PhongTro pt on bh.ID_Phong=pt.ID_Phong where bh.TrangThai in(N'Chờ xử lý',N'Đang xử lý')";
+				+ "join PhongTro pt on bh.ID_Phong=pt.ID_Phong where bh.TrangThai in(N'Chưa xử lý',N'Đang xử lý') and pt.ID_ChuTro=?";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, idChuTro);
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				BaoHong bh = new BaoHong();
