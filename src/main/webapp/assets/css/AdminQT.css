@@ -24,7 +24,6 @@ button {
 	font-family: 'Poppins', sans-serif;
 }
 
-/* ================= LAYOUT GRID ================= */
 .app-container {
 	display: grid;
 	grid-template-columns: 270px 1fr;
@@ -32,7 +31,6 @@ button {
 	height: 100vh;
 }
 
-/* ================= SIDEBAR ================= */
 .sidebar {
 	grid-row: 1/-1;
 	background: #ffffff;
@@ -126,7 +124,6 @@ button {
 	box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
 
-/* ================= HEADER ================= */
 .header {
 	background: transparent;
 	display: flex;
@@ -268,17 +265,16 @@ button {
 
 .incident-cols {
 	display: grid;
-	/* Cột "Vấn đề" rộng nhất (2.5fr) để hiển thị chi tiết */
 	grid-template-columns: 0.8fr 2.5fr 1.2fr 1fr 1.2fr 120px;
 	align-items: center;
 }
 
 .truncate-150 {
 	display: block;
-	width: 150px; /* cố định 150px như bạn yêu cầu */
-	white-space: nowrap; /* không xuống dòng */
-	overflow: hidden; /* ẩn phần dư */
-	text-overflow: ellipsis; /* hiện dấu “…” */
+	width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .modal-overlay {
@@ -311,39 +307,37 @@ button {
 
 .contract-cols {
 	display: grid;
-	/* Mã HĐ | Phòng | Người thuê | Thời hạn | Trạng thái | Hành động */
 	grid-template-columns: 1fr 0.8fr 1.5fr 1.5fr 1fr 120px;
 	align-items: center;
 }
 
 .status-badgee {
 	display: inline-block;
-	padding: 8px 24px; /* Tăng padding để badge dài ra giống hình */
-	border-radius: 50px; /* Bo tròn hoàn toàn hai đầu */
-	font-family: sans-serif; /* Hoặc font dự án của bạn */
-	font-size: 14px; /* Chỉnh kích thước chữ */
-	font-weight: 800; /* Làm chữ đậm như trong ảnh */
+	padding: 8px 24px;
+	border-radius: 50px;
+	font-family: sans-serif;
+	font-size: 14px;
+	font-weight: 800;
 	text-align: center;
-	border: 1px solid #FFEBB7; /* Viền rất nhạt */
+	border: 1px solid #FFEBB7;
 }
 
 .badge-waiting {
-	background-color: #FFF8E1; /* Màu nền vàng kem nhạt */
-	color: #E67E22; /* Màu chữ cam đậm */
+	background-color: #FFF8E1;
+	color: #E67E22;
 }
 
 .header-actions a[title="Tin nhắn"] .notification-dot {
-	background: #6366f1; /* Màu xanh tím đồng bộ với thương hiệu */
+	background: #6366f1; 
 }
 
-/* Đảm bảo các icon-btn có khoảng cách đều nhau */
+
 .header-actions {
 	display: flex;
 	align-items: center;
-	gap: 12px; /* Khoảng cách giữa các nút */
+	gap: 12px;
 }
 
-/* ================= CONTENT AREA ================= */
 .main-content {
 	padding: 10px 40px 40px 40px;
 	overflow-y: auto;
@@ -373,7 +367,6 @@ button {
 	display: block;
 }
 
-/* ================= CARDS & STATS ================= */
 .stats-grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -455,7 +448,6 @@ button {
 	color: #991b1b;
 }
 
-/* ================= CHART ================= */
 .revenue-section {
 	background: #ffffff;
 	border-radius: 24px;
@@ -531,7 +523,6 @@ button {
 	font-weight: 600;
 }
 
-/* ================= TABLES ================= */
 .table-container {
 	background: #ffffff;
 	border-radius: 24px;
@@ -607,7 +598,6 @@ td:last-child {
 	box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
 
-/* Badges */
 .status-badge {
 	display: inline-flex;
 	align-items: center;
@@ -667,21 +657,21 @@ td:last-child {
 .badge-urgent {
 	background: #fee2e2;
 	color: #b91c1c;
-} /* Khẩn cấp */
+}
 .badge-medium {
 	background: #fef9c3;
 	color: #854d0e;
-} /* Trung bình */
+	
+}
 .badge-processing {
 	background: #e0e7ff;
 	color: #4338ca;
-} /* Đang xử lý */
+}
 .badge-waiting {
 	background: #f3f4f6;
 	color: #4b5563;
-} /* Chờ */
+}
 
-/* ================= BUTTONS & ACTIONS ================= */
 .btn {
 	display: inline-flex;
 	align-items: center;
@@ -696,21 +686,17 @@ td:last-child {
 }
 
 .btn-logout {
-    /* Gradient đỏ cam sang đỏ hồng */
     background: linear-gradient(135deg, #ef4444, #f43f5e); 
     color: white;
-    /* Bóng đổ màu đỏ nhạt tạo chiều sâu */
     box-shadow: 0 4px 15px -3px rgba(239, 68, 68, 0.4);
 }
 
-/* Hiệu ứng khi di chuột vào */
 .btn-logout:hover {
-    filter: brightness(1.1); /* Sáng hơn một chút */
-    transform: translateY(-2px); /* Nổi lên nhẹ */
-    box-shadow: 0 8px 25px -5px rgba(239, 68, 68, 0.5); /* Bóng đổ đậm hơn */
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px rgba(239, 68, 68, 0.5); 
 }
 
-/* Hiệu ứng khi nhấn giữ */
 .btn-logout:active {
     transform: translateY(0);
     box-shadow: 0 2px 10px -3px rgba(239, 68, 68, 0.4);
@@ -785,7 +771,6 @@ td:last-child {
 	background: #f8faff;
 }
 
-/* Action Buttons Hover Effect */
 .action-group {
 	display: flex;
 	align-items: center;
@@ -837,7 +822,6 @@ td:last-child {
 	margin: 0 4px;
 }
 
-/* ================= MODAL ================= */
 .modal-overlay {
 	position: fixed;
 	inset: 0;
@@ -901,7 +885,6 @@ td:last-child {
 	box-shadow: 0 0 0 4px #e0e7ff;
 }
 
-/* Radio Box Style */
 .hidden-radio {
 	display: none;
 }

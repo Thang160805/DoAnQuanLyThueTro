@@ -4,11 +4,11 @@ public class PhoneHelper {
 	public static String maskPhone(String phone) {
 	    if (phone == null) return "";
 
-	    phone = phone.replaceAll("\\D", ""); // bỏ ký tự không phải số
+	    phone = phone.replaceAll("\\D", "");
 
-	    if (phone.length() != 10) return phone; // không đúng 10 số thì trả lại nguyên
+	    if (phone.length() != 10) return phone;
 
-	    return phone.substring(0, 2)        // 08
-	         + "xx.xxx.xxx";                // xx.xxx.xxx
+	    return phone.substring(0, 2)
+	         + "xx.xxx.xxx"; 
 	}
 }

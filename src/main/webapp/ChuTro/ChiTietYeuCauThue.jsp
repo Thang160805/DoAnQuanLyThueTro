@@ -11,15 +11,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Chi tiết yêu cầu</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet"
@@ -46,7 +43,6 @@
 </head>
 <body>
 <%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -57,7 +53,6 @@
 	}
 	%>
 	<div class="container">
-
 		<div style="margin-bottom: 20px;">
 			<a href="${pageContext.request.contextPath}/QuanLyTro"
 				style="color: #64748b; text-decoration: none; font-size: 14px;">
@@ -241,14 +236,10 @@
 	    }, 5000);
 	}
 $(document).ready(function () {
-
-    // NÚT DUYỆT
    $(".btn-approve").click(function () {
     let idYeuCau = $(this).data("yeucau-id");
     let idNguoi = $(this).data("nguoi-id");
     let idPhong = $(this).data("idPhong");
-
-
         $.ajax({
             url: "/DoAnQLThueTro/CapNhatTrangThaiYeuCau",
             method: "POST",
@@ -277,7 +268,7 @@ $(document).ready(function () {
         });
     });
 
-    // NÚT HỦY
+
     $(".btn-reject").click(function () {
     	let idYeuCau = $(this).data("yeucau-id");
         let idNguoi = $(this).data("nguoi-id");

@@ -14,7 +14,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Chi tiết hóa đơn</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -37,7 +36,7 @@
     padding: 24px;
     background: #f8fafc;
     border-radius: 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid #e2e8f0;
 }
 
 .payment-prompt {
@@ -50,12 +49,11 @@
 .payment-prompt p {
     margin: 0;
     font-size: 14px;
-    color: var(--text-secondary);
+    color: #64748b;
 }
 
-.payment-prompt i { color: var(--warning); margin-right: 8px; }
+.payment-prompt i { color: #f59e0b; margin-right: 8px; }
 
-/* Nút thanh toán Gradient Premium */
 .btn-pay-now {
     display: flex;
     align-items: center;
@@ -94,6 +92,16 @@
 	</style>
 </head>
 <body>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 	<div class="view-container">
 		<div class="top-nav">
 			<a href="${pageContext.request.contextPath}/LichThanhToan"

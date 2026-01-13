@@ -51,7 +51,6 @@ a {
 	width: 100%;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
 	width: 8px;
 }
@@ -69,7 +68,6 @@ a {
 	background: #94a3b8;
 }
 
-/* --- SIDEBAR --- */
 .sidebar {
 	width: 280px;
 	background-color: #ffffff;
@@ -143,13 +141,11 @@ a {
 	color: #1f2937;
 }
 
-/* Active */
 .nav-item.active {
 	background-color: #eff6ff;
 	color: #2563eb;
 }
 
-/* Danger Item */
 .nav-item.danger {
 	color: #dc2626;
 }
@@ -170,7 +166,6 @@ a {
 	border-top: 1px solid #f3f4f6;
 }
 
-/* --- MAIN CONTENT --- */
 .main-content {
 	flex: 1;
 	overflow-y: auto;
@@ -199,7 +194,6 @@ a {
 	color: #6b7280;
 }
 
-/* --- CARDS & FORMS --- */
 .card {
 	background-color: #ffffff;
 	border-radius: 16px;
@@ -216,7 +210,6 @@ a {
 	overflow: hidden;
 }
 
-/* Avatar */
 .avatar-section {
 	display: flex;
 	align-items: center;
@@ -259,7 +252,6 @@ a {
 	color: #2563eb;
 }
 
-/* Form Grid */
 .form-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -313,7 +305,6 @@ a {
 	resize: none;
 }
 
-/* Buttons */
 .btn {
 	padding: 0.75rem 1.5rem;
 	border-radius: 12px;
@@ -369,7 +360,6 @@ a {
 	background-color: #dbeafe;
 }
 
-/* Security List Items */
 .list-item {
 	display: flex;
 	align-items: center;
@@ -412,7 +402,6 @@ a {
 	border-radius: 6px;
 }
 
-/* Toggle */
 .toggle-switch {
 	position: relative;
 	display: inline-block;
@@ -458,7 +447,6 @@ input:checked+.slider:before {
 	transform: translateX(20px);
 }
 
-/* Animation */
 @keyframes fadeIn {from { opacity:0;
 	transform: translateY(10px);
 }

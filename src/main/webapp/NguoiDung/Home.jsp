@@ -11,8 +11,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Trang chủ</title>
-<!-- Font Google: Poppins & Inter -->
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -20,12 +18,8 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/footer.css">
 <link rel="stylesheet"
@@ -56,7 +50,7 @@ body {
 	cursor: pointer;
 	transition: 0.2s;
 	text-decoration: none;
-	display: inline-block; /* QUAN TRỌNG */
+	display: inline-block; 
 }
 
 .btn-view:hover {
@@ -76,7 +70,6 @@ body {
 </head>
 <body>
 	<%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -271,18 +264,13 @@ body {
 
 	<script>
         function toggleDropdown(id) {
-            // Đóng các dropdown khác
             const allDropdowns = document.querySelectorAll('.dropdown-content');
             allDropdowns.forEach(d => {
                 if(d.id !== id) d.parentElement.classList.remove('active');
             });
-
-            // Mở/Đóng cái hiện tại
             const element = document.getElementById(id);
             element.parentElement.classList.toggle('active');
         }
-
-        // Click ra ngoài thì đóng
         window.onclick = function(event) {
             if (!event.target.closest('.dropdown')) {
                 const dropdowns = document.querySelectorAll(".dropdown");

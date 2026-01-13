@@ -15,16 +15,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Phòng đã thuê</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet"
@@ -43,7 +40,6 @@
 </head>
 <body>
 <%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -188,18 +184,13 @@
 	<script>lucide.createIcons();</script>
 	<script>
         function toggleDropdown(id) {
-            // Đóng các dropdown khác
             const allDropdowns = document.querySelectorAll('.dropdown-content');
             allDropdowns.forEach(d => {
                 if(d.id !== id) d.parentElement.classList.remove('active');
             });
-
-            // Mở/Đóng cái hiện tại
             const element = document.getElementById(id);
             element.parentElement.classList.toggle('active');
         }
-
-        // Click ra ngoài thì đóng
         window.onclick = function(event) {
             if (!event.target.closest('.dropdown')) {
                 const dropdowns = document.querySelectorAll(".dropdown");

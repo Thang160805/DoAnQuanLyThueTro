@@ -58,7 +58,6 @@ gap:10px;
     padding: 0;
 }
 
-/* Từng ô số */
 .pagi-item {
     display: flex;
     align-items: center;
@@ -75,7 +74,6 @@ gap:10px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hiệu ứng Hover */
 .pagi-item:hover {
     border-color: #6366f1;
     color: #6366f1;
@@ -84,7 +82,6 @@ gap:10px;
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
 }
 
-/* Trang hiện tại */
 .pagi-item.active {
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: #ffffff;
@@ -92,20 +89,17 @@ gap:10px;
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
 }
 
-/* Dấu ba chấm */
 .pagi-dots {
     color: #94a3b8;
     padding: 0 5px;
 }
 
-/* Chữ hiển thị thông tin */
 .pagi-info {
     font-size: 0.85rem;
     color: #64748b;
     font-weight: 400;
 }
 
-/* Nút Icon */
 .pagi-item i {
     font-size: 0.8rem;
 }
@@ -113,7 +107,6 @@ gap:10px;
 </head>
 <body>
 	<%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -128,7 +121,6 @@ gap:10px;
 		ArrayList<ThongBao> list = (ArrayList<ThongBao>) request.getAttribute("listThongBao");
 		%>
 
-		<!-- HEADER SECTION -->
 		<header class="header">
 			<a href="${pageContext.request.contextPath}/QuanLyTro" class="page-title">Thông báo</a>
 			<button class="btn-mark-read" onclick="markAllRead()"

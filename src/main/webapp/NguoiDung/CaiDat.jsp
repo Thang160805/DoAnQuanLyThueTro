@@ -13,11 +13,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Cài đặt</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<!-- FontAwesome -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet"
@@ -31,7 +29,7 @@ body {
 	color: #1f2937;
 	height: 100vh;
 	display: flex;
-	overflow: hidden; /* Ngăn scroll body chính */
+	overflow: hidden;
 }
 .status-badge {
 	font-size: 0.75rem;
@@ -113,7 +111,6 @@ body {
 </head>
 <body>
 	<%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -123,9 +120,7 @@ body {
 		return;
 	}
 	%>
-	<!-- SIDEBAR -->
 	<aside class="sidebar">
-		<!-- Logo Area -->
 		<div class="sidebar-header">
 			<a class="navbar-brand"
 				href="${pageContext.request.contextPath}/ProcessHomeUser"> <i
@@ -135,8 +130,6 @@ body {
 
 
 		</div>
-
-		<!-- Menu Items -->
 		<nav id="sidebar-nav" class="sidebar-nav">
 			<div class="nav-label">Cài đặt chung</div>
 
@@ -160,7 +153,6 @@ body {
 			</button>
 		</nav>
 
-		<!-- Sidebar Footer -->
 		<div class="sidebar-footer">
 			<a href="${pageContext.request.contextPath}/Logout" class="nav-item"
 				style="color: #dc2626;"> <i
@@ -169,13 +161,12 @@ body {
 		</div>
 	</aside>
 
-	<!-- MAIN CONTENT -->
 	<main class="main-content">
 		<div class="container">
 			<%
 			TaiKhoan tk = (TaiKhoan) request.getAttribute("ThongTinCaNhan");
 			%>
-			<!-- TAB 1: THÔNG TIN TÀI KHOẢN -->
+
 			<div id="profile" class="tab-content">
 				<div class="page-header">
 					<h2 class="page-title">Thông tin tài khoản</h2>
@@ -183,7 +174,7 @@ body {
 						bạn trên FindRoom.</p>
 				</div>
 
-				<!-- Avatar Section -->
+
 				<div class="card">
 					<form id="avatarForm" enctype="multipart/form-data">
 						<div class="avatar-section">
@@ -216,10 +207,7 @@ body {
 
 				<div class="card">
 					<form id="updateInfoForm">
-						<!-- FORM BẮT AJAX -->
 						<div class="form-grid">
-
-							<!-- Họ và tên -->
 							<div class="form-group col-span-2">
 								<label class="form-label">Họ và tên</label>
 								<div class="input-wrapper">
@@ -228,8 +216,6 @@ body {
 										value="<%=(tk != null && tk.getHoTen() != null) ? tk.getHoTen() : ""%>">
 								</div>
 							</div>
-
-							<!-- CCCD -->
 							<div class="form-group">
 								<label class="form-label">CCCD</label>
 								<div class="input-wrapper">
@@ -239,7 +225,7 @@ body {
 								</div>
 							</div>
 
-							<!-- Email -->
+							
 							<div class="form-group">
 								<label class="form-label">Email</label>
 								<div class="input-wrapper">
@@ -249,7 +235,7 @@ body {
 								</div>
 							</div>
 
-							<!-- Số điện thoại -->
+							
 							<div class="form-group">
 								<label class="form-label">Số điện thoại</label>
 								<div class="input-wrapper">
@@ -259,7 +245,7 @@ body {
 								</div>
 							</div>
 
-							<!-- Giới tính -->
+							
 							<div class="form-group">
 								<label class="form-label">Giới tính</label>
 								<div class="input-wrapper">
@@ -271,7 +257,7 @@ body {
 								</div>
 							</div>
 
-							<!-- Ngày sinh -->
+							
 							<div class="form-group">
 								<label class="form-label">Ngày sinh</label>
 								<div class="input-wrapper">
@@ -282,7 +268,7 @@ body {
 								</div>
 							</div>
 
-							<!-- Địa chỉ -->
+							
 							<div class="form-group col-span-2">
 								<label class="form-label">Địa chỉ</label>
 								<div class="input-wrapper">
@@ -292,7 +278,7 @@ body {
 								</div>
 							</div>
 
-							<!-- Action Buttons -->
+							
 							<div class="flex justify-between items-center"
 								style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #f3f4f6;">
 
@@ -616,7 +602,6 @@ body {
 
 
 
-			<!-- TAB 6: DANGER ZONE -->
 			<div id="delete" class="tab-content hidden">
 				<div class="page-header">
 					<h2 class="page-title" style="color: #dc2626;">Vùng nguy hiểm</h2>
@@ -625,7 +610,6 @@ body {
 				</div>
 
 				<div class="card card-danger">
-					<!-- Decor Icon -->
 					<div
 						style="position: absolute; right: -20px; top: -20px; color: #fee2e2; font-size: 8rem; z-index: 0; opacity: 0.5; pointer-events: none;">
 						<i class="fa-solid fa-triangle-exclamation"></i>
@@ -659,38 +643,28 @@ body {
 			</div>
 
 		</div>
+		</main>
 		<div id="toast"
 			style="position: fixed; top: 20px; right: 20px; background: #1e293b; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 14px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); opacity: 0; transition: 0.3s; transform: translateY(-20px); pointer-events: none;">
 		</div>
 		<script
 			src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 		<script>
-        // 1. Tab Switching Logic
         function switchTab(tabId, element) {
-            // Hide all contents
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.add('hidden');
             });
             
-            // Show selected content
             document.getElementById(tabId).classList.remove('hidden');
-
-            // Remove active class from all items
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
-
-            // Set Active Style for clicked item
             element.classList.add('active');
-
-            // Close mobile menu if open
             const nav = document.getElementById('sidebar-nav');
             if (window.innerWidth < 768) {
                 nav.classList.remove('show');
             }
         }
-
-        // 2. Avatar Preview Logic
         function previewImage(event) {
             const reader = new FileReader();
             reader.onload = function(){
@@ -702,38 +676,27 @@ body {
             }
         }
 
-        
-        
-        // Window Resize Handle
         window.addEventListener('resize', () => {
              const nav = document.getElementById('sidebar-nav');
              if (window.innerWidth >= 768) {
                  nav.classList.remove('show');
-                 nav.style.display = ''; // Reset inline style
+                 nav.style.display = '';
              }
         });
         
         function showToast(message, type = "success") {
 		    const toast = $("#toast");
-
-		    // Icon hiển thị theo loại
 		    let iconHTML = "";
 
 		    if (type === "error") {
-		        toast.css("background-color", "#dc2626"); // đỏ
+		        toast.css("background-color", "#dc2626");
 		        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
 		    } else {
-		        toast.css("background-color", "#2563eb"); // xanh
+		        toast.css("background-color", "#2563eb");
 		        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
 		    }
-
-		    // Set nội dung kèm icon
 		    toast.html(iconHTML + message);
-
-		    // hiện
 		    toast.css({ opacity: "1", transform: "translateY(0)" });
-
-		    // tự tắt sau 5 giây
 		    setTimeout(() => {
 		        toast.css({ opacity: "0", transform: "translateY(20px)" });
 		    }, 5000);
@@ -741,7 +704,7 @@ body {
         
         $(document).ready(function () {
             $("#changePassForm").on("submit", function (e) {
-                e.preventDefault(); // Ngăn reload trang
+                e.preventDefault();
 
                 $.ajax({
                     url: "/DoAnQLThueTro/ChangePass",
@@ -767,13 +730,13 @@ body {
         
         $(document).ready(function () {
             $("#updateInfoForm").on("submit", function (e) {
-                e.preventDefault(); // Ngăn reload trang
+                e.preventDefault();
 
                 $.ajax({
                     url: "/DoAnQLThueTro/UpdateProfile",
                     type: "post",
                     dataType: "json",
-                    data: $(this).serialize(),  // Tự động gom tất cả name=""
+                    data: $(this).serialize(),
                     success: function (response) {
                         if (response.status === "success") {
                             showToast(response.message);
@@ -803,8 +766,6 @@ body {
                 showToast("File vượt quá 5MB!", "error");
                 return;
             }
-
-            // KHÔNG ĐƯỢC KHAI BÁO formData 2 LẦN
             let formData = new FormData();
 
             formData.append("avatar", file);
@@ -861,7 +822,7 @@ body {
                     div.className = "preview-item";
 
                     const img = document.createElement("img");
-                    img.src = reader.result;   // ✅ SRC LUÔN CÓ GIÁ TRỊ
+                    img.src = reader.result;
 
                     const removeBtn = document.createElement("div");
                     removeBtn.className = "preview-remove";
@@ -879,7 +840,7 @@ body {
                     previewContainer.appendChild(div);
                 };
 
-                reader.readAsDataURL(file); // ⚠️ BẮT BUỘC
+                reader.readAsDataURL(file);
             });
 
             updateFileInput();

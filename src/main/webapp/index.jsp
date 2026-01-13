@@ -4,19 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
+<title>Index</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
 
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
 
 
 <link rel="stylesheet"
@@ -30,7 +29,6 @@
 	</style>
 </head>
 <body>
-	<!-- 1. HEADER -->
 	<nav class="navbar navbar-expand-lg">
 		<div class="container-fluid" style="max-width: 1300px;">
 			<a class="navbar-brand" href="#"> <i
@@ -73,8 +71,6 @@
 			</div>
 		</div>
 	</section>
-
-	<!-- 3. GIỚI THIỆU (Sứ mệnh) -->
 	<section class="intro-section" id="intro">
 		<div class="container" style="max-width: 1200px;">
 			<div class="row align-items-center">
@@ -118,8 +114,6 @@
 			</div>
 		</div>
 	</section>
-
-	<!-- 4. TÍNH NĂNG NỔI BẬT -->
 	<section class="features-section" id="features">
 		<div class="container" style="max-width: 1200px;">
 			<div class="text-center mb-5">
@@ -173,7 +167,6 @@
 		</div>
 	</section>
 
-	<!-- 5. TRẢI NGHIỆM (VIDEO) -->
 	<section class="experience-section">
 		<div class="container" style="max-width: 1000px;">
 			<div class="text-center mb-5">
@@ -192,8 +185,6 @@
 
 		</div>
 	</section>
-
-	<!-- 6. ĐÁNH GIÁ (REVIEWS) -->
 	<section class="reviews-section" id="reviews">
 		<div class="container" style="max-width: 1200px;">
 			<div class="text-center mb-5">
@@ -267,7 +258,6 @@
 			</div>
 		</div>
 	</section>
-	<!-- 7. FOOTER -->
 	<footer>
 		<div class="container" style="max-width: 1200px;">
 			<div class="row">
@@ -320,8 +310,6 @@
 			</div>
 		</div>
 	</footer>
-
-	<!-- Bootstrap JS -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 		</body>

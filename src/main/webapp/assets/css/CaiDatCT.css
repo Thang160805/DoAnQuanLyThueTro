@@ -15,7 +15,6 @@ body {
 	overflow: hidden;
 }
 
-/* ================= 2. SIDEBAR ================= */
 .sidebar {
 	width: 280px;
 	background: #ffffff;
@@ -83,7 +82,6 @@ body {
 	color: #6366f1;
 }
 
-/* Footer Sidebar Profile */
 .sidebar-footer {
 	margin-top: auto;
 	padding-top: 20px;
@@ -110,7 +108,6 @@ body {
 	color: #64748b;
 }
 
-/* ================= 3. CONTENT AREA ================= */
 .content-area {
 	flex: 1;
 	height: 100%;
@@ -153,7 +150,6 @@ body {
 	display: block;
 }
 
-/* ================= 4. FORM & INPUTS (DETAILED) ================= */
 .card {
 	background: #ffffff;
 	border-radius: 16px;
@@ -200,7 +196,7 @@ body {
 
 .form-input, .form-select {
 	width: 100%;
-	padding: 14px 16px 14px 48px; /* Chừa chỗ cho icon */
+	padding: 14px 16px 14px 48px;
 	border-radius: 12px;
 	border: 2px solid #e2e8f0;
 	background: #fcfcfc;
@@ -227,7 +223,6 @@ body {
 	border-color: #e2e8f0;
 }
 
-/* ================= 5. AVATAR SECTION ================= */
 .avatar-box {
 	display: flex;
 	align-items: center;
@@ -290,7 +285,6 @@ body {
 	transform: translateY(-2px);
 }
 
-/* ================= 6. BUTTONS ================= */
 .btn-primary {
 	background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
 	color: white;
@@ -312,7 +306,6 @@ body {
 	filter: brightness(1.1);
 }
 
-/* Danger Zone Styles */
 .danger-zone {
 	background: #fff1f2;
 	border: 1px solid #fda4af;
@@ -349,11 +342,6 @@ body {
 	background: #ef4444;
 	color: white;
 }
-
-
-
-
-
 
 
 

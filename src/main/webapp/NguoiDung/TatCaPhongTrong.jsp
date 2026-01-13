@@ -13,20 +13,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Tất cả phòng trống</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 	<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/footer.css">
 <link rel="stylesheet"
@@ -80,7 +74,6 @@ body {
     padding: 0;
 }
 
-/* Từng ô số */
 .pagi-item {
     display: flex;
     align-items: center;
@@ -97,7 +90,6 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hiệu ứng Hover */
 .pagi-item:hover {
     border-color: #6366f1;
     color: #6366f1;
@@ -106,7 +98,6 @@ body {
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
 }
 
-/* Trang hiện tại */
 .pagi-item.active {
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: #ffffff;
@@ -114,20 +105,17 @@ body {
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
 }
 
-/* Dấu ba chấm */
 .pagi-dots {
     color: #94a3b8;
     padding: 0 5px;
 }
 
-/* Chữ hiển thị thông tin */
 .pagi-info {
     font-size: 0.85rem;
     color: #64748b;
     font-weight: 400;
 }
 
-/* Nút Icon */
 .pagi-item i {
     font-size: 0.8rem;
 }
@@ -135,7 +123,6 @@ body {
 </head>
 <body>
 <%
-    // Ngăn cache để không thể back sau khi logout
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
@@ -205,7 +192,6 @@ int countTB = (int) request.getAttribute("countTB");
 			</div>
 		</div>
 	</header>
-	<!-- 2. MAIN CONTENT -->
 	<div class="container">
 
 		<div class="section-header">
@@ -214,13 +200,9 @@ int countTB = (int) request.getAttribute("countTB");
 					ở)</span>
 			</h1>
 		</div>
-
-		<!-- BỘ LỌC DẠNG LINK (THẺ A) TRONG DROPDOWN -->
 		<div class="filter-bar">
 			<span style="font-weight: 600; color: #333; margin-right: 10px;"><i
 				class="fa-solid fa-filter text-primary"></i> Lọc nhanh:</span>
-
-			<!-- Filter: Mức giá -->
 			<div class="dropdown">
 				<button class="btn btn-filter dropdown-toggle" type="button"
 					data-bs-toggle="dropdown" aria-expanded="false">Mức giá</button>
@@ -242,8 +224,6 @@ int countTB = (int) request.getAttribute("countTB");
 							1 triệu</a></li>
 				</ul>
 			</div>
-
-			<!-- Filter: Khu vực -->
 			<div class="dropdown">
 				<button class="btn btn-filter dropdown-toggle" type="button"
 					data-bs-toggle="dropdown" aria-expanded="false">Khu vực</button>
@@ -265,7 +245,6 @@ int countTB = (int) request.getAttribute("countTB");
 				</ul>
 			</div>
 
-			<!-- Filter: Diện tích -->
 			<div class="dropdown">
 				<button class="btn btn-filter dropdown-toggle" type="button"
 					data-bs-toggle="dropdown" aria-expanded="false">Diện tích
@@ -290,13 +269,11 @@ int countTB = (int) request.getAttribute("countTB");
 			</div>
 		</div>
 
-		<!-- LƯỚI PHÒNG (GRID) -->
 		<div class="room-grid">
 			<%
 			ArrayList<PhongTro> listPT = (ArrayList<PhongTro>) request.getAttribute("listPhongTrong");
 			for (PhongTro pt : listPT) {
 			%>
-			<!-- Card 1 -->
 			<div class="room-card">
 				<div class="card-img-wrap">
 					<span class="status-badge"><%=pt.getTrangThai()%></span> <img
@@ -404,23 +381,19 @@ int countTB = (int) request.getAttribute("countTB");
 	</div>
 	<%@ include file="../includes/footer.jsp" %>
 
-	<!-- Script Bootstrap Bundle để Dropdown hoạt động -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 		<script>
         function toggleDropdown(id) {
-            // Đóng các dropdown khác
             const allDropdowns = document.querySelectorAll('.dropdown-content');
             allDropdowns.forEach(d => {
                 if(d.id !== id) d.parentElement.classList.remove('active');
             });
 
-            // Mở/Đóng cái hiện tại
             const element = document.getElementById(id);
             element.parentElement.classList.toggle('active');
         }
 
-        // Click ra ngoài thì đóng
         window.onclick = function(event) {
             if (!event.target.closest('.dropdown')) {
                 const dropdowns = document.querySelectorAll(".dropdown");

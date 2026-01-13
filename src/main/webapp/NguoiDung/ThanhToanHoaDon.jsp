@@ -14,7 +14,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Thanh toán</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -36,6 +35,16 @@
 	</style>
 </head>
 <body>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 	<%
 	HoaDon hd = (HoaDon) request.getAttribute("ChiTietHoaDon");
 	TaiKhoan tk = (TaiKhoan) request.getAttribute("ThongTin");
@@ -170,15 +179,13 @@
 	<script>
 			function showToast(message, type = "success") {
 			    const toast = $("#toast");
-
-			    // Icon hiển thị theo loại
 			    let iconHTML = "";
 
 			    if (type === "error") {
-			        toast.css("background-color", "#dc2626"); // đỏ
+			        toast.css("background-color", "#dc2626");
 			        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
 			    } else {
-			        toast.css("background-color", "#2563eb"); // xanh
+			        toast.css("background-color", "#2563eb");
 			        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
 			    }
 

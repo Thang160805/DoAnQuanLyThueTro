@@ -14,7 +14,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Chi tiết hóa đơn</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
@@ -34,7 +33,6 @@ body {
 	color: #1e293b;
 	padding: 40px 0;
 }
-/* Nút Sửa */
 .btn-edit-invoice {
     display: inline-flex;
     align-items: center;
@@ -55,7 +53,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Nút Xóa */
 .btn-delete-invoice {
     display: inline-flex;
     align-items: center;
@@ -83,6 +80,16 @@ body {
 </style>
 </head>
 <body>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 	<div class="view-container">
 		<div class="top-nav">
 			<a href="${pageContext.request.contextPath}/QuanLyTro"
@@ -259,25 +266,16 @@ body {
 <script>
 function showToast(message, type = "success") {
     const toast = $("#toast");
-
-    // Icon hiển thị theo loại
     let iconHTML = "";
-
     if (type === "error") {
-        toast.css("background-color", "#dc2626"); // đỏ
+        toast.css("background-color", "#dc2626");
         iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
     } else {
-        toast.css("background-color", "#2563eb"); // xanh
+        toast.css("background-color", "#2563eb");
         iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
     }
-
-    // Set nội dung kèm icon
     toast.html(iconHTML + message);
-
-    // hiện
     toast.css({ opacity: "1", transform: "translateY(0)" });
-
-    // tự tắt sau 5 giây
     setTimeout(() => {
         toast.css({ opacity: "0", transform: "translateY(20px)" });
     }, 5000);

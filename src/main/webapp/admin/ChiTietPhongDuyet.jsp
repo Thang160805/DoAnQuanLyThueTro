@@ -18,7 +18,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Chi tiết phòng duyệt</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -31,6 +30,16 @@
 	href="${pageContext.request.contextPath}/assets/css/ChiTietPhongDuyet.css">
 </head>
 <body>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 	<%
 	PhongTro pt = (PhongTro) request.getAttribute("ChiTietPhong");
 	%>
@@ -210,11 +219,10 @@
 	        toast.css({ opacity: "0", transform: "translateY(20px)" });
 	    }, 5000);
 	}
-    // Hàm đổi ảnh chính khi click ảnh phụ
     function changeImage(element) {
         const mainImg = document.getElementById('mainImage');
         
-        // Hiệu ứng mờ dần khi chuyển
+        
         mainImg.style.opacity = '0';
         
         setTimeout(() => {
@@ -222,7 +230,7 @@
             mainImg.style.opacity = '1';
         }, 200);
 
-        // Cập nhật trạng thái Active
+        
         const thumbnails = document.querySelectorAll('.sub-img');
         thumbnails.forEach(thumb => thumb.classList.remove('active'));
         element.classList.add('active');
@@ -242,7 +250,7 @@
         if (!confirm("Bạn có chắc chắn muốn phê duyệt phòng này?")) return;
 
         $.ajax({
-            url: "/DoAnQLThueTro/DuyetPhongTro", // ✅ servlet phê duyệt
+            url: "/DoAnQLThueTro/DuyetPhongTro",
             method: "POST",
             data: { 
             	idPhong: roomId

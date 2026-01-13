@@ -9,15 +9,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Yêu cầu thuê trọ</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -26,8 +23,8 @@
 	<style>
 	body {
 	font-family: "Open Sans", sans-serif;
-	background-color: #f9fafb; /* bg-body */
-	color: #111827; /* text-main */
+	background-color: #f9fafb;
+	color: #111827;
 	-webkit-font-smoothing: antialiased;
 	line-height: 1.5;
 	padding-bottom: 60px;
@@ -44,7 +41,6 @@
 </head>
 <body>
 <%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -247,24 +243,20 @@ PhongTro pt = (PhongTro) request.getAttribute("ThongTinPhong");
 function showToast(message, type = "success") {
     const toast = $("#toast");
 
-    // Icon hiển thị theo loại
     let iconHTML = "";
 
     if (type === "error") {
-        toast.css("background-color", "#dc2626"); // đỏ
+        toast.css("background-color", "#dc2626");
         iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
     } else {
-        toast.css("background-color", "#2563eb"); // xanh
+        toast.css("background-color", "#2563eb");
         iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
     }
 
-    // Set nội dung kèm icon
     toast.html(iconHTML + message);
 
-    // hiện
     toast.css({ opacity: "1", transform: "translateY(0)" });
 
-    // tự tắt sau 5 giây
     setTimeout(() => {
         toast.css({ opacity: "0", transform: "translateY(20px)" });
     }, 5000);
@@ -281,8 +273,6 @@ $(document).ready(function () {
             dataType: "json",
 
             success: function (res) {
-
-                // Delay 5 giây trước khi hiện thông báo
                 setTimeout(function () {
 
                     if (res.status === "success") {

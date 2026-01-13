@@ -14,7 +14,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Lịch thanh toán</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
@@ -45,7 +44,6 @@
     padding: 0;
 }
 
-/* Từng ô số */
 .pagi-item {
     display: flex;
     align-items: center;
@@ -62,7 +60,6 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hiệu ứng Hover */
 .pagi-item:hover {
     border-color: #6366f1;
     color: #6366f1;
@@ -71,7 +68,6 @@
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
 }
 
-/* Trang hiện tại */
 .pagi-item.active {
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: #ffffff;
@@ -79,20 +75,17 @@
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
 }
 
-/* Dấu ba chấm */
 .pagi-dots {
     color: #94a3b8;
     padding: 0 5px;
 }
 
-/* Chữ hiển thị thông tin */
 .pagi-info {
     font-size: 0.85rem;
     color: #64748b;
     font-weight: 400;
 }
 
-/* Nút Icon */
 .pagi-item i {
     font-size: 0.8rem;
 }
@@ -142,6 +135,16 @@ footer {
 	</style>
 </head>
 <body>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 	<%
 	TaiKhoan tk = (TaiKhoan) request.getAttribute("ThongTinCaNhan");
 	int countTB = (int) request.getAttribute("countTB");
@@ -428,18 +431,13 @@ footer {
 	<%@ include file="../includes/footer.jsp"%>
 	<script>
         function toggleDropdown(id) {
-            // Đóng các dropdown khác
             const allDropdowns = document.querySelectorAll('.dropdown-content');
             allDropdowns.forEach(d => {
                 if(d.id !== id) d.parentElement.classList.remove('active');
             });
-
-            // Mở/Đóng cái hiện tại
             const element = document.getElementById(id);
             element.parentElement.classList.toggle('active');
         }
-
-        // Click ra ngoài thì đóng
         window.onclick = function(event) {
             if (!event.target.closest('.dropdown')) {
                 const dropdowns = document.querySelectorAll(".dropdown");

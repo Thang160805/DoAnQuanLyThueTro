@@ -9,7 +9,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Thông tin cá nhân</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -17,12 +16,8 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/footer.css">
 <link rel="stylesheet"
@@ -38,7 +33,6 @@
 </head>
 <body>
 	<%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -139,10 +133,7 @@
 
 		<!-- MAIN LAYOUT -->
 		<div class="layout-grid">
-
-			<!-- CỘT TRÁI: THÔNG TIN & CÀI ĐẶT -->
 			<div class="left-col">
-				<!-- 2. THÔNG TIN CÁ NHÂN -->
 				<div class="card">
 					<div class="card-header">
 						<div class="card-title">
@@ -215,8 +206,6 @@
 
 					</div>
 				</div>
-
-				<!-- 5. SETTINGS REDIRECT (Card chuyển hướng) -->
 				<a href="${pageContext.request.contextPath}/CaiDat"
 					class="settings-card">
 					<div class="settings-info">
@@ -233,9 +222,7 @@
 				</a>
 			</div>
 
-			<!-- CỘT PHẢI: HOẠT ĐỘNG -->
 			<div class="right-col">
-				<!-- 3. HOẠT ĐỘNG NGƯỜI DÙNG (OVERVIEW) -->
 				<div class="overview-grid">
 					<div class="stat-card">
 						<div class="stat-icon"
@@ -254,8 +241,6 @@
 						<div class="stat-label">Đã thuê</div>
 					</div>
 				</div>
-
-				<!-- 4. HOẠT ĐỘNG GẦN ĐÂY (LIST) -->
 				<div class="card">
 					<div class="card-header">
 						<div class="card-title">
@@ -332,18 +317,15 @@
 
 	<script>
         function toggleDropdown(id) {
-            // Đóng các dropdown khác
             const allDropdowns = document.querySelectorAll('.dropdown-content');
             allDropdowns.forEach(d => {
                 if(d.id !== id) d.parentElement.classList.remove('active');
             });
 
-            // Mở/Đóng cái hiện tại
             const element = document.getElementById(id);
             element.parentElement.classList.toggle('active');
         }
 
-        // Click ra ngoài thì đóng
         window.onclick = function(event) {
             if (!event.target.closest('.dropdown')) {
                 const dropdowns = document.querySelectorAll(".dropdown");
@@ -358,19 +340,15 @@
 
         function openModal() {
             modal.classList.add('active');
-            body.style.overflow = 'hidden'; // Prevent background scrolling
+            body.style.overflow = 'hidden';
             
-            // Sync current values to inputs (in case text changed)
             document.getElementById('inputName').value = document.getElementById('displayFullname').innerText;
-            // ... (sync other fields if needed, simplified here)
         }
 
         function closeModal() {
             modal.classList.remove('active');
             body.style.overflow = 'auto';
         }
-
-        // Close on click outside
         modal.addEventListener('click', function(e) {
             if (e.target === modal) closeModal();
         });

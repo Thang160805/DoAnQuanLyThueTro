@@ -9,16 +9,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Tất cả thông báo</title>
-<!-- Font Google: Poppins & Inter -->
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet"
@@ -58,7 +54,6 @@ gap:10px;
     padding: 0;
 }
 
-/* Từng ô số */
 .pagi-item {
     display: flex;
     align-items: center;
@@ -75,7 +70,6 @@ gap:10px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hiệu ứng Hover */
 .pagi-item:hover {
     border-color: #6366f1;
     color: #6366f1;
@@ -84,7 +78,6 @@ gap:10px;
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
 }
 
-/* Trang hiện tại */
 .pagi-item.active {
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: #ffffff;
@@ -92,20 +85,17 @@ gap:10px;
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
 }
 
-/* Dấu ba chấm */
 .pagi-dots {
     color: #94a3b8;
     padding: 0 5px;
 }
 
-/* Chữ hiển thị thông tin */
 .pagi-info {
     font-size: 0.85rem;
     color: #64748b;
     font-weight: 400;
 }
 
-/* Nút Icon */
 .pagi-item i {
     font-size: 0.8rem;
 }
@@ -113,7 +103,6 @@ gap:10px;
 </head>
 <body>
 	<%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);

@@ -10,18 +10,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Chat</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
 	href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
 	rel="stylesheet">
 
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet"
@@ -29,6 +26,16 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 	<%
 	TaiKhoan tk = (TaiKhoan) request.getAttribute("ThongTin");
 
@@ -144,15 +151,11 @@ const chatInput   = document.getElementById("chatInput");
 const btnSend     = document.getElementById("btnSend");
 const messageArea = document.getElementById("messageArea");
 
-// ID người đang đăng nhập
 const myId = <%=user.getId()%>;
 
-// ID người đang chat cùng (chủ trọ)
 const otherId = <%=tk.getId()%>;
 
-/* ================== WEBSOCKET ================== */
 
-// Kết nối WebSocket
 const socket = new WebSocket(
     "ws://" + location.host + "<%=request.getContextPath()%>/chat?userId=" + myId
 );

@@ -10,14 +10,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Cài đặt</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
 
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/CaiDatCT.css">
@@ -34,7 +31,6 @@
 </head>
 <body>
 <%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -85,12 +81,8 @@
 							<img
 								src="<%=(tk != null && tk.getAvatar() != null) ? tk.getAvatar() : ""%>"
 								id="avatar-preview" class="avatar-img" alt="Avatar">
-
-							<!-- input file phải đúng ID avatar-upload để uploadAvatar() hoạt động -->
 							<input type="file" id="avatar-upload" name="avatar"
 								accept="image/*" hidden onchange="uploadAvatar()">
-
-							<!-- nút mở file -->
 							<button type="button" class="btn-camera-small"
 								onclick="document.getElementById('avatar-upload').click()"
 								title="Đổi ảnh đại diện">
@@ -306,15 +298,12 @@
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 	<script>
-        // Chuyển Tab
         function openTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             element.classList.add('active');
         }
-
-        // Preview Ảnh
         function previewImage(event) {
             const reader = new FileReader();
             reader.onload = function() {
@@ -324,29 +313,19 @@
                 reader.readAsDataURL(event.target.files[0]);
             }
         }
-
-        // Hiện Toast Notification
         function showToast(message, type = "success") {
 		    const toast = $("#toast");
-
-		    // Icon hiển thị theo loại
 		    let iconHTML = "";
 
 		    if (type === "error") {
-		        toast.css("background-color", "#dc2626"); // đỏ
+		        toast.css("background-color", "#dc2626");
 		        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
 		    } else {
-		        toast.css("background-color", "#2563eb"); // xanh
+		        toast.css("background-color", "#2563eb");
 		        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
 		    }
-
-		    // Set nội dung kèm icon
 		    toast.html(iconHTML + message);
-
-		    // hiện
 		    toast.css({ opacity: "1", transform: "translateY(0)" });
-
-		    // tự tắt sau 5 giây
 		    setTimeout(() => {
 		        toast.css({ opacity: "0", transform: "translateY(20px)" });
 		    }, 5000);
@@ -364,10 +343,7 @@
                 showToast("File vượt quá 5MB!", "error");
                 return;
             }
-
-            // KHÔNG ĐƯỢC KHAI BÁO formData 2 LẦN
             let formData = new FormData();
-
             formData.append("avatar", file);
             formData.append("username", localStorage.getItem("username"));
             formData.append("password", localStorage.getItem("password"));
@@ -398,7 +374,7 @@
         
         $(document).ready(function () {
             $("#changePassForm").on("submit", function (e) {
-                e.preventDefault(); // Ngăn reload trang
+                e.preventDefault();
 
                 $.ajax({
                     url: "/DoAnQLThueTro/ChangePass",
@@ -424,19 +400,19 @@
         
         $(document).ready(function () {
             $("#updateInfoForm").on("submit", function (e) {
-                e.preventDefault(); // Ngăn reload trang
+                e.preventDefault();
 
                 $.ajax({
                     url: "/DoAnQLThueTro/UpdateProfile",
                     type: "post",
                     dataType: "json",
-                    data: $(this).serialize(),  // Tự động gom tất cả name=""
+                    data: $(this).serialize(),
                     success: function (response) {
                         if (response.status === "success") {
                             showToast(response.message);
                             setTimeout(() => {
                                 window.location.href = "/DoAnQLThueTro/CaiDatCT";
-                            }, 3000);// dùng toast bạn đã có
+                            }, 3000);
                         } else {
                             showToast(response.message, "error");
                         }

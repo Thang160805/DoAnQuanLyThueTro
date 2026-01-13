@@ -5,16 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Toastify CSS (Thông báo đẹp) -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/DangKy.css">
 	<style>
@@ -25,7 +21,6 @@
             align-items: center;
             justify-content: center;
             background-color: #f0f2f5;
-            /* Ảnh nền phòng trọ/urban style */
             background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=2500&q=80');
             background-size: cover;
             background-position: center;
@@ -44,7 +39,6 @@
     </div>
 
     <div class="auth-card">
-        <!-- --- VIEW 2: SIGNUP --- -->
         <div id="signup-view" class="auth-view">
             <div class="brand-area">
                 <a href="#" class="logo"><i class="fa-solid fa-house-chimney"></i> FindRoom</a>
@@ -112,30 +106,25 @@
 </div>
 			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <!-- Toastify JS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
     function showToast(message, type = "success") {
 	    const toast = $("#toast");
 
-	    // Icon hiển thị theo loại
 	    let iconHTML = "";
 
 	    if (type === "error") {
-	        toast.css("background-color", "#dc2626"); // đỏ
+	        toast.css("background-color", "#dc2626");
 	        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
 	    } else {
-	        toast.css("background-color", "#2563eb"); // xanh
+	        toast.css("background-color", "#2563eb");
 	        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
 	    }
 
-	    // Set nội dung kèm icon
 	    toast.html(iconHTML + message);
 
-	    // hiện
 	    toast.css({ opacity: "1", transform: "translateY(0)" });
 
-	    // tự tắt sau 5 giây
 	    setTimeout(() => {
 	        toast.css({ opacity: "0", transform: "translateY(20px)" });
 	    }, 5000);

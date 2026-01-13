@@ -19,17 +19,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Quản lý</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
 	href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
 	rel="stylesheet">
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -123,17 +120,16 @@ body {
 
 .incident-cols {
 	display: grid;
-	/* Cột "Vấn đề" rộng nhất (2.5fr) để hiển thị chi tiết */
 	grid-template-columns: 0.8fr 2.5fr 1.2fr 1fr 1.2fr 120px;
 	align-items: center;
 }
 
 .truncate-150 {
 	display: block;
-	width: 150px; /* cố định 150px như bạn yêu cầu */
-	white-space: nowrap; /* không xuống dòng */
-	overflow: hidden; /* ẩn phần dư */
-	text-overflow: ellipsis; /* hiện dấu “…” */
+	width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis; 
 }
 
 .modal-overlay {
@@ -166,36 +162,34 @@ body {
 
 .contract-cols {
 	display: grid;
-	/* Mã HĐ | Phòng | Người thuê | Thời hạn | Trạng thái | Hành động */
 	grid-template-columns: 1fr 0.8fr 1.5fr 1.5fr 1fr 120px;
 	align-items: center;
 }
 
 .status-badgee {
 	display: inline-block;
-	padding: 8px 24px; /* Tăng padding để badge dài ra giống hình */
-	border-radius: 50px; /* Bo tròn hoàn toàn hai đầu */
-	font-family: sans-serif; /* Hoặc font dự án của bạn */
-	font-size: 14px; /* Chỉnh kích thước chữ */
-	font-weight: 800; /* Làm chữ đậm như trong ảnh */
+	padding: 8px 24px; 
+	border-radius: 50px; 
+	font-family: sans-serif; 
+	font-size: 14px; 
+	font-weight: 800; 
 	text-align: center;
-	border: 1px solid #FFEBB7; /* Viền rất nhạt */
+	border: 1px solid #FFEBB7; 
 }
 
 .badge-waiting {
-	background-color: #FFF8E1; /* Màu nền vàng kem nhạt */
-	color: #E67E22; /* Màu chữ cam đậm */
+	background-color: #FFF8E1;
+	color: #E67E22; 
 }
 
 .header-actions a[title="Tin nhắn"] .notification-dot {
-	background: #6366f1; /* Màu xanh tím đồng bộ với thương hiệu */
+	background: #6366f1;
 }
 
-/* Đảm bảo các icon-btn có khoảng cách đều nhau */
 .header-actions {
 	display: flex;
 	align-items: center;
-	gap: 12px; /* Khoảng cách giữa các nút */
+	gap: 12px; 
 }
 
 .badge-warn {
@@ -208,7 +202,6 @@ body {
 	color: #2563eb;
 }
 
-/* ===== MỨC ĐỘ ===== */
 .badge-low {
 	background: #dcfce7;
 	color: #166534;
@@ -248,7 +241,6 @@ body {
 </head>
 <body>
 	<%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -930,34 +922,29 @@ body {
 							%>
 
 							<div class="room-grid-row contract-cols">
-								<!-- Mã hợp đồng -->
 								<div>
 									<span style="font-weight: 700; color: #64748b;">
 										HD-2025/<%=hd.getId()%>
 									</span>
 								</div>
 
-								<!-- Phòng -->
 								<div>
 									<span style="font-weight: 700; color: #6366f1;"> <%=hd.getTenPhong()%>
 									</span>
 								</div>
 
-								<!-- Người thuê -->
 								<div>
 									<div style="font-weight: 600;">
 										<%=hd.getTenNguoiThue()%>
 									</div>
 								</div>
 
-								<!-- Thời hạn -->
 								<div style="font-size: 13px; color: #64748b;">
 									<%=DateHelper.formatVN(hd.getNgayBatDau())%>
 									-
 									<%=DateHelper.formatVN(hd.getNgayKetThuc())%>
 								</div>
 
-								<!-- Trạng thái -->
 								<div>
 									<%
 									if ("Đang hiệu lực".equals(hd.getTrangThai())) {
@@ -1216,33 +1203,23 @@ body {
         };
         document.getElementById('page-heading').innerText = titles[id];
     }
-
-    // --- Modal General ---
     function openModal(id) { document.getElementById(id).classList.add('active'); }
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
     
 
     function showToast(message, type = "success") {
 	    const toast = $("#toast");
-
-	    // Icon hiển thị theo loại
 	    let iconHTML = "";
 
 	    if (type === "error") {
-	        toast.css("background-color", "#dc2626"); // đỏ
+	        toast.css("background-color", "#dc2626");
 	        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
 	    } else {
-	        toast.css("background-color", "#2563eb"); // xanh
+	        toast.css("background-color", "#2563eb");
 	        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
 	    }
-
-	    // Set nội dung kèm icon
 	    toast.html(iconHTML + message);
-
-	    // hiện
 	    toast.css({ opacity: "1", transform: "translateY(0)" });
-
-	    // tự tắt sau 5 giây
 	    setTimeout(() => {
 	        toast.css({ opacity: "0", transform: "translateY(20px)" });
 	    }, 5000);

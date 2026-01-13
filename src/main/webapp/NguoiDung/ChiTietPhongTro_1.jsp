@@ -17,21 +17,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Chi tiết phòng</title>
-<!-- Font Google: Poppins & Inter -->
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
 	href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
 	rel="stylesheet">
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link rel="stylesheet"
@@ -79,7 +74,6 @@ body {
 	cursor: pointer;
 }
 
-/* --- 3. MODAL OVERLAY & CONTAINER --- */
 .modal-overlay {
 	position: fixed;
 	top: 0;
@@ -114,14 +108,12 @@ body {
 	transform: translateY(20px);
 	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 	overflow: hidden;
-	/* Để bo góc hoạt động tốt */
 }
 
 .modal-overlay.active .modal-container {
 	transform: translateY(0);
 }
 
-/* --- 4. MODAL HEADER --- */
 .modal-header {
 	padding: 40px 40px;
 	border-bottom: 1px solid #eee;
@@ -189,7 +181,6 @@ body {
 	color: #e74c3c;
 }
 
-/* --- 5. MODAL BODY (Content Scroll) --- */
 .modal-body {
 	flex: 1;
 	padding: 24px 32px;
@@ -217,7 +208,6 @@ body {
 	background: #bbb;
 }
 
-/* Typography trong hợp đồng */
 .contract-content h3 {
 	font-size: 18px;
 	font-weight: 700;
@@ -241,7 +231,6 @@ body {
 	color: #1E90FF;
 }
 
-/* --- 6. MODAL FOOTER --- */
 .modal-footer {
 	padding: 20px 24px;
 	border-top: 1px solid #eee;
@@ -324,12 +313,10 @@ body {
 	color: #222222;
 }
 
-/* Container chung */
 .booking-action {
 	margin-top: 15px;
 }
 
-/* Nút thuê chính */
 .btn-rent {
 	display: flex;
 	align-items: center;
@@ -351,7 +338,6 @@ body {
 	color: white;
 }
 
-/* Các khối thông báo trạng thái */
 .status-notice {
 	display: flex;
 	align-items: center;
@@ -364,7 +350,6 @@ body {
 	border: 1px solid transparent;
 }
 
-/* Style cho Đã thuê */
 .notice-rented {
 	background-color: #f1f5f9;
 	color: #64748b;
@@ -372,7 +357,6 @@ body {
 	cursor: not-allowed;
 }
 
-/* Style cho Đang sửa chữa */
 .notice-repair {
 	background-color: #fff7ed;
 	color: #c2410c;
@@ -409,7 +393,6 @@ body {
 </head>
 <body>
 	<%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -438,7 +421,7 @@ body {
 				<li class="nav-item"><a
 					href="${pageContext.request.contextPath}/PhongDaThue">Phòng đã
 						thuê</a></li>
-				<li class="nav-item"><a href="#">Lịch thanh toán</a></li>
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/LichThanhToan">Lịch thanh toán</a></li>
 				<li class="nav-item"><a
 					href="${pageContext.request.contextPath}/HopDong">Hợp đồng</a></li>
 			</ul>
@@ -503,8 +486,6 @@ body {
 	PhongTro pt = (PhongTro) request.getAttribute("ChiTietPhong");
 	%>
 	<div class="container mt-4">
-
-		<!-- 1. ẢNH PHÒNG (Gallery) -->
 		<div class="gallery-container">
 			<%
 			ArrayList<String> img = pt.getHinhAnh();
@@ -536,9 +517,7 @@ body {
 		</div>
 
 		<div class="detail-layout">
-			<!-- CỘT TRÁI: THÔNG TIN CHI TIẾT -->
 			<div class="left-column">
-				<!-- 2. THÔNG TIN CHÍNH -->
 				<div class="room-header">
 					<h1><%=pt.getTenPhong()%></h1>
 					<div class="room-address">
@@ -606,7 +585,7 @@ body {
 					</div>
 				</div>
 
-				<!-- 3. BẢN ĐỒ -->
+
 				<div class="section-box">
 					<h3 class="section-title">Vị trí</h3>
 					<iframe class="map-frame"
@@ -618,7 +597,6 @@ body {
 				int countComment = (int) request.getAttribute("countComment");
 				int avgStar = (int) request.getAttribute("avgStar");
 				%>
-				<!-- 5. BÌNH LUẬN -->
 				<div class="section-box">
 					<div class="review-summary">
 						<i class="fa-solid fa-star text-warning"></i>
@@ -628,7 +606,6 @@ body {
 						</span>
 					</div>
 
-					<!-- Form đăng bình luận -->
 					<form action="${pageContext.request.contextPath}/Comment"
 						method="post" id="reviewForm">
 
@@ -658,8 +635,6 @@ body {
 						</div>
 
 					</form>
-
-					<!-- List bình luận -->
 					<div class="review-list">
 						<%
 						ArrayList<Comment> listCM = (ArrayList<Comment>) request.getAttribute("listComment");
@@ -689,8 +664,6 @@ body {
 				</div>
 
 			</div>
-
-			<!-- CỘT PHẢI: ĐẶT PHÒNG (Sticky Sidebar) -->
 			<div class="right-column">
 				<div class="booking-sidebar">
 					<div class="price-tag">
@@ -706,7 +679,7 @@ body {
 
 					<div class="booking-action">
 						<%
-						String status = pt.getTrangThai(); // Giả sử: 0: Trống, 1: Đã thuê, 2: Đang sửa chữa
+						String status = pt.getTrangThai();
 
 						if (status.equals("Còn trống")) {
 						%>
@@ -744,8 +717,6 @@ body {
 			</div>
 		</div>
 
-
-		<!-- 6. PHÒNG TƯƠNG TỰ -->
 		<div class="section-box border-top-0 mt-4">
 			<h3 class="section-title">Phòng tương tự gần đây</h3>
 			<div class="row g-4">
@@ -791,18 +762,15 @@ body {
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
 	function toggleDropdown(id) {
-        // Đóng các dropdown khác
         const allDropdowns = document.querySelectorAll('.dropdown-content');
         allDropdowns.forEach(d => {
             if(d.id !== id) d.parentElement.classList.remove('active');
         });
 
-        // Mở/Đóng cái hiện tại
         const element = document.getElementById(id);
         element.parentElement.classList.toggle('active');
     }
 
-    // Click ra ngoài thì đóng
     window.onclick = function(event) {
         if (!event.target.closest('.dropdown')) {
             const dropdowns = document.querySelectorAll(".dropdown");
@@ -820,19 +788,16 @@ body {
             star.addEventListener("click", function () {
                 const value = parseInt(this.dataset.value);
 
-                // Reset tất cả sao
                 stars.forEach(s => {
                     s.classList.remove("fa-solid");
                     s.classList.add("fa-regular");
                 });
 
-                // Tô sao từ 1 → value
                 for (let i = 0; i < value; i++) {
                     stars[i].classList.remove("fa-regular");
                     stars[i].classList.add("fa-solid");
                 }
 
-                // Gán giá trị cho form
                 ratingInput.value = value;
             });
         });

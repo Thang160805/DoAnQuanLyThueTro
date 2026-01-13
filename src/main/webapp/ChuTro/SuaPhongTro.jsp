@@ -9,15 +9,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Sửa phòng</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -70,7 +67,6 @@
 </head>
 <body>
 <%
-	// Ngăn cache để không thể back sau khi logout
 	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	response.setHeader("Pragma", "no-cache");
 	response.setDateHeader("Expires", 0);
@@ -209,7 +205,7 @@
 							lý Hình Ảnh
 						</h2>
 
-						<!-- ẢNH CHÍNH -->
+						
 						<div class="form-group">
 							<label>Ảnh Chính (Bắt buộc 1 ảnh)</label> <label for="anhChinh"
 								class="upload-area">
@@ -231,7 +227,7 @@
 
 						<hr>
 
-						<!-- ẢNH PHỤ -->
+						
 						<div class="form-group">
 							<label>Ảnh Phụ (Tối đa 5 ảnh)</label> <label for="anhPhu"
 								class="upload-area">
@@ -247,7 +243,6 @@
 						<div class="image-preview-wrapper">
 							<label>Ảnh Phụ (Preview)</label>
 
-							<!-- JS sẽ tự thêm ảnh vào đây -->
 							<div class="sub-image-grid"
 								style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px;">
 							</div>
@@ -282,10 +277,10 @@
 	    let iconHTML = "";
 
 	    if (type === "error") {
-	        toast.css("background-color", "#dc2626"); // đỏ
+	        toast.css("background-color", "#dc2626");
 	        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
 	    } else {
-	        toast.css("background-color", "#2563eb"); // xanh
+	        toast.css("background-color", "#2563eb");
 	        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
 	    }
 
@@ -316,13 +311,10 @@
     e.preventDefault();
 
     let formData = new FormData(this);
-
-    // Lấy tiện ích giống trang thêm
     $("input[name='tienIch']:checked").each(function () {
         formData.append("tienIchList[]", $(this).val());
     });
 
-    // Lấy ảnh phụ giống trang thêm
     let anhPhuFiles = $("#anhPhu")[0].files;
     for (let i = 0; i < anhPhuFiles.length; i++) {
         formData.append("anhPhuList[]", anhPhuFiles[i]);

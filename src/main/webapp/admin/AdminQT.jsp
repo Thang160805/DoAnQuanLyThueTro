@@ -11,7 +11,6 @@
 <head>
 <meta charset="UTF-8">
 <title>FindRoom Admin | Quản trị hệ thống</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
@@ -94,6 +93,16 @@ body {
 </style>
 </head>
 <body>
+<%
+	response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	response.setHeader("Pragma", "no-cache");
+	response.setDateHeader("Expires", 0);
+
+	if (session.getAttribute("user") == null) {
+		response.sendRedirect(request.getContextPath() + "/index.jsp");
+		return;
+	}
+	%>
 
 	<div class="app-container">
 		<aside class="sidebar">
@@ -363,28 +372,27 @@ body {
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 	<script>
-    // Hàm điều hướng mượt mà giữa các tab
     function navTo(id, el) {
         const sections = document.querySelectorAll('.section');
         const navItems = document.querySelectorAll('.nav-item');
         const heading = document.getElementById('page-heading');
         const sub = document.getElementById('page-sub');
 
-        // Ẩn tất cả
+      
         sections.forEach(s => {
             s.classList.remove('active');
             s.style.display = 'none';
         });
         navItems.forEach(n => n.classList.remove('active'));
 
-        // Hiện section được chọn
+    
         const activeSection = document.getElementById(id);
         activeSection.style.display = 'block';
-        // Delay 1 chút để effect transition chạy
+        
         setTimeout(() => activeSection.classList.add('active'), 50);
         el.classList.add('active');
         
-        // Cập nhật text tiêu đề
+        
         const titles = {
             'dashboard': ['Tổng quan', 'Hôm nay hệ thống của bạn thế nào?'],
             'accounts': ['Quản lý tài khoản', 'Danh sách tất cả người dùng và chủ trọ'],
@@ -401,10 +409,10 @@ body {
 	    let iconHTML = "";
 
 	    if (type === "error") {
-	        toast.css("background-color", "#dc2626"); // đỏ
+	        toast.css("background-color", "#dc2626");
 	        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
 	    } else {
-	        toast.css("background-color", "#2563eb"); // xanh
+	        toast.css("background-color", "#2563eb");
 	        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
 	    }
 

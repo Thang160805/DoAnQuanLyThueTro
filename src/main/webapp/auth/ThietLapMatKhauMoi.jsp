@@ -7,21 +7,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- Google Fonts: Poppins (Hiện đại, tròn trịa giống Airbnb) -->
+<title>Thiết lập mật khẩu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<!-- Bootstrap 5 CSS -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<!-- Font Awesome Icons -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Toastify CSS (Thông báo đẹp) -->
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/ThietLapMatKhau.css">
 <style>
@@ -36,10 +30,10 @@ body {
     overflow: hidden;
 }
 .user-avatar img {
-	width: 52px; /* hoặc 100% */
+	width: 52px;
 	height: 52px;
-	object-fit: cover; /* giúp ảnh fill khung */
-	border-radius: 50%; /* bo tròn */
+	object-fit: cover;
+	border-radius: 50%;
 	display: block;
 }
 </style>
@@ -135,25 +129,20 @@ body {
 	
 	function showToast(message, type = "success") {
 	    const toast = $("#toast");
-
-	    // Icon hiển thị theo loại
 	    let iconHTML = "";
 
 	    if (type === "error") {
-	        toast.css("background-color", "#dc2626"); // đỏ
+	        toast.css("background-color", "#dc2626");
 	        iconHTML = `<i class="fa-solid fa-circle-xmark" style="color:#fecaca; margin-right:8px;"></i>`;
 	    } else {
-	        toast.css("background-color", "#2563eb"); // xanh
+	        toast.css("background-color", "#2563eb");
 	        iconHTML = `<i class="fa-solid fa-circle-check" style="color:#4ade80; margin-right:8px;"></i>`;
 	    }
 
-	    // Set nội dung kèm icon
 	    toast.html(iconHTML + message);
 
-	    // hiện
 	    toast.css({ opacity: "1", transform: "translateY(0)" });
 
-	    // tự tắt sau 5 giây
 	    setTimeout(() => {
 	        toast.css({ opacity: "0", transform: "translateY(20px)" });
 	    }, 5000);
